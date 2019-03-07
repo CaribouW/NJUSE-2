@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@MapperScan("com.example.main")
+@MapperScan({"com.example.main.mapper",
+                "com.example.main.dao"})
 @SpringBootApplication
 public class MainApplication extends SpringBootServletInitializer{
     @Override
