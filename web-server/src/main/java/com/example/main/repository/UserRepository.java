@@ -1,5 +1,6 @@
 package com.example.main.repository;
 
+import com.example.main.model.Role;
 import com.example.main.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,4 +21,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query("delete from User where userId = ?1")
     void deleteByUserId(String userid);
+
+    @Transactional
+    @Query("select r from () where userId = ?1")
+    List<Role> findRolesByUserId(String uid);
 }
