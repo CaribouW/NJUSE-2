@@ -23,6 +23,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     void deleteByUserId(String userid);
 
     @Transactional
-    @Query("select r from () where userId = ?1")
-    List<Role> findRolesByUserId(String uid);
+    @Query("select m.rid " +
+            "from User u inner join MapperUserRole m on u.userId = m.uid " +
+            "where m.rid in (select m.rid from Role r where r.roleId = m.rid)")
+    List<String> findRolesByUserId(String uid);
+
 }

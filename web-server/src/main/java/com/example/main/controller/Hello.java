@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class Hello {
     @Autowired
@@ -17,8 +19,10 @@ public class Hello {
 
     @GetMapping("/")
     public String run() {
-        Role role=roleRepository.findByRoleId("001");
-        userRepository.deleteByUserId("1");
-        return String.valueOf(userRepository.findAll().size());
+        List<String> list=userRepository.findRolesByUserId("1");
+        if (!list.isEmpty())
+            return list.get(0);
+        else
+            return "";
     }
 }

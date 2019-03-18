@@ -44,4 +44,12 @@ public class Role extends BaseDomain {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }
