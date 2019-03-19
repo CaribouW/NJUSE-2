@@ -1,10 +1,10 @@
 package com.example.main.core.security.session;
 
 import org.apache.shiro.session.Session;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.Collection;
-
 public interface ShiroSessionRepository {
 
     /**

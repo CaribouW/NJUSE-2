@@ -1,18 +1,18 @@
 package com.example.main.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.example.main.model.Role;
-import com.example.main.model.User;
+import com.example.main.core.security.session.CustomShiroSessionDAO;
 import com.example.main.repository.RoleRepository;
 import com.example.main.repository.UserRepository;
-import com.example.main.utils.OssUtils;
+import com.example.main.utils.SessionUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SimpleSession;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.List;
+import java.util.Collection;
 
 @Controller
 public class Hello {
@@ -20,9 +20,22 @@ public class Hello {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private SessionUtils sessionUtils;
+
     @RequestMapping("/demo")
-    public String hell(){
+    public String hell() {
+        String s =
+                (String) sessionUtils.getValue("as");
         return "index";
+    }
+
+    @RequestMapping("/dem")
+    public String h() {
+        EnterpriseCacheSessionDAO dao = new EnterpriseCacheSessionDAO();
+        sessionUtils.setAttribute("as", "as");
+
+        return "";
     }
 
 }

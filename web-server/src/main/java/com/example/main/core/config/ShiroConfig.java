@@ -7,6 +7,7 @@ import com.example.main.core.security.filter.RoleFilter;
 import com.example.main.core.security.listener.CustomSessionListener;
 import com.example.main.core.security.listener.PswAuthenticationListener;
 import com.example.main.core.security.realm.UserRealm;
+import com.example.main.core.security.session.CustomShiroSessionDAO;
 import org.apache.shiro.authc.AbstractAuthenticator;
 import org.apache.shiro.authc.AuthenticationListener;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -196,6 +197,12 @@ public class ShiroConfig {
     }
 
     //会话持久层
+//    @Bean
+//    public CustomShiroSessionDAO sessionDAO(){
+//        CustomShiroSessionDAO sessionDAO=new CustomShiroSessionDAO();
+//        sessionDAO.setSessionIdGenerator(sessionIdGenerator());
+//        return sessionDAO;
+//    }
     @Bean
     public EnterpriseCacheSessionDAO sessionDAO() {
         EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();

@@ -1,16 +1,19 @@
 package com.example.main.core.security.session;
 
 
+import com.example.main.utils.LoggerUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Collection;
 
 public class CustomShiroSessionDAO extends AbstractSessionDAO {
-
     private ShiroSessionRepository shiroSessionRepository;
+    @Autowired
+    private LoggerUtils loggerUtils;
 
     public ShiroSessionRepository getShiroSessionRepository() {
         return shiroSessionRepository;
@@ -29,7 +32,7 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO {
     @Override
     public void delete(Session session) {
         if (session == null) {
-//            LoggerUtils.error(getClass(), "Session 不能为null");
+            loggerUtils.error(getClass(), "Session 不能为null");
             return;
         }
         Serializable id = session.getId();
@@ -53,5 +56,6 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO {
     @Override
     protected Session doReadSession(Serializable sessionId) {
         return getShiroSessionRepository().getSession(sessionId);
-    } }
+    }
+}
 

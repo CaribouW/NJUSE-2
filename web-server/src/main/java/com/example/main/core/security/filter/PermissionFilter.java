@@ -2,20 +2,22 @@ package com.example.main.core.security.filter;
 
 
 import com.example.main.model.User;
+import com.example.main.utils.LoggerUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 public class PermissionFilter extends AccessControlFilter {
-//    @Autowired
-//    private LoggerUtils loggerUtils;
+    @Autowired
+    private LoggerUtils loggerUtils;
     @Override
     protected boolean isAccessAllowed(ServletRequest request,
                                       ServletResponse response, Object mappedValue) throws Exception {
-//        loggerUtils.debug(PermissionFilter.class, "accessAllowed check");
+        loggerUtils.debug(PermissionFilter.class, "accessAllowed check");
         //先判断带参数的权限判断
         Subject subject = getSubject(request, response);
         User users = (User) subject.getPrincipal();
