@@ -49,8 +49,8 @@ public class OssUtils {
             request.setContentType("image/png");
         } else if (objectName.matches("[0-9a-zA-Z_/]*.pdf")) {
             request.setContentType("application/pdf");
-        } else return "辣鸡";
-        // 生成签名URL（HTTP PUT请求）。
+        } else return "错误";
+//         生成签名URL（HTTP PUT请求）。
         URL signedUrl = client.generatePresignedUrl(request);
 
         // 关闭OSSClient。
