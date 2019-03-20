@@ -1,20 +1,14 @@
 package com.example.main.controller;
 
-import com.example.main.core.security.session.CustomShiroSessionDAO;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.main.repository.RoleRepository;
 import com.example.main.repository.UserRepository;
 import com.example.main.utils.SessionUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.SimpleSession;
-import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-
-@Controller
+@RestController
 public class Hello {
     @Autowired
     private UserRepository userRepository;
@@ -23,19 +17,31 @@ public class Hello {
     @Autowired
     private SessionUtils sessionUtils;
 
-    @RequestMapping("/demo")
-    public String hell() {
-        String s =
-                (String) sessionUtils.getValue("as");
-        return "index";
+    private class Response {
+        public JSON data;
+        public String message;
+
+        public Response(JSON data, String message) {
+            this.data = data;
+            this.message = message;
+        }
     }
 
-    @RequestMapping("/dem")
-    public String h() {
-        EnterpriseCacheSessionDAO dao = new EnterpriseCacheSessionDAO();
-        sessionUtils.setAttribute("as", "as");
-
-        return "";
+    @RequestMapping(value = "/hello/{user_id}", method = RequestMethod.GET)
+    public JSONObject hell(@PathVariable("user_id") String id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", id);
+        return jsonObject;
     }
+
+    @GetMapping("/")
+    public Response he() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("我们是什么???", "凉凉四人组");
+        jsonObject.put("会不会凉???", "听天命！！！");
+        Response response = new Response(jsonObject, "ready");
+        return response;
+    }
+
 
 }
