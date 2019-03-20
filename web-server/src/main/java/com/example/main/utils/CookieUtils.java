@@ -138,6 +138,7 @@ public class CookieUtils {
 
             }
         } catch (Exception ex) {
+            String a;
             loggerUtils.error(CookieUtils.class, "获取Cookies发生异常！", ex);
         }
         return string;

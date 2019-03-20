@@ -9,4 +9,10 @@ spring:
     jpa:
       hibernate:
         ddl-auto: update
-      show-sql: true       #日志加入查询内容
+      show-sql: true
+    devtools:
+      restart:
+        enabled: true
+    freemarker:
+      cache: true
+
