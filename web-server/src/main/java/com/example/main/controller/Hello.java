@@ -34,6 +34,11 @@ public class Hello {
         return jsonObject;
     }
 
+    @GetMapping("hello")
+    public String h() {
+        return "a";
+    }
+
     @GetMapping("/")
     public Response he() {
         JSONObject jsonObject = new JSONObject();
