@@ -11,7 +11,8 @@ import java.util.List;
 @Table(name = "user")
 @Setter
 @Getter
-public class User extends BaseDomain {
+public class User implements Serializable {
+    @Id
     @Column(name = "user_id", nullable = false)
     private String userId;
 
@@ -19,7 +20,7 @@ public class User extends BaseDomain {
     private String password;
 
     @ManyToMany()
-    @JoinTable(name = "mapper_user_role",joinColumns = {
+    @JoinTable(name = "mapper_user_role", joinColumns = {
             @JoinColumn(name = "user_id", foreignKey =
             @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT)),
     }, inverseJoinColumns = {

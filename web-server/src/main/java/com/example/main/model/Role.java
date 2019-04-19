@@ -4,15 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "role")
 @Setter
 @Getter
-public class Role extends BaseDomain {
+public class Role implements Serializable {
     @Column(name = "role_name")
     private String roleName;
+    @Id
     @Column(name = "role_id", length = 64, unique = true)
     private String roleId;
 

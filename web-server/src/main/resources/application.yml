@@ -2,7 +2,7 @@ server:
     port: 18080
 spring:
     datasource:
-        url: jdbc:mysql://106.14.140.93:3306/SoftWareTwo
+        url: jdbc:mysql://106.14.140.93:3306/SE2?useUnicode=true&characterEncoding=utf-8
         username: root
         password: lfm
         driver-class-name: com.mysql.cj.jdbc.Driver
