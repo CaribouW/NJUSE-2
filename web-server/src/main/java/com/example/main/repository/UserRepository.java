@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-    List<User> findTop1ByUserId(String uid);
 
     @Transactional
     @Query("select u from User u where u.userId=?1")
@@ -21,11 +20,5 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query("delete from User where userId = ?1")
     void deleteByUserId(String userid);
-
-    @Transactional
-    @Query("select m.rid " +
-            "from User u inner join MapperUserRole m on u.userId = m.uid " +
-            "where m.rid in (select m.rid from Role r where r.roleId = m.rid)")
-    List<String> findRolesByUserId(String uid);
 
 }

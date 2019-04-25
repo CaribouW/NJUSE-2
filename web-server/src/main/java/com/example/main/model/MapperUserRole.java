@@ -1,27 +1,59 @@
 package com.example.main.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
-@Table(name = "mapper_user_role")
+@Table(name = "mapper_user_role", schema = "SE2", catalog = "")
 public class MapperUserRole implements Serializable {
-    @Column(name = "user_id")
-    private String uid;
-
-    @Column(name = "role_id")
-    private String rid;
-    @Id
     private String id;
+    private String userId;
+    private String roleId;
 
+    @Basic
+    @Id
+    @Column(name = "id")
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "role_id")
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MapperUserRole that = (MapperUserRole) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(roleId, that.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, roleId, id);
     }
 }

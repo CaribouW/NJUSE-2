@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -19,16 +20,6 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany()
-    @JoinTable(name = "mapper_user_role", joinColumns = {
-            @JoinColumn(name = "user_id", foreignKey =
-            @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT)),
-    }, inverseJoinColumns = {
-            @JoinColumn(name = "role_id", foreignKey =
-            @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    })
-    private List<Role> roles;
-
     public User(String userId) {
         this.userId = userId;
     }
@@ -36,6 +27,8 @@ public class User implements Serializable {
     public User() {
     }
 
+    @Id
+    @Column(name = "user_id")
     public String getUserId() {
         return userId;
     }
@@ -44,11 +37,27 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, password);
     }
 }
