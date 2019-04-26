@@ -1,0 +1,3025 @@
+swagger: '2.0'
+info:
+  description: 南大测试 REST API
+  version: 2.1.1
+  title: 南大测试 REST API 接口说明
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 'localhost:8000'
+tags:
+  - name: login
+    description: 登录
+  - name: consign
+    description: 委托
+  - name: processInstance
+    description: 流程实例状态
+  - name: project
+    description: 工程（添加project时要给id，是想要绑定的consign的id，project的id会重新生成啦）
+  - name: contract
+    description: >-
+      合同(与project一对一对应，添加时提供project的id作为其id)
+  - name: testPlan
+    description: >-
+      测试计划（与project一对一对应，添加时提供project的id作为其id）
+  - name: testCase
+    description: >-
+      测试方案（添加测试方案时需要给定去绑定的project的id，与project是多对一的关系，因此会有随机生成的id）
+  - name: testReport
+    description: >-
+      测试报告（同测试计划，与工程一对一）
+  - name: testFunction
+    description: >-
+      测试功能（同测试方案，与工程多对一）
+  - name: testReportCheck
+    description: >-
+      测试报告检查（同测试计划，与工程一对一）
+  - name: testWorkCheck
+    description: >-
+      测试工作检查（同测试计划，与工程一对一）
+  - name: satisfactionSurvey
+    description: >-
+      用户满意度调查（与工程一对一）
+  - name: testRecord
+    description: >-
+      测试记录（暂时不要用，后面会改掉）
+schemes:
+  - http
+consumes:
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: 登录
+      description: 登录系统
+      operationId: login
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名. 此时应默认为 **undefined**
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要. 此时应默认为 **undefined**
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            登录信息. JSON格式，需包含两个key， 'username' 以及 'password'.  eg.
+            ```
+            {
+              "username": "admin",
+              "password": "admin"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功登录,data里包含User各种信息
+              eg.
+            ```
+            {
+              "data": {
+                "password": "21232F297A57A5A743894A0E4A801FC3",
+                "code": "2",
+                "createdUserId": "2",
+                "roles": [
+                  {
+                    "functionGroup": {
+                      "Consign": [
+                        "ADD",
+                        "DELETE",
+                        "EDIT",
+                        "VIEW"
+                      ]
+                    },
+                    "name": "normal_customer"
+                  }
+                ],
+                "name": "Customer1",
+                "id": "2",
+                "credentialsSalt": "customer1null",
+                "clientDigest": "dfcbbdfef1f8561cc04cf219736922c07af9be789ca53aa24af6594e89e81ccb",
+                "username": "customer1"
+              },
+              "message": "",
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/consign:
+    get:
+      tags:
+        - consign
+      summary: 查询委托
+      description: 用户为工作人员时，返回所有委托；用户为客户时，返回该客户的委托；分为根据用户查询和根据projectID查询，在参数中加入projectID时查询该project里的consign，没有时查询用户所有的consign
+      operationId: queryConsigns
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: project的ID
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询委托时返回委托. data内包含JsonArray格式的委托内容
+            ```
+            {
+              "data": [
+                {
+                  "processInstanceID": "14",
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-15 22:04:24",
+                  "id": "0314e289-460c-4c53-8369-316508887a62",
+                  "state": "TobeSubmit",
+                  "operation": "[
+                    Submit
+                  ]",
+                  "consignation": "REPUTATION"
+                },
+                {
+                  "processInstanceID": "23",
+                  "createdUserId": "2",
+                  "alteredTime": "2018-06-15 22:10:28",
+                  "createdTime": "2018-06-15 22:05:34",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "state": "TobeSubmit",
+                  "operation": "[
+                    Submit
+                  ]",
+                  "consignation": "END GAME"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "status":failure;
+            }
+            ```
+          schema:
+            $ref: '#/definitions/Response'
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - consign
+      summary: 添加委托
+      description: 向数据库中添加委托，成功时返回委托的具体信息以及一个success状态
+      operationId: addConsign
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            委托内容具体内容. JSON格式
+            ```
+            {
+              "consignation": "content"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加委托时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "32",
+                "createdUserId": "2",
+                "createdTime": "2018-06-15 22:08:03",
+                "id": "6d7e45ec-154f-477b-990d-ae7daad676c7",
+                "state": "TobeSubmit",
+                "operation": "[Submit]",
+                "consignation": "I love Ariana Grande"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - consign
+      summary: 修改委托
+      description: 修改已有的委托，参数中需要包含委托的id
+      operationId: editConsign
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            委托具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+              "consignation":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+              "processInstanceID": "32",
+              "createdUserId": "2",
+              "alteredTime": "2018-05-19 20:54:42",
+              "createdTime": "2018-05-19 20:48:24",
+              "alteredUserId": "2",
+              "id": "1708445d-a5c6-4425-b0b4-4bf96486941d",
+              "state": "State：提交委托 From: Consign:1:7",
+              "consignation": "excellent"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - consign
+      summary: 删除委托
+      description: 删除一个委托，需要提供委托的具体id
+      operationId: deleteConsign
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            委托具体内容. JSON格式. 需要指明ID,consignation为非必要
+            ```
+            {
+              "id": 
+              "consignation":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 成功删除委托
+          schema:
+            $ref: '#/definitions/Response'
+        '405':
+          description: Invalid input
+  '/services/consign/{id}':
+    get:
+      tags:
+        - consign
+      summary: 根据id查询委托
+      description: 根据请求中的id查询委托
+      operationId: queryConsignByID
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 委托id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询委托. data内包含JsonArray格式的委托内容
+            ```
+            {
+              "data": {
+                "processInstanceID": "23",
+                "createdUserId": "2",
+                "alteredTime": "2018-06-15 22:10:28",
+                "createdTime": "2018-06-15 22:05:34",
+                "alteredUserId": "2",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "consignation": "1989"
+                },
+              "status": "SUCCESS"
+            }
+          schema:
+            $ref: '#/definitions/Response'
+        '405':
+          description: Invalid input
+  '/services/processInstance/{processInstanceID}':
+    get:
+      summary: 获取流程实例状态
+      tags:
+        - processInstance
+      description: 根据processInstanceID获取该流程实例状态
+      operationId: queryConsignState
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: processInstanceID
+          in: path
+          type: string
+          description: 流程实例在Activiti中的进程ID
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: >-
+            成功获取委托状态. 
+
+            testReport的state有：TobeWrit，TobeReview，TobeApprove， TobeSend，
+            TobeConfirm， Satisfaction， TobeDone， TobeFiling， Finished
+
+            data含两个属性：
+
+            processInstanceID->委托进程ID
+
+            state->委托状态. 格式为
+
+            ```
+
+            {
+              "data": {
+                "processInstanceID": "23",
+                "state": "TobeSubmit",
+                "operation": [
+                "Submit"
+              ]
+            },
+            "status": "SUCCESS"
+            }
+
+            ```
+          schema:
+            $ref: '#/definitions/Response'
+    put:
+      summary: 修改流程实例状态
+      description: 根据processInstanceID修改该流程实例状态
+      operationId: update"Consign"State
+      tags:
+        - processInstance
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: processInstanceID
+          in: path
+          type: string
+          description: 流程实例在Activiti中的进程ID
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: params
+          in: formData
+          description: >
+            修改的操作内容。JSON格式。对象名为'object',属性名为'operation',  目前去操作流程实例的具体状态为：Write/
+            ReviewPass - ReviewReject/ ApprovePass- ApproveReject/ Send/
+            ConfirmPass- ConfirmReject/ SatisfactoryFeedback/ ConfirmAbort/
+            Done/ File eg.
+
+            ```
+
+            {
+              "object": "consign",
+              "operation": "Submit"
+            }
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功修改流程实例状态，并在data中返回修改后的进程状态。 
+            data含两个属性 ：
+            processInstanceID->流程实例进程ID .
+            state->流程实例状态
+            ```
+            {
+              "data": {
+                "processInstanceID": "23",
+                "state": "TobeReview",
+                "operation": [
+                  "ReviewPass",
+                  "ReviewReject"
+                ]
+              },
+              "status": "SUCCESS"
+            }
+          schema:
+            $ref: '#/definitions/Response'
+  /services/contract:
+    get:
+      tags:
+        - contract
+      summary: 查询合同
+      description: 用户为普通客户时，返回当前该客户的所有合同，如果是工作人员返回所有合同，更新：提供根据project查询
+      operationId: queryContracts
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询合同时返回合同. data内包含JsonArray格式的内容内容
+            目前没有返回合同的contractBody？
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "data": [
+                {
+                  "processInstanceID": "23",
+                  "createdUserId": "2",
+                  "contractBody": "...ready for it?",
+                  "createdTime": "2018-06-19 19:21:12",
+                  "id": "a7ab288c-55eb-4e26-81f2-ed0e16fca1f0",
+                  "state": "TobeSubmit",
+                  "operation": "[Submit]"
+                },
+                {
+                  "processInstanceID": "41",
+                  "createdUserId": "2",
+                  "contractBody": "I did something bad",
+                  "createdTime": "2018-06-19 19:27:13",
+                  "id": "9dcaaf2c-6594-4324-af1a-11d7ca399f06",
+                  "state": "TobeSubmit",
+                  "operation": "[Submit]"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - contract
+      summary: 添加合同
+      description: >-
+        向数据库中添加合同，添加时要给定一个id，是所在project的id（project的id是在创建project时前端传入的对应绑定consign的一个id），这个id改到了query里，成功时返回合同的具体信息以及一个success状态
+      operationId: addContract
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            合同的具体内容. JSON格式
+            ```
+            {
+              "contractBody": "content"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加合同时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "2515",
+                "createdUserId": "2",
+                "contractBody": "Our song",
+                "createdTime": "2018-06-16 10:14:54",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "state": "TobeSubmit",
+                "operation": "[Submit]"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - contract
+      summary: 修改合同
+      description: 修改已有的合同，参数中需要包含合同的id
+      operationId: editContract
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            合同具体内容. JSON格式. 需要指明合同的ID
+            ```
+            {
+              "id": 
+              "contractBody":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+              "processInstanceID": "5001",
+                "createdUserId": "2",
+                "contractBody": "you belong with me",
+                "alteredTime": "2018-05-28 19:16:02",
+                "createdTime": "2018-05-28 18:47:22",
+                "alteredUserId": "2",
+                "id": "1399d1ac-9aad-4ca3-9f44-e49972d147cf",
+                "state": "TobeSubmit"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - contract
+      summary: 删除合同
+      description: 删除一个合同，需要提供委托的具体id
+      operationId: deleteContract
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            合同具体内容. JSON格式. 需要指明ID,contractBody为非必要
+            ```
+            {
+              "id": 
+              "contractBody":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除合同
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/contract/{id}':
+    get:
+      tags:
+        - contract
+      summary: 根据id查询合同
+      description: 根据请求中的id查询对应合同
+      operationId: queryContractByID
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 合同的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询合同. data内包含JsonArray格式的合同内容
+            ```
+            {
+              "data": {
+              "processInstanceID": "5011",
+              "createdUserId": "2",
+              "contractBody": "I Love TaylorSwift So Much",
+              "alteredTime": "2018-05-28 19:26:22",
+              "createdTime": "2018-05-28 19:00:56",
+              "alteredUserId": "2",
+              "id": "7356e68f-c01f-4a32-8c5e-4fce3f5508d7"
+              "state": "TobeSubmit",
+              "operation": "[Submit]"
+            },
+            "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/project:
+    get:
+      tags:
+        - project
+      summary: 查询工程
+      description: 用户为普通客户时，返回当前该客户的所有工程，如果是工作人员返回所有工程
+      operationId: queryProjects
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询时返回工程.返回内容中的testCase为历史遗留问题，正式版应该不会有
+            查询失败时，返回一个失败的status
+            ```
+            {
+              
+              "data": [
+                {
+                  "code": "why?Oh,cuz she is dead",
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-09 17:37:22",
+                  "id": "aa1a57fc-3ba5-414a-89fb-a9eea5b33a3f",
+                  "userID": "2",
+                  "testCase": [],
+                  "username": "customer1"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - project
+      summary: 添加工程
+      description: 向数据库中添加工程，添加时需要前端提供去绑定的consign的id，写在query里，成功时返回合同的具体信息以及一个success状态
+      operationId: addProject
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: consignID
+          in: query
+          description: 绑定委托的id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            工程的具体内容. JSON格式，当前尝试一个code(工程的编码)
+            ```
+            {
+              "code":"xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加工程时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-02 20:16:29",
+                "id": "cdd340fa-501c-42ab-9596-6c55b1a694c2"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - project
+      summary: 修改工程
+      description: 修改已有的工程，参数中需要包含工程的id，但是其实project中似乎并没有去改动的body，只有consign等其他实体类，所以有问题去问俊举或博文
+      operationId: editProject
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            工程具体内容. JSON格式. 需要指明工程的ID
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-02 20:25:16",
+                "createdTime": "2018-06-02 20:24:49",
+                "alteredUserId": "2",
+                "id": "028c9856-6d00-48ab-8b24-9328c29ef3a8"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - project
+      summary: 删除工程
+      description: 删除一个工程，需要提工程的具体id
+      operationId: deleteProject
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            需要指明工程的ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除工程
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/project/{id}':
+    get:
+      tags:
+        - project
+      summary: 根据id查询工程
+      description: 根据请求中的id查询对应工程
+      operationId: queryProjectById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 工程的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询工程. data内包含JsonArray格式的工程内容
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-02 20:27:01",
+                "id": "0aee06e8-f44b-4594-8919-bd93e8f3a49f"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testPlan:
+    get:
+      tags:
+        - testPlan
+      summary: 查询测试计划
+      description: 用户为普通客户时，返回当前该客户的所有测试计划，如果是工作人员返回所有测试计划,新增根据project的id查询
+      operationId: queryTestPlans
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询测试计划时返回测试计划
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "data": [
+                {
+                  "processInstanceID": "44",
+                  "createdUserId": "2",
+                  "alteredTime": "2018-06-15 22:42:55",
+                  "createdTime": "2018-06-15 22:40:50",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "state": "TobeWrite",
+                  "body": "love TaylorSwift",
+                  "operation": "[Write]"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testPlan
+      summary: 添加测试计划
+      description: 添加测试计划，除了内容body还要提供绑定project的id，成功时返回测试计划的具体信息以及一个success状态,projectID换到了query里
+      operationId: addTestPlan
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          description: 功程id
+          in: query
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            测试计划的具体内容. JSON格式
+            ```
+            {
+              "body": "xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加测试计划时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "44",
+                "createdUserId": "2",
+                "createdTime": "2018-06-15 22:40:50",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "state": "TobeWrite",
+                "body": "love taylorswift",
+                "operation": "[Write]"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testPlan
+      summary: 修改测试计划
+      description: 修改已有的测试计划，参数中需要包含测试计划的id
+      operationId: editTestPlan
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明测试计划的ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "44",
+                "createdUserId": "2",
+                "alteredTime": "2018-06-15 22:42:55",
+                "createdTime": "2018-06-15 22:40:50",
+                "alteredUserId": "2",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "state": "TobeWrite",
+                "body": "love TaylorSwift",
+                "operation": "[Write]"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testPlan
+      summary: 删除测试计划
+      description: 删除一个测试计划，需要提供具体id
+      operationId: deleteTestPlan
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除测试计划
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testPlan/{id}':
+    get:
+      tags:
+        - testPlan
+      summary: 根据id查询测试计划
+      description: 根据请求中的id查询对应测试计划
+      operationId: queryTestPlanById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 测试计划的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试计划. data内包含JsonArray格式的内容
+            ```
+            {
+            "data": [
+                {
+                  "processInstanceID": "44",
+                  "createdUserId": "2",
+                  "alteredTime": "2018-06-15 22:42:55",
+                  "createdTime": "2018-06-15 22:40:50",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "state": "TobeWrite",
+                  "body": "love TaylorSwift",
+                  "operation": "[Write]"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testCase:
+    get:
+      tags:
+        - testCase
+      summary: 查询测试方案
+      description: >-
+        根据用户查询或者根据工程查询，从传入参数里是否有projectID区分，如果没有则返回当前用户所有测试方案或者管理员获取所有测试方案，如果给了projectID则返回该工程里的测试方案
+      operationId: queryTestCases
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id，需要按照工程查找时填入该参数
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询测试方案时返回测试方案
+            查询失败时，返回一个失败的status
+            ```
+            {
+              
+              "data": [
+                {
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-02 20:16:29",
+                  "id": "cdd340fa-501c-42ab-9596-6c55b1a694c2"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testCase
+      summary: 添加测试方案
+      description: >-
+        向数据库中添加测试方案，除了内容body还要前端提供project的id，这个projectID和username、clientDigest一样的形式传入，成功时返回测试方案的具体信息以及一个success状态
+      operationId: addTestCase
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 绑定的工程的id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            测试方案的具体内容. JSON格式
+            ```
+            {
+              "body": "xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加测试方案时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-03 20:16:31",
+                "id": "49e9b994-064c-47f9-9a2e-f02260ed9d11",
+                "body": "I love taylorswift"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testCase
+      summary: 修改测试方案
+      description: 修改已有的测试方案，参数中需要包含测试方案的id
+      operationId: editTestCase
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明测试方案的ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-03 20:17:52",
+                "createdTime": "2018-06-03 20:16:31",
+                "alteredUserId": "2",
+                "id": "49e9b994-064c-47f9-9a2e-f02260ed9d11",
+                "body": "love shawnmendes"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testCase
+      summary: 删除测试方案
+      description: 删除一个测试方案，需要提供具体id
+      operationId: deleteTestCase
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除测试方案
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testCase/{id}':
+    get:
+      tags:
+        - testCase
+      summary: 根据id查询测试方案
+      description: 根据请求中的id查询对应测试方案
+      operationId: queryTestCaseById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 测试方案的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试方案. data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-03 20:19:30",
+                "id": "ad402346-a514-4e0b-9fec-6ac13f0a2a98",
+                "testcase": "I love taylorswift"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testReport:
+    get:
+      tags:
+        - testReport
+      summary: 查询测试报告
+      description: >-
+        用户为普通客户时，返回当前该客户的所有报告，如果是工作人员返回所有报告（当前用户为customer1并且testReport为空时会返回failure，尚未解决）
+      operationId: queryTestReports
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询测试计划时返回测试计划.返回内容还没有确定
+            查询失败时，返回一个失败的status
+            ```
+            {
+              
+              "data": [
+                {
+                  "processInstanceID": "7501",
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-19 22:28:27",
+                  "id": "7e8e4f78-ac36-4c9d-af11-7da9c440a15d",
+                  "state": "TobeWrite",
+                  "body": "no one has to know",
+                  "operation": "[Write]"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testReport
+      summary: 添加测试报告
+      description: 向数据库中添加测试报告，除了内容report还要提供绑定project的id，成功时返回测试计划的具体信息以及一个success状态
+      operationId: addTestReport
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            测试计划的具体内容. JSON格式
+            ```
+            {
+              "body": "xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加测试报告时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "2501",
+                "createdUserId": "2",
+                "createdTime": "2018-06-16 09:56:25",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "state": "TobeWrite",
+                "body": "perfect",
+                "operation": "[Write]"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testReport
+      summary: 修改测试报告
+      description: 修改已有的测试报告，参数中需要包含测试报告的id
+      operationId: editTestReport
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明测试报告的ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "processInstanceID": "2508",
+                "createdUserId": "2",
+                "alteredTime": "2018-06-08 14:07:47",
+                "createdTime": "2018-06-08 14:06:49",
+                "alteredUserId": "2",
+                "id": "3c2f5301-8f9c-4cde-aa42-5827b1b6df4e"
+                "state": "TobeWrite",
+                "body": "We are never ever ever ever getting back together",
+                "operation": "[Write]"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testReport
+      summary: 删除测试报告
+      description: 删除一个测试报告，需要提供具体id
+      operationId: deleteTestReport
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除测试报告
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testReport/{id}':
+    get:
+      tags:
+        - testReport
+      summary: 根据id查询测试报告
+      description: 根据请求中的id查询对应测试报告
+      operationId: queryTestReportById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 测试计划的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试报告. data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-08 14:07:47",
+                "report": "world tour",
+                "createdTime": "2018-06-08 14:06:49",
+                "alteredUserId": "2",
+                "id": "3c2f5301-8f9c-4cde-aa42-5827b1b6df4e"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testFunction:
+    get:
+      tags:
+        - testFunction
+      summary: 查询测试功能
+      description: >-
+        根据用户查询或者根据工程查询，从传入参数里是否有projectID区分，如果没有则返回当前用户所有测试功能或者管理员获取所有测试功能，如果给了projectID则返回该工程里的测试功能
+      operationId: queryTestFunctions
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id，需要按照工程查找时填入该参数
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询测试功能时返回测试功能
+            查询失败时，返回一个失败的status
+            ```
+            {
+              
+              "data": [
+                {
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-02 20:16:29",
+                  "id": "cdd340fa-501c-42ab-9596-6c55b1a694c2"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testFunction
+      summary: 添加测试功能
+      description: >-
+        添加测试方案，除了内容body还要前端提供project的id，这个projectID和username、clientDigest一样的形式传入，成功时返回测试方案的具体信息以及一个success状态
+      operationId: addTestFunction
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 绑定的工程的id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            测试功能的具体内容. JSON格式
+            ```
+            {
+              "body": "xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加测试功能时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-03 20:16:31",
+                "id": "b68cd9c6-fb4b-4bff-9cbe-f1804fcc6678",
+                "body": "22"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testFunction
+      summary: 修改测试功能
+      description: 修改已有的测试功能，参数中需要包含测试功能的id
+      operationId: editTestFunction
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明测试功能的ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-03 20:17:52",
+                "createdTime": "2018-06-03 20:16:31",
+                "alteredUserId": "2",
+                "id": "49e9b994-064c-47f9-9a2e-f02260ed9d11",
+                "body": "i don't know about you"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testFunction
+      summary: 删除测试功能
+      description: 删除一个测试功能，需要提供具体id
+      operationId: deleteTestFunction
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除测试功能
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testFunction/{id}':
+    get:
+      tags:
+        - testFunction
+      summary: 根据id查询测试功能
+      description: 根据请求中的id查询对应测试功能
+      operationId: queryTesFunctionById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 测试功能的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试方案. data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-03 20:19:30",
+                "id": "ad402346-a514-4e0b-9fec-6ac13f0a2a98",
+                "testcase": "I love taylorswift"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testReportCheck:
+    get:
+      tags:
+        - testReportCheck
+      summary: 查询
+      description: 用户为普通客户时，返回当前该客户的所有报告检查，如果是工作人员返回所有，新增通过project的id获取接口'问题是如果user的某一个project里没有对应contract会返回一个null'
+      operationId: queryTestReportChecks
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询时返回testReportCheck. data内包含JsonArray格式的内容内容
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "data": [
+                null,
+                null,
+                {
+                  "createdUserId": "2",
+                  "alteredTime": "2018-06-16 10:50:34",
+                  "createdTime": "2018-06-16 10:47:31",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "body": "take my hand"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testReportCheck
+      summary: 添加
+      description: >-
+        添加testReportCheck，添加时要给定一个id，是所在project的id（project的id是在创建project时前端传入的对应绑定consign的一个id），成功时返回具体信息以及一个success状态，这个id所在位置改成了query
+      operationId: addTestReportCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式
+            ```
+            {
+              "body": "content"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdTime": "2018-06-16 10:14:54",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "body": "fearless"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testReportCheck
+      summary: 修改
+      description: 参数中需要包含合testReportCheck的id
+      operationId: editTestReportCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-16 10:50:34",
+                "createdTime": "2018-06-16 10:47:31",
+                "alteredUserId": "2",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "body": "take my hand"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testReportCheck
+      summary: 删除
+      description: 需要提供testReportCheck的具体id
+      operationId: deleteTestReportCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testReportCheck/{id}':
+    get:
+      tags:
+        - testReportCheck
+      summary: 根据id查询
+      description: 根据请求中的id查询
+      operationId: querytestReportCheckByID
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: testReportCheck的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "alteredTime": "2018-06-16 10:50:34",
+                "createdTime": "2018-06-16 10:47:31",
+                "alteredUserId": "2",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "body": "take my hand"
+            },
+            "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testWorkCheck:
+    get:
+      tags:
+        - testWorkCheck
+      summary: 查询
+      description: 用户为普通客户时，返回当前该客户的所有TestWorkCheck，如果是工作人员返回所有，新增根据工程查询
+      operationId: queryTestWorkChecks
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          description: 工程id，根据project查询时传递
+          type: string
+          in: query
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询时返回testWorkCheck. data内包含JsonArray格式的内容
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "data": [
+                {
+                  "createdUserId": "2",
+                  "testworker": "taylorswift",
+                  "alteredTime": "2018-06-16 11:11:07",
+                  "createdTime": "2018-06-16 11:11:00",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "softwarename": "I don't wanna live forever",
+                  "version": "3"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testWorkCheck
+      summary: 添加
+      description: >-
+        添加testWorkCheck，添加时要给定一个id，是所在project的id（project的id是在创建project时前端传入的对应绑定consign的一个id，移动到了query里，成功时返回具体信息以及一个success状态（这里的样例body没有写上所有内容变量，具体有：version,acendtime,fcendtime,client,softwarename,starttime,testworker）
+      operationId: addTestWorkCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          description: 工程id
+          in: query
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式
+            ```
+            {
+              "softwarename": "content"
+              "...":"..."
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "testworker": "taylorswift",
+                "createdTime": "2018-06-16 11:02:02",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "softwarename": "style",
+                "version": "3"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testWorkCheck
+      summary: 修改
+      description: 参数中需要包含合testWorkCheck的id，修改当前比较麻烦，若改动变量的其中一项或多项时，未改动的也要传递否则会被覆盖为空
+      operationId: editTestWorkCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "testworker": "taylorswift",
+                "alteredTime": "2018-06-16 11:05:47",
+                "createdTime": "2018-06-16 11:11:00",
+                "alteredUserId": "2",
+                "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                "softwarename": "I don't wanna live forever",
+                "version": "3"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testWorkCheck
+      summary: 删除
+      description: 需要提供testWorkCheck的具体id
+      operationId: deleteTestWorkCheck
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testWorkCheck/{id}':
+    get:
+      tags:
+        - testWorkCheck
+      summary: 根据id查询
+      description: 根据请求中的id查询
+      operationId: querytestWorkCheckByID
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: testWorkCheck的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            data内包含JsonArray格式的内容
+            ```
+            {
+              "data": [
+                {
+                  "createdUserId": "2",
+                  "testworker": "taylorswift",
+                  "alteredTime": "2018-06-16 11:11:07",
+                  "createdTime": "2018-06-16 11:11:00",
+                  "alteredUserId": "2",
+                  "id": "c493a848-fb91-44ca-a9a0-86f283b78f30",
+                  "softwarename": "I don't wanna live forever",
+                  "version": "3"
+                }
+            ],
+            "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/satisfactionSurvey:
+    get:
+      tags:
+        - satisfactionSurvey
+      summary: 查询
+      description: 用户为普通客户时，返回当前该客户的所有用户满意度调查，如果是工作人员返回所有，通过project的id获取接口
+      operationId: querySatisfactionSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: false
+      responses:
+        '200':
+          description: |
+            成功查询时返回satisfactionSurvey. data内包含JsonArray格式的内容内容
+            查询失败时，返回一个失败的status
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdUserName": "customer1",
+                "createdTime": "2018-07-06 17:02:45",
+                "id": "082b3bed-0787-4409-a58a-1112205fa658",
+                "body": "born to die",
+                "projectID": "bd0342ef-fc9e-44b1-9261-46a74064887b"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - satisfactionSurvey
+      summary: 添加
+      description: >-
+        添加satisfactionSurvey，添加时要给定一个id，是所在project的id（project的id是在创建project时前端传入的对应绑定consign的一个id），成功时返回具体信息以及一个success状态，这个id所在位置改成了query
+      operationId: addSatisfactionSurvey
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - name: projectID
+          in: query
+          description: 工程id
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式
+            ```
+            {
+              "body": "content"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加时的样例response body
+            ```
+            {
+              "data": {
+                "createdUserId": "2",
+                "createdUserName": "customer1",
+                "createdTime": "2018-07-06 17:02:45",
+                "id": "082b3bed-0787-4409-a58a-1112205fa658",
+                "body": "born to die"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - satisfactionSurvey
+      summary: 修改
+      description: 参数中需要包含合satisfactionSurvey的id
+      operationId: editSatisfactionSurvey
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+              "body":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "alteredUserName": "customer1",
+                "createdUserId": "2",
+                "createdUserName": "customer1",
+                "alteredTime": "2018-07-06 17:04:15",
+                "createdTime": "2018-07-06 17:02:45",
+                "alteredUserId": "2",
+                "id": "082b3bed-0787-4409-a58a-1112205fa658",
+                "body": "born to die",
+                "projectID": "bd0342ef-fc9e-44b1-9261-46a74064887b"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - satisfactionSurvey
+      summary: 删除
+      description: 需要提供satisfactionSurvey的具体id
+      operationId: deleteSatisfactionSurvey
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID
+            ```
+            {
+              "id": 
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/satisfactionSurvey/{id}':
+    get:
+      tags:
+        - satisfactionSurvey
+      summary: 根据id查询
+      description: 根据请求中的id查询
+      operationId: querySatisfactionSurveyByID
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: satisfactionSurvey的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "alteredUserName": "customer1",
+                "createdUserId": "2",
+                "createdUserName": "customer1",
+                "alteredTime": "2018-07-06 17:04:15",
+                "createdTime": "2018-07-06 17:02:45",
+                "alteredUserId": "2",
+                "id": "082b3bed-0787-4409-a58a-1112205fa658",
+                "body": "born to die"
+            },
+            "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  /services/v1/testRecord:
+    get:
+      tags:
+        - testRecord
+      summary: 查询测试结果
+      description: 尚未实现成功（未绑定project）
+      operationId: queryTestResults
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试结果时返回测试结果.返回内容还没有确定
+            查询失败时，返回一个失败的status
+            ```
+            {
+              
+              "data": [
+                {
+                  "createdUserId": "2",
+                  "createdTime": "2018-06-02 20:16:29",
+                  "id": "cdd340fa-501c-42ab-9596-6c55b1a694c2"
+                }
+              ],
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - testRecord
+      summary: 添加测试结果
+      description: 向数据库中添加测试结果，除了一个record还要有对应project的id，成功时返回测试计划的具体信息以及一个success状态
+      operationId: addTestResult
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            测试计划的具体内容. JSON格式
+            ```
+            {
+              "id":"xxx"
+              "record": "xxx"
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功添加测试结果时的样例response body
+            ```
+            {
+              "data": {
+                "record": "end game",
+                "createdUserId": "2",
+                "createdTime": "2018-06-08 14:19:55",
+                "id": "a6ae9603-ca4a-4fb0-bc7a-341313eacbe3"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - testRecord
+      summary: 修改测试结果
+      description: 修改已有的测试结果，参数中需要包含测试结果的id
+      operationId: editTestResult
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明测试计划的ID
+            ```
+            {
+              "id": 
+              "record":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            修改成功时的样例response body
+            ```
+            {
+              "data": {
+                "record": "gorgeous",
+                "createdUserId": "2",
+                "alteredTime": "2018-06-08 14:21:30",
+                "createdTime": "2018-06-08 14:19:55",
+                "alteredUserId": "2",
+                "id": "a6ae9603-ca4a-4fb0-bc7a-341313eacbe3"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - testRecord
+      summary: 删除测试结果
+      description: 删除一个测试结果，需要提供具体id
+      operationId: deleteTestRecord
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+        - in: formData
+          name: params
+          description: |
+            具体内容. JSON格式. 需要指明ID,其他内容为非必要
+            ```
+            {
+              "id": 
+              "xxx":
+            }
+            ```
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功删除测试结果
+            ```
+            {
+              "status":"SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+  '/services/v1/testRecord/{id}':
+    get:
+      tags:
+        - testRecord
+      summary: 根据id查询测试结果
+      description: 根据请求中的id查询对应测试结果
+      operationId: queryTestResultById
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 测试结果的id
+          type: string
+          required: true
+        - name: username
+          in: query
+          description: 用户名
+          type: string
+          required: true
+        - name: clientDigest
+          in: query
+          description: 摘要。登录时由后台传入，用以身份验证
+          type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            成功查询测试结果. data内包含JsonArray格式的内容
+            ```
+            {
+              "data": {
+                "record": "gorgeous",
+                "createdUserId": "2",
+                "alteredTime": "2018-06-08 14:21:30",
+                "createdTime": "2018-06-08 14:19:55",
+                "alteredUserId": "2",
+                "id": "a6ae9603-ca4a-4fb0-bc7a-341313eacbe3"
+              },
+              "status": "SUCCESS"
+            }
+            ```
+        '405':
+          description: Invalid input
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+    flow: implicit
+    scopes:
+      'write:pets': modify pets in your account
+      'read:pets': read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  Response:
+    type: object
+    properties:
+      status:
+        type: string
+        description: 用来表示状态。SUCCESS/FAILURE
+        enum:
+          - SUCCESS
+          - FAILURE
+      data:
+        type: string
+        format: json
+        example: json
+        description: 用来传送数据，json格式
+      message:
+        type: string
+        description: 用于传输错误信息

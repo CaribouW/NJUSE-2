@@ -20,13 +20,6 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    public User(String userId) {
-        this.userId = userId;
-    }
-
-    public User() {
-    }
-
     @Id
     @Column(name = "user_id")
     public String getUserId() {
@@ -47,6 +40,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +49,13 @@ public class User implements Serializable {
         User user = (User) o;
         return Objects.equals(userId, user.userId) &&
                 Objects.equals(password, user.password);
+    }
+
+    public User(String userId) {
+        this.userId = userId;
+    }
+
+    public User() {
     }
 
     @Override

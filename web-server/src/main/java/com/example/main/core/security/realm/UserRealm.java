@@ -31,7 +31,7 @@ public class UserRealm extends AuthorizingRealm {
      * 用户认证
      * 登陆信息、用户信息
      * <p>
-     * 现在有两种token : 账号密码登陆 | 手机号验证码登陆鉴权
+     * 现在token : 账号密码登陆
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -55,7 +55,6 @@ public class UserRealm extends AuthorizingRealm {
      * <p>
      * 角色权限、对应权限添加
      * 提供用户信息、返回权限
-     * 2018-12-4
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
