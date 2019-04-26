@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * 退票;查看历史订单
  */
 @Service
-public class PurchasingService {
+public class MovieTicketService {
     @Autowired
     private MemberListRepository memberListRepository;
     @Autowired

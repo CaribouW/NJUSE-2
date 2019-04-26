@@ -11,6 +11,8 @@ public class MovieTicket {
     private String slotId;
     private String position;
     private String preferentialId;
+    private String userId;
+    private int status;
 
     @Id
     @Column(name = "ticket_id")
@@ -20,6 +22,26 @@ public class MovieTicket {
 
     public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
+    }
+
+    @Basic
+    @Column(name = "user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "status")
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Basic
