@@ -196,13 +196,6 @@ public class ShiroConfig {
         return validationScheduler;
     }
 
-    //会话持久层
-//    @Bean
-//    public CustomShiroSessionDAO sessionDAO(){
-//        CustomShiroSessionDAO sessionDAO=new CustomShiroSessionDAO();
-//        sessionDAO.setSessionIdGenerator(sessionIdGenerator());
-//        return sessionDAO;
-//    }
     @Bean
     public EnterpriseCacheSessionDAO sessionDAO() {
         EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
@@ -235,8 +228,10 @@ public class ShiroConfig {
     //session监听器
     @Bean
     public CustomSessionListener sessionListener() {
-        return new CustomSessionListener();
-
+        CustomSessionListener customSessionListener
+                = new CustomSessionListener();
+        customSessionListener.setSessionDAO(sessionDAO());
+        return customSessionListener;
     }
     //session end--------------------------
 

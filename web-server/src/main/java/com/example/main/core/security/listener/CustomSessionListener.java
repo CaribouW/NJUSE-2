@@ -3,13 +3,14 @@ package com.example.main.core.security.listener;
 import com.example.main.core.security.session.ShiroSessionRepository;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CustomSessionListener implements SessionListener {
     Logger logger = LoggerFactory.getLogger(getClass());
-    private ShiroSessionRepository shiroSessionRepository;
+    private SessionDAO sessionDAO;
 
     /**
      * 一个回话的生命周期开始
@@ -32,14 +33,14 @@ public class CustomSessionListener implements SessionListener {
 
     @Override
     public void onExpiration(Session session) {
-        shiroSessionRepository.deleteSession(session.getId());
+        sessionDAO.delete(session);
     }
 
-    public ShiroSessionRepository getShiroSessionRepository() {
-        return shiroSessionRepository;
+    public SessionDAO getSessionDAO() {
+        return sessionDAO;
     }
 
-    public void setShiroSessionRepository(ShiroSessionRepository shiroSessionRepository) {
-        this.shiroSessionRepository = shiroSessionRepository;
+    public void setSessionDAO(SessionDAO sessionDAO) {
+        this.sessionDAO = sessionDAO;
     }
 }
