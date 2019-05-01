@@ -262,7 +262,7 @@ MovieTicket.getTicketHistory|查看订单列表
     <tr>
       <th rowspan="3">MovieTicket.initOrderForm</th>
       <td>语法</td>
-      <td>public MovieTicketPO selectSeat(string movieId,int[][] position)</td>
+      <td>public MovieTicketPO initOrderForm(string movieId,int[][] position)</td>
     </tr>
     <tr>
       <td>前置条件</td>
