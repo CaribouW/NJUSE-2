@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends BaseRepository<User> {
     @Transactional
     @Query("select u from User u where u.userId=?1")
     User findUserByUserId(String userid);

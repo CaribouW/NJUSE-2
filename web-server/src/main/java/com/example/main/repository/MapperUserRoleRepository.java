@@ -3,5 +3,5 @@ package com.example.main.repository;
 import com.example.main.model.MapperUserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MapperUserRoleRepository extends JpaRepository<MapperUserRole, String> {
+public interface MapperUserRoleRepository extends BaseRepository<MapperUserRole> {
 }
