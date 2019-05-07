@@ -7,15 +7,23 @@ public class BaseResponse {
     public JSON data;
     public String message;
 
-    public BaseResponse() {
+    private BaseResponse() {
         this.status = 0;
         this.data = null;
         this.message = null;
     }
 
-    public BaseResponse(int status, JSON data, String message) {
+    private BaseResponse(int status, JSON data, String message) {
         this.status = status;
         this.data = data;
         this.message = message;
+    }
+
+    public static BaseResponse SUCCESS(JSON data) {
+        return new BaseResponse(200, data, "success");
+    }
+
+    public static BaseResponse FAIL(int status) {
+        return new BaseResponse(status, null, "fail");
     }
 }

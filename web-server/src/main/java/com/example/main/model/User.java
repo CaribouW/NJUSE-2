@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String password;
 
     @Id
-    @Column(name = "user_id",length = 32)
+    @Column(name = "user_id", length = 32)
     public String getUserId() {
         return userId;
     }
@@ -39,7 +39,6 @@ public class User implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +53,11 @@ public class User implements Serializable {
     }
 
     public User() {
+    }
+
+    public User(String id, String psw) {
+        this.userId = id;
+        this.password = psw;
     }
 
     @Override

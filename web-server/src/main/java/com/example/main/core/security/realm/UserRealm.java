@@ -3,6 +3,7 @@ package com.example.main.core.security.realm;
 import com.example.main.core.security.token.PswToken;
 import com.example.main.core.security.token.TokenManager;
 import com.example.main.model.User;
+import com.example.main.repository.UserRepository;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -25,6 +26,8 @@ public class UserRealm extends AuthorizingRealm {
     TokenManager tokenManager;
     @Autowired
     RealmHelper realmHelper;
+    @Autowired
+    UserRepository userRepository;
 
     /**
      * 认证器：对用户身份进行认证
@@ -39,9 +42,7 @@ public class UserRealm extends AuthorizingRealm {
         if (!(authenticationToken instanceof PswToken))
             return null;
         String userID = (String) authenticationToken.getPrincipal();
-//        User user = userService.findUserByID(userID);
-        assert false;
-        User user = new User();
+        User user = userRepository.findUserByUserId(userID);
         if (user == null)
             throw new UnknownAccountException();
         return new SimpleAuthenticationInfo(

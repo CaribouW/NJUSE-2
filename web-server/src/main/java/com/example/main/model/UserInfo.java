@@ -38,10 +38,6 @@ public class UserInfo implements Serializable {
         return age;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public void setAge(int age) {
         this.age = age;
     }

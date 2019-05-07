@@ -1,5 +1,6 @@
 package com.example.main.repository;
 
+import com.example.main.model.User;
 import com.example.main.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 

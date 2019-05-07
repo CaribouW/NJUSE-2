@@ -5,7 +5,7 @@ public enum ExceptionEnum {
 
     private String desc;
 
-    private ExceptionEnum(Integer value, String desc) {
+    ExceptionEnum(Integer value, String desc) {
         this.value = value;
         this.desc = desc;
     }
