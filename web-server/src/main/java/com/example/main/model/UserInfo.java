@@ -1,19 +1,14 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_info", schema = "SE2", catalog = "")
-public class UserInfo {
-    @Id
-    @Column(name = "user_id")
+public class UserInfo implements Serializable {
     private String userId;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "age")
     private int age;
     private String account;
 

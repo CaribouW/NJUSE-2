@@ -1,25 +1,31 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * 优惠券实体类
+ */
 @Entity
-@Table(name = "preferential")
-public class Preferential {
-    private String preferentialId;
+@Table(name = "strategy_coupon")
+public class Coupon implements Serializable {
+    private String couponId;
     private String name;
     private Date startDate;
     private Date endDate;
+    private int amount;
+    private int discount;
 
     @Id
-    @Column(name = "preferential_id")
-    public String getPreferentialId() {
-        return preferentialId;
+    @Column(name = "coupon_id", length = 32)
+    public String getCouponId() {
+        return couponId;
     }
 
-    public void setPreferentialId(String preferentialId) {
-        this.preferentialId = preferentialId;
+    public void setCouponId(String preferentialId) {
+        this.couponId = preferentialId;
     }
 
     @Basic
@@ -52,12 +58,32 @@ public class Preferential {
         this.endDate = endDate;
     }
 
+    @Basic
+    @Column(name = "amount")
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @Basic
+    @Column(name = "discount")
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Preferential that = (Preferential) o;
-        return Objects.equals(preferentialId, that.preferentialId) &&
+        Coupon that = (Coupon) o;
+        return Objects.equals(couponId, that.couponId) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate);
@@ -65,6 +91,6 @@ public class Preferential {
 
     @Override
     public int hashCode() {
-        return Objects.hash(preferentialId, name, startDate, endDate);
+        return Objects.hash(couponId, name, startDate, endDate);
     }
 }

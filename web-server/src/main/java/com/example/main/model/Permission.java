@@ -1,17 +1,18 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "permission")
-public class Permission {
+public class Permission implements Serializable {
     private String permissionId;
     private String content;
     private String roleId;
 
     @Id
-    @Column(name = "permission_id")
+    @Column(name = "permission_id",length = 32,nullable = false)
     public String getPermissionId() {
         return permissionId;
     }

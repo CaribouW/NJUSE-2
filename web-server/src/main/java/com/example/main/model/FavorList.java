@@ -1,17 +1,18 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "favor_list", schema = "SE2", catalog = "")
-public class FavorList {
+public class FavorList implements Serializable {
     private String favorId;
     private String movieId;
     private String userId;
 
     @Id
-    @Column(name = "favor_id")
+    @Column(name = "favor_id",length = 32,nullable = false)
     public String getFavorId() {
         return favorId;
     }

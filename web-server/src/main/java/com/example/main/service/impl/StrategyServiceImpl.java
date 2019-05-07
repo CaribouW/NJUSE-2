@@ -1,6 +1,6 @@
 package com.example.main.service.impl;
 
-import com.example.main.repository.PreferentialRepository;
+import com.example.main.repository.CouponRepository;
 import com.example.main.service.StrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class StrategyServiceImpl implements StrategyService {
     @Autowired
-    private PreferentialRepository preferentialRepository;
+    private CouponRepository couponRepository;
 }

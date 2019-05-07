@@ -1,11 +1,12 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "movie_ticket", schema = "SE2", catalog = "")
-public class MovieTicket {
+public class MovieTicket implements Serializable {
     private String ticketId;
     private String veriCode;
     private String slotId;
@@ -15,7 +16,7 @@ public class MovieTicket {
     private int status;
 
     @Id
-    @Column(name = "ticket_id")
+    @Column(name = "ticket_id",length = 32)
     public String getTicketId() {
         return ticketId;
     }
@@ -25,7 +26,7 @@ public class MovieTicket {
     }
 
     @Basic
-    @Column(name = "user_id")
+    @Column(name = "user_id",length = 32)
     public String getUserId() {
         return userId;
     }
@@ -55,7 +56,7 @@ public class MovieTicket {
     }
 
     @Basic
-    @Column(name = "slot_id")
+    @Column(name = "slot_id",length = 32)
     public String getSlotId() {
         return slotId;
     }

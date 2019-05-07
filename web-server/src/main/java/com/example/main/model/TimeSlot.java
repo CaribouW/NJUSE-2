@@ -1,21 +1,23 @@
 package com.example.main.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "time_slot", schema = "SE2", catalog = "")
-public class TimeSlot {
+public class TimeSlot implements Serializable {
     private String slotId;
-    private Timestamp timeSlot;
+    private Date startTime;
+    private Date endTime;
     private String movieId;
     private Double ticketPrize;
     private String hallId;
     private String property;
 
     @Id
-    @Column(name = "slot_id")
+    @Column(name = "slot_id",length = 32)
     public String getSlotId() {
         return slotId;
     }
@@ -25,17 +27,25 @@ public class TimeSlot {
     }
 
     @Basic
-    @Column(name = "time_slot")
-    public Timestamp getTimeSlot() {
-        return timeSlot;
+    @Column(name = "start_time")
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setTimeSlot(Timestamp timeSlot) {
-        this.timeSlot = timeSlot;
+    public void setStartTime(Date timeSlot) {
+        this.startTime = timeSlot;
     }
-
     @Basic
-    @Column(name = "movie_id")
+    @Column(name = "end_time")
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date timeSlot) {
+        this.endTime = timeSlot;
+    }
+    @Basic
+    @Column(name = "movie_id",length = 32)
     public String getMovieId() {
         return movieId;
     }
@@ -55,7 +65,7 @@ public class TimeSlot {
     }
 
     @Basic
-    @Column(name = "hall_id")
+    @Column(name = "hall_id",length = 32)
     public String getHallId() {
         return hallId;
     }
@@ -80,7 +90,7 @@ public class TimeSlot {
         if (o == null || getClass() != o.getClass()) return false;
         TimeSlot timeSlot1 = (TimeSlot) o;
         return Objects.equals(slotId, timeSlot1.slotId) &&
-                Objects.equals(timeSlot, timeSlot1.timeSlot) &&
+                Objects.equals(startTime, timeSlot1.startTime) &&
                 Objects.equals(movieId, timeSlot1.movieId) &&
                 Objects.equals(ticketPrize, timeSlot1.ticketPrize) &&
                 Objects.equals(hallId, timeSlot1.hallId) &&
@@ -89,6 +99,6 @@ public class TimeSlot {
 
     @Override
     public int hashCode() {
-        return Objects.hash(slotId, timeSlot, movieId, ticketPrize, hallId, property);
+        return Objects.hash(slotId, startTime, movieId, ticketPrize, hallId, property);
     }
 }

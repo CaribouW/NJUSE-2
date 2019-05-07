@@ -10,12 +10,5 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserRepository extends BaseRepository<User> {
-    @Transactional
-    @Query("select u from User u where u.userId=?1")
-    User findUserByUserId(String userid);
 
-    @Transactional
-    @Modifying
-    @Query("delete from User where userId = ?1")
-    void deleteByUserId(String userid);
 }

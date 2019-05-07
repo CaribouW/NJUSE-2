@@ -1,8 +1,5 @@
 package com.example.main.service.impl;
 
-import com.example.main.model.MemberList;
-import com.example.main.model.MovieInfo;
-import com.example.main.model.MovieTicket;
 import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class MovieTicketServiceImpl implements MovieTicketService {
     @Autowired
-    private MemberListRepository memberListRepository;
-    @Autowired
     private MovieInfoRepository movieInfoRepository;
     @Autowired
     private MovieTicketRepository movieTicketRepository;
     @Autowired
-    private PreferentialRepository preferentialRepository;
+    private CouponRepository couponRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 }

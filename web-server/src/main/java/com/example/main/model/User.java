@@ -13,15 +13,13 @@ import java.util.Objects;
 @Setter
 @Getter
 public class User implements Serializable {
-    @Id
-    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column(name = "password")
     private String password;
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id",length = 32)
     public String getUserId() {
         return userId;
     }

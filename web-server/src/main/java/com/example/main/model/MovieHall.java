@@ -1,18 +1,19 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "movie_hall", schema = "SE2", catalog = "")
-public class MovieHall {
+public class MovieHall implements Serializable {
     private String hallId;
     private String hallName;
     private String size;
     private String category;
 
     @Id
-    @Column(name = "hall_id")
+    @Column(name = "hall_id",length = 32)
     public String getHallId() {
         return hallId;
     }
@@ -31,6 +32,10 @@ public class MovieHall {
         this.hallName = hallName;
     }
 
+    /**
+     * 逗号隔开 m,n
+     * 表示行列
+     */
     @Basic
     @Column(name = "size")
     public String getSize() {

@@ -1,12 +1,13 @@
 package com.example.main.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "movie_info", schema = "SE2", catalog = "")
-public class MovieInfo {
+public class MovieInfo implements Serializable {
     private String movieId;
     private String name;
     private Date downDate;
@@ -22,7 +23,7 @@ public class MovieInfo {
     private String lang;
 
     @Id
-    @Column(name = "movie_id")
+    @Column(name = "movie_id",length = 32)
     public String getMovieId() {
         return movieId;
     }

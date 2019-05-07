@@ -13,7 +13,7 @@ public class MapperUserRole implements Serializable {
 
     @Basic
     @Id
-    @Column(name = "id")
+    @Column(name = "id",length = 32)
     public String getId() {
         return id;
     }
@@ -23,7 +23,7 @@ public class MapperUserRole implements Serializable {
     }
 
     @Basic
-    @Column(name = "user_id")
+    @Column(name = "user_id",length = 32)
     public String getUserId() {
         return userId;
     }
@@ -33,7 +33,7 @@ public class MapperUserRole implements Serializable {
     }
 
     @Basic
-    @Column(name = "role_id")
+    @Column(name = "role_id",length = 32)
     public String getRoleId() {
         return roleId;
     }

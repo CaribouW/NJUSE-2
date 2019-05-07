@@ -1,7 +1,6 @@
 package com.example.main.service.impl;
 
-import com.example.main.repository.MemberListRepository;
-import com.example.main.repository.PreferentialRepository;
+import com.example.main.repository.CouponRepository;
 import com.example.main.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MemberServiceImpl implements MemberService {
-    @Autowired
-    private MemberListRepository memberListRepository;
 
     @Autowired
-    private PreferentialRepository preferentialRepository;
+    private CouponRepository couponRepository;
 }

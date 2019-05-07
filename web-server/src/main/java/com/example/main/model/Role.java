@@ -16,8 +16,6 @@ import java.util.Objects;
 public class Role implements Serializable {
     @Column(name = "role_name")
     private String roleName;
-    @Id
-    @Column(name = "role_id", length = 64, unique = true)
     private String roleId;
 
     private Timestamp expireTime;
@@ -33,7 +31,7 @@ public class Role implements Serializable {
     }
 
     @Id
-    @Column(name = "role_id")
+    @Column(name = "role_id", length = 32, nullable = false, unique = true)
     public String getRoleId() {
         return roleId;
     }
