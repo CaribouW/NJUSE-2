@@ -19,6 +19,10 @@ public class BaseResponse {
         this.message = message;
     }
 
+    public static BaseResponse SUCCESS() {
+        return new BaseResponse(200, null, "success");
+    }
+
     public static BaseResponse SUCCESS(JSON data) {
         return new BaseResponse(200, data, "success");
     }

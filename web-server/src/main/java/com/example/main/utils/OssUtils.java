@@ -43,11 +43,11 @@ public class OssUtils {
         /*
          * 支持下边几种文件格式，有其他需求可自行加入
          */
-        if (objectName.matches("[0-9a-zA-Z_/]*.jpg")) {
+        if (objectName.matches(".*.jpg")) {
             request.setContentType("image/jpeg");
-        } else if (objectName.matches("[0-9a-zA-Z_/]*.png")) {
+        } else if (objectName.matches(".*.png")) {
             request.setContentType("image/png");
-        } else if (objectName.matches("[0-9a-zA-Z_/]*.pdf")) {
+        } else if (objectName.matches(".*.pdf")) {
             request.setContentType("application/pdf");
         } else return "错误";
 //         生成签名URL（HTTP PUT请求）。

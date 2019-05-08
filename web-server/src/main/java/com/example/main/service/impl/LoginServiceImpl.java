@@ -1,5 +1,6 @@
 package com.example.main.service.impl;
 
+import com.alibaba.dubbo.container.page.Page;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.response.BaseResponse;
@@ -14,7 +15,10 @@ import com.example.main.service.LoginService;
 import com.example.main.utils.IDUtils;
 import com.example.main.utils.SignUpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.awt.print.Pageable;
 
 /**
  * 登录,登出,注册
@@ -88,5 +92,9 @@ public class LoginServiceImpl implements LoginService {
         userRepository.saveAndFlush(user);
         userInfoRepository.saveAndFlush(userInfo);
         return user.getUserId();
+    }
+
+    public void r() {
+        PageRequest pageable = PageRequest.of(3, 4);
     }
 }

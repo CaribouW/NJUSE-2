@@ -10,6 +10,7 @@ import com.example.main.repository.FavorListRepository;
 import com.example.main.repository.MovieInfoRepository;
 import com.example.main.repository.UserRepository;
 import com.example.main.utils.IDUtils;
+import com.example.main.utils.OssUtils;
 import com.example.main.utils.SignUpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,62 +20,16 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    private FavorListRepository favorListRepository;
-
-    @Autowired
-    private MovieInfoRepository movieInfoRepository;
-    @Autowired
-    TokenManager tokenManager;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private SignUpHelper signUpHelper;
-    @Autowired
-    private IDUtils idUtils;
-
-    private class Response {
-        public JSONObject data;
-        public String message;
-
-        public Response(JSONObject data, String message) {
-            this.data = data;
-            this.message = message;
-        }
-    }
+    private OssUtils ossUtils;
 
     @GetMapping("/")
     public BaseResponse he() {
-        JSONObject jsonObject = new JSONObject();
-        User user = new User();
-        user.setUserId(idUtils.getUUID32());
-        user.setPassword(signUpHelper.encryptPassword("123"));
-        userRepository.saveAndFlush(user);
-        try {
-            user.setPassword("123");
-            if (!tokenManager.isLogin())
-                tokenManager.loginPsw(user, true);
-            else {
-                return BaseResponse.FAIL(404);
-            }
-            return BaseResponse.SUCCESS(jsonObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResponse.FAIL(404);
-        }
-
-
+        String url = ossUtils.getUploadURL("F:\\Project github\\NJUSE-2\\web-server\\src\\main\\resources\\static\\info.png");
+        String u = ossUtils.getDownloadURL(url);
+        System.out.println(url);
+        System.out.println(u);
+        return BaseResponse.SUCCESS();
     }
 
-    @GetMapping("/logout")
-    public BaseResponse logout() {
-        JSONObject jsonObject = new JSONObject();
-        Response response = new Response(jsonObject, "success");
-        if (tokenManager.isLogin())
-            tokenManager.logout();
-        else {
-            response.message = "fail";
-            return BaseResponse.FAIL(404);
-        }
-        return BaseResponse.SUCCESS(jsonObject);
-    }
+
 }
