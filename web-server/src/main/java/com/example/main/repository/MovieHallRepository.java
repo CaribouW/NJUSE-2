@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MovieHallRepository extends BaseRepository<MovieHall> {
-    Page<MovieHall> findByMAndHallId(String id, Pageable pageable);
+    Page<MovieHall> findMovieHallByHallId(String id, Pageable pageable);
 }
