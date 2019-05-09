@@ -1,19 +1,17 @@
 <template>
-  <div class="login_body">
-    <div class="login_body_content">
-      <div class="login_body_content_left">
-        <div class="login_body_content_left_word">
+  <div class="register_body">
+    <div class="register_body_content">
+      <div class="register_body_content_left">
+        <div class="register_body_content_left_word">
           <span>COME&</span><br><span>JOIN US</span>
         </div>
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
-      <div class="login_body_content_right">
-          <input type="text" placeholder="请输入绑定的手机号"><br>
+      <div class="register_body_content_right">
+          <input type="text" placeholder="请输入账号"><br>
           <input type="password" placeholder="请输入密码"><br>
-          <div>
-            <input type="checkbox"><span>一周之内自动登录</span>
-          </div>
-          <button @click="login()">登录 </button>
+          <input type="password" placeholder="请再次输入密码"><br>
+          <button @click="rigister()">注册</button>
       </div>
     </div>
   </div>
@@ -27,7 +25,7 @@ export default {
     }
   },
   methods: {
-    login() {
+    rigister() {
       this.$message.error('别试了，接口还没写呢！');
     }
   }
@@ -36,7 +34,7 @@ export default {
 
 
 <style lang="scss">
-.login_body{
+.register_body{
   width: 100%;
   height: 100%;
   background-color: rgba(32, 31, 29, 1);
@@ -75,7 +73,7 @@ export default {
       background-color: #161D1D;
       vertical-align: top;
       padding-top: 80px;
-      >input:nth-of-type(-n+2){
+      >input{
         box-sizing: border-box;
         font-size: 26px;
         width: 439px;
@@ -85,31 +83,6 @@ export default {
         background-color: #E9E9E8;
         padding: 0 20px;
         color: #192C35;
-      }
-      input[type='checkbox']{
-        width: 20px;
-        height: 20px;
-        appearance: none;
-        -webkit-appearance: none;
-        outline: none;
-        border: 2px solid #CFF1F5;
-        border-radius: 2px;
-        cursor: pointer;
-        vertical-align: middle;
-      }
-      input[type='checkbox']:checked{
-        background: url(../../assets/images/Login/checkbox.png) no-repeat center;
-      }
-      >div{
-        // width: fit-content;
-        // margin-left: 55px;
-        margin-bottom: 40px;
-        >span{
-          color: #CFF1F5;
-          font-Size:16px;
-          vertical-align:middle;
-          margin-left: 20px;
-        }
       }
       ::-webkit-input-placeholder { /* WebKit browsers */ 
 color: #192C35; 
