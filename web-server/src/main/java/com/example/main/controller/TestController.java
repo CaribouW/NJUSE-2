@@ -9,6 +9,7 @@ import com.example.main.model.User;
 import com.example.main.repository.FavorListRepository;
 import com.example.main.repository.MovieInfoRepository;
 import com.example.main.repository.UserRepository;
+import com.example.main.service.HallService;
 import com.example.main.utils.IDUtils;
 import com.example.main.utils.OssUtils;
 import com.example.main.utils.SignUpHelper;
@@ -21,15 +22,15 @@ import java.util.List;
 public class TestController {
     @Autowired
     private OssUtils ossUtils;
+    @Autowired
+    private HallService hallService;
 
     @GetMapping("/")
     public BaseResponse he() {
-        String url = ossUtils.getUploadURL("F:\\Project github\\NJUSE-2\\web-server\\src\\main\\resources\\static\\info.png");
-        String u = ossUtils.getDownloadURL(url);
-        System.out.println(url);
-        System.out.println(u);
+        hallService
         return BaseResponse.SUCCESS();
     }
+
 
 
 }
