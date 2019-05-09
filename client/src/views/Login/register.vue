@@ -39,47 +39,48 @@ export default {
   height: 100%;
   background-color: rgba(32, 31, 29, 1);
   position: relative;
+  color: #CFF9FE;
   &_content{
-    width: 940px;
-    height: 560px;
+    width: fit-content;
+    height: 402px;
     top: 0; left: 0; bottom: 0; right: 0; 
     margin: auto;
     font-size: 0px;
     position:absolute;  
     &_left{
       box-sizing: border-box;
-      width: 390px;
-      height: 560px;
+      width: 261px;
+      height: 402px;
       display: inline-block;
       vertical-align: top;
       background: url(../../assets/images/Login/QQ20190331-123453@2x.png) no-repeat center #132D36;
       >div{
-        font: 48px/1.5 Arial;
+        font: 36px/1.5 Arial bold;
         >span{
-          color: #CFF1F5;
+          color: #CFF9FE;
         }
       }
       >img{
         position: relative;
-        top: 360px;
-        right: 88px;
+        top: 255px;
+        right: 60px;
       }
     }&_right
     {
       box-sizing: border-box;
-      width: 550px;
-      height: 560px;
+      width: 434px;
+      height: 402px;
       display: inline-block;
       background-color: #161D1D;
       vertical-align: top;
-      padding-top: 80px;
+      padding-top: 50px;
       >input{
         box-sizing: border-box;
-        font-size: 26px;
-        width: 439px;
-        height: 70px;
+        font-size: 18px;
+        width: 340px;
+        height: 50px;
         margin-bottom: 40px;
-        border-radius: 5px;
+        border-radius: 10px;
         background-color: #E9E9E8;
         padding: 0 20px;
         color: #192C35;
@@ -97,12 +98,12 @@ color: #192C35;
 color: #192C35; 
 } 
       >button{
-        font-size:40px;
-        padding:14.6px 68px;
-        border: 1px solid #CFF1F5;
+        font-size:28px;
+        padding:5px 40px;
+        border: 2px solid #CFF9FE;
         border-radius: 50px;
         background-color: #132D36;
-        color: #CFF1F5;
+        color: #CFF9FE;
         box-sizing: content-box;
         font-weight: bold;
         cursor: pointer;
