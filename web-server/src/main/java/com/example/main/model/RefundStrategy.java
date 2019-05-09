@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "strategy_refund")
+@Table(name = "strategy_refund",schema = "SE2")
 public class RefundStrategy implements Serializable {
     private String id;
     private String description;

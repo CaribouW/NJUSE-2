@@ -14,7 +14,6 @@ import java.util.Objects;
 @Setter
 @Getter
 public class Role implements Serializable {
-    @Column(name = "role_name")
     private String roleName;
     private String roleId;
 

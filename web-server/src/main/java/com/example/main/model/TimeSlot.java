@@ -8,12 +8,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "time_slot", schema = "SE2", catalog = "")
 public class TimeSlot implements Serializable {
-    private String slotId;
-    private Date startTime;
-    private Date endTime;
-    private String movieId;
-    private Double ticketPrize;
-    private String hallId;
+    private String slotId;  //场次
+    private Date startTime; //开始时间
+    private Date endTime;   //结束时间
+    private String movieId; //movie id
+    private Double ticketPrize; //票价(原价,和消费记录中的票价不一定一样)
+    private String hallId;  //指定电影厅
     private String property;
 
     @Id

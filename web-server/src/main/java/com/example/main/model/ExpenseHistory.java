@@ -7,7 +7,7 @@ import java.util.Date;
  * 消费记录实体
  */
 @Entity
-@Table(name = "expense_history")
+@Table(name = "expense_history",schema = "SE2")
 public class ExpenseHistory {
     private String id;
     private String movie_id;
@@ -67,7 +67,7 @@ public class ExpenseHistory {
     }
 
     @Basic
-    @Column(name = "order_number", columnDefinition = "订单号,根据id,time 哈希生成")
+    @Column(name = "order_number")
     public String getOrderNumber() {
         return orderNumber;
     }

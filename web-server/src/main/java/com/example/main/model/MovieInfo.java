@@ -1,29 +1,30 @@
 package com.example.main.model;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "movie_info", schema = "SE2", catalog = "")
 public class MovieInfo implements Serializable {
-    private String movieId;
-    private String name;
-    private Date downDate;
-    private Date uploadDate;
-    private Double score;
-    private Integer timeLength;
-    private String poster;
-    private String director;
-    private String editor;
-    private String mainCharactor;
-    private String category;
-    private String nation;
-    private String lang;
+    private String movieId; //id
+    private String name;    //电影名
+    private Date downDate;  //下架时间
+    private Date uploadDate;//上架时间
+    private Double score;   //得分
+    private Integer timeLength;//放映时长(min)
+    private String poster;  //电影海报,预告片url(横版竖版用逗号隔开)
+    private Integer category;//类型,给予枚举类
+    private String nation;  //国家
+    private String lang;    //语言
+    private int state;     //上映状态,给予枚举类
 
     @Id
-    @Column(name = "movie_id",length = 32)
+    @Column(name = "movie_id", length = 32)
     public String getMovieId() {
         return movieId;
     }
@@ -92,43 +93,14 @@ public class MovieInfo implements Serializable {
         this.poster = poster;
     }
 
-    @Basic
-    @Column(name = "director")
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    @Basic
-    @Column(name = "editor")
-    public String getEditor() {
-        return editor;
-    }
-
-    public void setEditor(String editor) {
-        this.editor = editor;
-    }
-
-    @Basic
-    @Column(name = "main_charactor")
-    public String getMainCharactor() {
-        return mainCharactor;
-    }
-
-    public void setMainCharactor(String mainCharactor) {
-        this.mainCharactor = mainCharactor;
-    }
 
     @Basic
     @Column(name = "category")
-    public String getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 
@@ -164,9 +136,6 @@ public class MovieInfo implements Serializable {
                 Objects.equals(score, movieInfo.score) &&
                 Objects.equals(timeLength, movieInfo.timeLength) &&
                 Objects.equals(poster, movieInfo.poster) &&
-                Objects.equals(director, movieInfo.director) &&
-                Objects.equals(editor, movieInfo.editor) &&
-                Objects.equals(mainCharactor, movieInfo.mainCharactor) &&
                 Objects.equals(category, movieInfo.category) &&
                 Objects.equals(nation, movieInfo.nation) &&
                 Objects.equals(lang, movieInfo.lang);
@@ -174,6 +143,17 @@ public class MovieInfo implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(movieId, name, downDate, uploadDate, score, timeLength, poster, director, editor, mainCharactor, category, nation, lang);
+        return Objects.hash(movieId, name, downDate, uploadDate, score, timeLength, poster, category, nation, lang);
     }
+
+    @Basic
+    @Column(name = "state")
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
 }

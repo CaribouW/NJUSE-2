@@ -14,8 +14,6 @@ import java.util.Objects;
 @Getter
 public class User implements Serializable {
     private String userId;
-
-    @Column(name = "password")
     private String password;
 
     @Id

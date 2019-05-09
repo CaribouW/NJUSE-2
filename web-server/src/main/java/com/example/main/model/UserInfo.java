@@ -7,13 +7,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_info", schema = "SE2", catalog = "")
 public class UserInfo implements Serializable {
-    private String userId;
-    private String name;
-    private int age;
-    private String account;
+    private String userId;  //id
+    private String account; //账号
+    private String name;    //姓名
+    private String avatarUrl;   //头像url
+    private String sex;     //性别
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id",length = 32)
     public String getUserId() {
         return userId;
     }
@@ -33,16 +34,6 @@ public class UserInfo implements Serializable {
     }
 
     @Basic
-    @Column(name = "age")
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    @Basic
     @Column(name = "account")
     public String getAccount() {
         return account;
@@ -57,14 +48,34 @@ public class UserInfo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserInfo userInfo = (UserInfo) o;
-        return age == userInfo.age &&
+        return
                 Objects.equals(userId, userInfo.userId) &&
-                Objects.equals(name, userInfo.name) &&
-                Objects.equals(account, userInfo.account);
+                        Objects.equals(name, userInfo.name) &&
+                        Objects.equals(account, userInfo.account);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, age, account);
+        return Objects.hash(userId, name, account);
+    }
+
+    @Basic
+    @Column(name = "avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avaterUrl) {
+        this.avatarUrl = avaterUrl;
+    }
+
+    @Basic
+    @Column(name = "sex")
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

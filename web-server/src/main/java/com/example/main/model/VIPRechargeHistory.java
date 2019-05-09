@@ -14,7 +14,7 @@ public class VIPRechargeHistory {
     private int amount;
 
     @Id
-    @Column(name = "id", length = 32, columnDefinition = "vip id")
+    @Column(name = "id", length = 32)
     public String getVipId() {
         return vipId;
     }

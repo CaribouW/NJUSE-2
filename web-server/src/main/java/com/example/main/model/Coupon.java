@@ -7,17 +7,17 @@ import java.util.Objects;
 
 /**
  * 优惠券实体类
- * 给予用户，和用户连接
+ * 给予用户，和用户连接(优惠策略里面的不一样)
  */
 @Entity
-@Table(name = "strategy_coupon")
+@Table(name = "strategy_coupon",schema = "SE2")
 public class Coupon implements Serializable {
-    private String couponId;
-    private String name;
-    private Date startDate;
-    private Date endDate;
-    private int amount;
-    private int discount;
+    private String couponId;    //id
+    private String name;        //名称
+    private Date startDate;     //开始时间
+    private Date endDate;       //结束(过期)时间
+    private int amount;         //总量
+    private int discount;       //减价
 
     @Id
     @Column(name = "coupon_id", length = 32)

@@ -59,7 +59,7 @@ public class FavorList implements Serializable {
     }
 
     @Basic
-    @Column(name = "put_time",columnDefinition = "the timeStamp of adding")
+    @Column(name = "put_time")
     public Date getPut_time() {
         return put_time;
     }
