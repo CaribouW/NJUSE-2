@@ -21,21 +21,34 @@ def get_one_page(url):
 
 
 def parse_one_page(html):
-    pattern = re.compile(
+    pattern_norm = re.compile(
         '<dd>.*?board-index.*?>(.*?)</i>.*?data-src="(.*?)".*?name.*?a.*?>(.*?)</a>'
-        + '.*?star">(.*?)</p>.*?releasetime">(.*?)</p>.*?integer">(.*?)</i>.*?fraction">'
+        + '.*?star">(.*?)</p>.*?releasetime">上映时间：(.*?)</p>.*?integer">(.*?)</i>.*?fraction">'
         + '(.*?)</i>.*?</dd>', re.S
     )
-    items = re.findall(pattern, html)
-    for item in items:
-        yield {
-            'index': item[0],
-            'image': item[1],
-            'title': item[2].strip(),
-            'actor': item[3].strip()[3:] if len(item[3]) > 3 else '',
-            'time': item[4].strip()[5:] if len(item[4]) > 5 else '',
-            'score': item[5].strip() + item[6].strip()
-        }
+
+    pattern = re.compile(
+        '"avatar" src="(.*?)".*?name">(.*?)</h3.*?"ellipsis">(.*?)</li>.*?ellipsis">.*?\n(.*?)\n.*?/(.*?)</li>'
+        '.*?"ellipsis">(.*?)</li>.*?',
+        re.S
+    )
+    movie_id_list = re.findall(re.compile('<dd>.*?{movieId:(.*?)}.*?</dd>', re.S), html)  # get all of the movie id
+    norm_list = re.findall(pattern_norm, html)
+    for i, val in enumerate(movie_id_list):
+        score = norm_list[i][5].strip() + norm_list[i][6].strip()
+        url = 'https://maoyan.com/films/' + str(val)
+        html_single = get_one_page(url)
+        items = re.findall(pattern, html_single)
+        for item in items:
+            yield {
+                'index': val,  # id
+                'image': item[0].strip(),  # 图片url
+                'title': item[1].strip(),  # 电影名
+                'length': item[4].strip()[:-2],
+                'score': score,  # 得分
+                'category': item[2],  # 类别
+                'nation': item[3].strip(),  # 国家
+            }
 
 
 def write_to_file(content):
@@ -72,8 +85,8 @@ def insert_movies(movies):
 def insert_movie(movie):
     db = pymysql.connect(host='106.14.140.93', port=3306, user='root', passwd='lfm', db='SE2', charset='utf8')
     cursor = db.cursor()
-    sql = "INSERT INTO movie_info(movie_id,name,poster,score)\
-      VALUES ('%s','%s','%s',%s)" % (str(movie['index']), movie['title'], movie['image'], movie['score'])
+    sql = "INSERT INTO movie_info(movie_id,name,poster,score,nation,time_length,category)\
+      VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (str(movie['index']), movie['title'], movie['image'], movie['score'],movie['nation'],movie['length'],movie['category'])
     try:
         cursor.execute(sql, movie)
         db.commit()
