@@ -2,6 +2,7 @@ package com.example.main.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +11,7 @@ public class FavorList implements Serializable {
     private String favorId;
     private String movieId;
     private String userId;
+    private Date put_time;
 
     @Id
     @Column(name = "favor_id",length = 32,nullable = false)
@@ -54,5 +56,15 @@ public class FavorList implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(favorId, movieId, userId);
+    }
+
+    @Basic
+    @Column(name = "put_time",columnDefinition = "the timeStamp of adding")
+    public Date getPut_time() {
+        return put_time;
+    }
+
+    public void setPut_time(Date put_time) {
+        this.put_time = put_time;
     }
 }

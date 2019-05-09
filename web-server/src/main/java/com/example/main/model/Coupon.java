@@ -7,6 +7,7 @@ import java.util.Objects;
 
 /**
  * 优惠券实体类
+ * 给予用户，和用户连接
  */
 @Entity
 @Table(name = "strategy_coupon")
