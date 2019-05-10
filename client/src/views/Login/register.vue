@@ -3,7 +3,7 @@
     <div class="register_body_content">
       <div class="register_body_content_left">
         <div class="register_body_content_left_word">
-          <span>COME&</span><br><span>JOIN US</span>
+          <img src="@/assets/images/Login/motto.png" alt="">
         </div>
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
@@ -62,7 +62,7 @@ export default {
       }
       >img{
         position: relative;
-        top: 255px;
+        top: 168px;
         right: 60px;
       }
     }&_right

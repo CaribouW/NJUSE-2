@@ -3,12 +3,12 @@
     <div class="login_body_content">
       <div class="login_body_content_left">
         <div class="login_body_content_left_word">
-          <span>COME&</span><br><span>JOIN US</span>
+          <img src="@/assets/images/Login/motto.png" alt="">
         </div>
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
       <div class="login_body_content_right">
-          <input type="text" placeholder="请输入绑定的手机号"><br>
+          <input type="text" placeholder="请输入账号"><br>
           <input type="password" placeholder="请输入密码"><br>
           <div>
             <input type="checkbox"><span>一周之内自动登录</span>
@@ -64,7 +64,7 @@ export default {
       }
       >img{
         position: relative;
-        top: 255px;
+        top: 168px;
         right: 60px;
       }
     }&_right
