@@ -1,10 +1,8 @@
 <template>
   <div class="register_body">
     <div class="register_body_content">
+      <div class="register_body_content_motto"><img src="@/assets/images/Login/motto.png" alt=""></div>
       <div class="register_body_content_left">
-        <div class="register_body_content_left_word">
-          <img src="@/assets/images/Login/motto.png" alt="">
-        </div>
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
       <div class="register_body_content_right">
@@ -47,6 +45,11 @@ export default {
     margin: auto;
     font-size: 0px;
     position:absolute;  
+    &_motto{
+      position: absolute;
+      top: 0;
+      left: -30px;
+    }
     &_left{
       box-sizing: border-box;
       width: 261px;
@@ -54,15 +57,9 @@ export default {
       display: inline-block;
       vertical-align: top;
       background: url(../../assets/images/Login/QQ20190331-123453@2x.png) no-repeat center #132D36;
-      >div{
-        font: 36px/1.5 Arial bold;
-        >span{
-          color: #CFF9FE;
-        }
-      }
       >img{
         position: relative;
-        top: 168px;
+        top: 364px;
         right: 60px;
       }
     }&_right

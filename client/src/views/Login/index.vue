@@ -1,10 +1,8 @@
 <template>
   <div class="login_body">
     <div class="login_body_content">
+      <div class="login_body_content_motto"><img src="@/assets/images/Login/motto.png" alt=""></div>
       <div class="login_body_content_left">
-        <div class="login_body_content_left_word">
-          <img src="@/assets/images/Login/motto.png" alt="">
-        </div>
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
       <div class="login_body_content_right">
@@ -14,6 +12,9 @@
             <input type="checkbox"><span>一周之内自动登录</span>
           </div>
           <button @click="login()">登录 </button>
+          <div>
+            <span>没有账号？</span><span @click="goToRegister()">点击注册</span>
+          </div>
       </div>
     </div>
   </div>
@@ -29,6 +30,9 @@ export default {
   methods: {
     login() {
       this.$message.error('别试了，接口还没写呢！');
+    },
+    goToRegister() {
+      this.$router.push('/register')
     }
   }
 }
@@ -48,7 +52,12 @@ export default {
     top: 0; left: 0; bottom: 0; right: 0; 
     margin: auto;
     font-size: 0px;
-    position:absolute;  
+    position:absolute;
+    &_motto{
+      position: absolute;
+      top: 0;
+      left: -30px;
+    }
     &_left{
       box-sizing: border-box;
       width: 261px;
@@ -56,15 +65,9 @@ export default {
       display: inline-block;
       vertical-align: top;
       background: url(../../assets/images/Login/QQ20190331-123453@2x.png) no-repeat center #132D36;
-      >div{
-        font: 36px/1.5 Arial bold;
-        >span{
-          color: #CFF9FE;
-        }
-      }
       >img{
         position: relative;
-        top: 168px;
+        top: 364px;
         right: 60px;
       }
     }&_right
@@ -101,15 +104,24 @@ export default {
       input[type='checkbox']:checked{
         background: url(../../assets/images/Login/checkbox.png) no-repeat center;
       }
-      >div{
+      >div:first-of-type{
         // width: fit-content;
         // margin-left: 55px;
-        margin-bottom: 65px;
+        margin-bottom: 30px;
         >span{
           color: #CFF1F5;
           font-Size:16px;
           vertical-align:middle;
           margin-left: 20px;
+        }
+      }
+      >div:last-of-type{
+        margin-top: 10px;
+        font-size: 16px;
+        color: #ABA5A5;
+        >span:last-of-type{
+          color:#CFF9FE;
+          cursor: pointer;
         }
       }
       ::-webkit-input-placeholder { /* WebKit browsers */ 
