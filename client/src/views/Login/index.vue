@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import Mock from '@/mock/mock.js'
+
 export default {
   data () {
     return {
@@ -29,7 +31,16 @@ export default {
   },
   methods: {
     login() {
-      this.$message.error('别试了，接口还没写呢！');
+      // this.$message.error('别试了，接口还没写呢！');
+      // 测试axios + mock
+      this.$axios.post('http://localhost:3000/user/Login',{
+        'account':123,
+        'password':123456
+      }).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
     },
     goToRegister() {
       this.$router.push('/register')
