@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.service.impl.LoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LoginController {
@@ -22,4 +20,10 @@ public class LoginController {
     public JSON userRegister(@RequestBody JSONObject req) {
         return loginService.register(req.getString("account"), req.getString("password"));
     }
+
+    @DeleteMapping(value = "/user/login")
+    public JSON userLogout(@RequestParam(name = "userId") String uid) {
+        return loginService.logout(uid);
+    }
+
 }
