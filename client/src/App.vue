@@ -31,7 +31,7 @@
           </div>
         </div>
         <router-view/>
-        <div v-if="header_show">footer</div>
+        <Footer v-if="header_show"></Footer>
       </div>
     </div>
   </div>
@@ -39,8 +39,12 @@
 
 <script>
 import $ from 'jquery'
+import Footer from '@/components/footer.vue'
 export default {
   name: 'App',
+  components: {
+    Footer
+  },
   data () {
     return {
       // 是否显示header,footer
@@ -129,9 +133,11 @@ a:hover { text-decoration:underline; }
 }
 .background{
   background-color: black;
+  min-height: 100vh;
   .main_content{
     margin: 0 80px;
     background-color: #201f1d;
+    min-height: inherit;
   }
 }
 .selected{font-weight:bold;color:white}
@@ -143,7 +149,7 @@ a:hover { text-decoration:underline; }
   display: flex;
   &_left{
     text-align: initial;
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     display: flex;
     align-items:baseline;
     >img{

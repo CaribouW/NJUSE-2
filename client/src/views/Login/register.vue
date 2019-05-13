@@ -34,21 +34,21 @@ export default {
 <style lang="scss">
 .register_body{
   width: 100%;
-  height: -webkit-fill-available;
+  height: 100vh;
   background-color: rgba(32, 31, 29, 1);
   position: relative;
   color: #CFF9FE;
   &_content{
     width: fit-content;
-    height: 402px;
+    // height: 402px;
     top: 0; left: 0; bottom: 0; right: 0; 
     margin: auto;
     font-size: 0px;
     position:absolute;  
     &_motto{
-      position: absolute;
-      top: 0;
-      left: -30px;
+      position: relative;
+      top: 135px;
+      left: -190px;
     }
     &_left{
       box-sizing: border-box;
