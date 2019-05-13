@@ -3,14 +3,13 @@ package com.example.main.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.ResponseType;
+import com.example.main.core.enums.RoleType;
 import com.example.main.core.response.Response;
 import com.example.main.core.security.token.TokenManager;
+import com.example.main.model.MapperUserRole;
 import com.example.main.model.User;
 import com.example.main.model.UserInfo;
-import com.example.main.repository.PermissionRepository;
-import com.example.main.repository.RoleRepository;
-import com.example.main.repository.UserInfoRepository;
-import com.example.main.repository.UserRepository;
+import com.example.main.repository.*;
 import com.example.main.service.LoginService;
 import com.example.main.utils.IDUtils;
 import com.example.main.utils.SignUpHelper;
@@ -36,6 +35,8 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private SignUpHelper signUpHelper;
     @Autowired
+    private MapperUserRoleRepository mapperURRepository;
+    @Autowired
     private IDUtils idUtils;
 
     @Override
@@ -50,7 +51,8 @@ public class LoginServiceImpl implements LoginService {
                 JSONObject res = new JSONObject();
                 res.put("id", user.getUserId());
                 res.put("account", account);
-                return res;
+                res.put("roleName",roleRepository.findRoleByUserID(user.getUserId()).getRoleName());
+                return Response.success(res);
             } catch (Exception e) {
                 e.printStackTrace();
                 return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
@@ -84,15 +86,20 @@ public class LoginServiceImpl implements LoginService {
      */
     private synchronized String insertUser(String account, String password) {
         User user = new User(idUtils.getUUID32(), signUpHelper.encryptPassword(password));
+        //info
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getUserId());
         userInfo.setAccount(account);
+        //mapper
+        MapperUserRole mapper = new MapperUserRole();
+        mapper.setId(idUtils.getUUID32());
+        mapper.setUserId(user.getUserId());
+        mapper.setRoleId(roleRepository.findRoleByRoleName(RoleType.AUDIENCE.getContent()).getRoleId());
+        //store
         userRepository.saveAndFlush(user);
         userInfoRepository.saveAndFlush(userInfo);
+        mapperURRepository.saveAndFlush(mapper);
         return user.getUserId();
     }
 
-    public void r() {
-        PageRequest pageable = PageRequest.of(3, 4);
-    }
 }

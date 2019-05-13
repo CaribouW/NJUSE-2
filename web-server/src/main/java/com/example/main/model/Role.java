@@ -17,8 +17,6 @@ public class Role implements Serializable {
     private String roleName;
     private String roleId;
 
-    private Timestamp expireTime;
-
     @Basic
     @Column(name = "role_name")
     public String getRoleName() {
@@ -39,28 +37,17 @@ public class Role implements Serializable {
         this.roleId = roleId;
     }
 
-    @Basic
-    @Column(name = "expire_time")
-    public Timestamp getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Timestamp expireTime) {
-        this.expireTime = expireTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
         return Objects.equals(roleName, role.roleName) &&
-                Objects.equals(roleId, role.roleId) &&
-                Objects.equals(expireTime, role.expireTime);
+                Objects.equals(roleId, role.roleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleId, roleName, expireTime);
+        return Objects.hash(roleId, roleName);
     }
 }
