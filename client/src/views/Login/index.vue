@@ -53,7 +53,7 @@ export default {
 <style lang="scss">
 .login_body{
   width: 100%;
-  height: 100%;
+  height: -webkit-fill-available;
   background-color: rgba(32, 31, 29, 1);
   position: relative;
   color: #CFF9FE;

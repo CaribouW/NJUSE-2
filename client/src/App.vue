@@ -31,7 +31,7 @@
           </div>
         </div>
         <router-view/>
-        <div>footer</div>
+        <div v-if="header_show">footer</div>
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
   name: 'App',
   data () {
     return {
-      // 是否显示header
+      // 是否显示header,footer
       header_show: true,
       // 登陆or未登录
       logined: false,
@@ -130,7 +130,7 @@ a:hover { text-decoration:underline; }
 .background{
   background-color: black;
   .main_content{
-    margin: 0 50px;
+    margin: 0 80px;
     background-color: #201f1d;
   }
 }
@@ -148,11 +148,12 @@ a:hover { text-decoration:underline; }
     align-items:baseline;
     >img{
       cursor: pointer;
+      margin-right: 40px;
     }
     li{
       display: inline-block;
       color: #CFF9FE;
-      margin-left: 20px;
+      margin-left: 30px;
       cursor: pointer;
     }
   }
