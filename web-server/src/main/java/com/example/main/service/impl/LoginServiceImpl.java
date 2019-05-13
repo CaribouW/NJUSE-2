@@ -112,6 +112,7 @@ public class LoginServiceImpl implements LoginService {
                 return Response.fail(ResponseType.USER_OUT);
             }
             tokenManager.logout();
+            return Response.success(null);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
