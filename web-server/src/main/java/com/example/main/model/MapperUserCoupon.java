@@ -12,6 +12,7 @@ public class MapperUserCoupon {
     private String id;
     private String userId;
     private String couponId;
+    private String vipId;
     private int state;
 
     @Id
@@ -52,5 +53,15 @@ public class MapperUserCoupon {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    @Basic
+    @Column(name = "vip_id",length = 32)
+    public String getVipId() {
+        return vipId;
+    }
+
+    public void setVipId(String vipId) {
+        this.vipId = vipId;
     }
 }
