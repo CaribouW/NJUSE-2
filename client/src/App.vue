@@ -4,9 +4,9 @@
       <div class="header_left">
         <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
         <ul id="test">
-            <li>首页</li>
-            <li>影库</li>
-            <li>快速购票</li>
+            <li v-for="items in navList" :class="{selected:items.isActive}" @click="activeFun(items)">
+                    {{items.text}}
+            </li>
         </ul>
       </div>
       <div class="header_right">
@@ -40,7 +40,12 @@ export default {
       // 是否显示header
       header_show: true,
       // 登陆or未登录
-      logined: false
+      logined: false,
+      navList: [
+        {text: '首页', isActive: true, route: 'index'},
+        {text: '影库', isActive: false, route: 'movielist'},
+        {text: '快速购票', isActive: false, route: 'marchant'},
+      ]
     }
   },
   methods: {
@@ -52,6 +57,14 @@ export default {
     },
     goHomepage() {
       this.$router.push("/index")
+    },
+    // 导航栏切换
+    activeFun: function(data){
+      this.$router.push(data.route)
+        this.navList.forEach(function(obj){
+            obj.isActive = false;
+        });
+        data.isActive = !data.isActive;
     }
   },
   // 保证header在登录注册时不会显示
@@ -107,71 +120,72 @@ a:hover { text-decoration:underline; }
   height: 100%;
   font-size: 28px;
 }
-  .header{
-    background-color: #201f1d;
-    // background-color: red;
-    height: 60px;
-    padding: 20px 20px 0 20px;
+.selected{font-weight:bold;}
+.header{
+  background-color: #201f1d;
+  // background-color: red;
+  height: 60px;
+  padding: 20px 20px 0 20px;
+  display: flex;
+  &_left{
+    text-align: initial;
+    flex: 1 1 auto;
     display: flex;
-    &_left{
-      text-align: initial;
-      flex: 1 1 auto;
-      display: flex;
-      align-items: center;
-      >img{
-        cursor: pointer;
+    align-items: center;
+    >img{
+      cursor: pointer;
+    }
+    li{
+      display: inline-block;
+      color: #CFF9FE;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+  &_right{
+    flex:0 1 auto;
+    display: flex;
+    align-items: center;
+    .searchBox{
+      width: 344px;
+      height: 36px;
+      background-color: green;
+      text-align: left;
+      border-radius: 10px;
+      margin-right: 60px;
+      >el-icon-search{
+        vertical-align: middle;
       }
-      li{
-        display: inline-block;
-        color: #CFF9FE;
-        margin-left: 20px;
+      >input{
+        // height: 15px;
+        vertical-align: middle;
+        font-size: 24px;
+      }
+    }
+    .logined{
+      >img:first-of-type{
+        // display: inline-block;
+        cursor: pointer;
+        margin-right: 20px;
+      }
+      >img:last-of-type{
+        height: 50px;
         cursor: pointer;
       }
     }
-    &_right{
-      flex:0 1 auto;
-      display: flex;
-      align-items: center;
-      .searchBox{
-        width: 344px;
-        height: 36px;
-        background-color: green;
-        text-align: left;
-        border-radius: 10px;
-        margin-right: 60px;
-        >el-icon-search{
-          vertical-align: middle;
-        }
-        >input{
-          // height: 15px;
-          vertical-align: middle;
-          font-size: 24px;
-        }
-      }
-      .logined{
-        >img:first-of-type{
-          // display: inline-block;
-          cursor: pointer;
-          margin-right: 20px;
-        }
-        >img:last-of-type{
-          height: 50px;
-          cursor: pointer;
-        }
-      }
-      >div:last-of-type{
-        >div{
-          display: flex;
-          align-items: center;
-          font-size: 20px;
-          margin-bottom: 5px;
-          cursor: pointer;
-          >span{
-            margin-left: 10px;
-            color: #CFF9FE;
-          }
+    >div:last-of-type{
+      >div{
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        >span{
+          margin-left: 10px;
+          color: #CFF9FE;
         }
       }
     }
   }
+}
 </style>

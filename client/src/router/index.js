@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/views/Login/index.vue'
 import Register from '@/views/Login/register.vue'
 import Homepage from '@/views//homepage/index.vue'
+import MovieList from '@/views//movieList/index.vue'
 
 Vue.use(Router)
 
@@ -11,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/login',
+      redirect:'/index',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -29,6 +30,11 @@ export default new Router({
       path: '/index',
       name: 'Homepage',
       component: Homepage
+    },
+    {
+      path: '/movielist',
+      name: 'MovieList',
+      component: MovieList
     },
   ]
 })

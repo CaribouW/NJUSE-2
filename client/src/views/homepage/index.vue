@@ -1,5 +1,5 @@
 <template>
   <div>
-    fdsf
+    首页
   </div>
 </template>
