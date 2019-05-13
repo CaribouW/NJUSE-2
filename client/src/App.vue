@@ -1,34 +1,39 @@
 <template>
   <div id="app">
-    <div class="header" v-if="header_show">
-      <div class="header_left">
-        <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
-        <ul id="test">
-            <li v-for="items in navList" :class="{selected:items.isActive}" @click="activeFun(items)">
-                    {{items.text}}
-            </li>
-        </ul>
-      </div>
-      <div class="header_right">
-        <div class="searchBox">
-          <i class="el-icon-search"></i>
-          <input type="text" placeholder="Search">
-        </div>
-        <div class="logined" v-if="logined">
-          <img src="@/assets/images/header/fullsizerender(4).png" alt="">
-          <img src="@/assets/images/header/personal-image.png" alt="">
-        </div>
-        <div v-else>
-          <div @click="goLogin()">
-            <img src="@/assets/images/header/denglu.png" alt=""><span>登录</span> 
+    <div class="background">
+      <div class="main_content">
+        <div class="header" v-if="header_show">
+          <div class="header_left">
+            <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
+            <ul id="test">
+                <li v-for="items in navList" :class="{selected:items.isActive}" @click="activeFun(items)">
+                        {{items.text}}
+                </li>
+            </ul>
           </div>
-          <div @click="goRegister()">
-            <img src="@/assets/images/header/zhuce.png" alt=""><span>注册</span> 
+          <div class="header_right">
+            <div class="searchBox">
+              <i class="el-icon-search"></i>
+              <input type="text" placeholder="Search">
+            </div>
+            <div class="logined" v-if="logined">
+              <img src="@/assets/images/header/fullsizerender(4).png" alt="">
+              <img src="@/assets/images/header/personal-image.png" alt="">
+            </div>
+            <div v-else>
+              <div @click="goLogin()">
+                <img src="@/assets/images/header/denglu.png" alt=""><span>登录</span> 
+              </div>
+              <div @click="goRegister()">
+                <img src="@/assets/images/header/zhuce.png" alt=""><span>注册</span> 
+              </div>
+            </div>
           </div>
         </div>
+        <router-view/>
+        <div>footer</div>
       </div>
     </div>
-    <router-view/>
   </div>
 </template>
 
@@ -122,18 +127,25 @@ a:hover { text-decoration:underline; }
   height: 100%;
   font-size: 28px;
 }
-.selected{font-weight:bold;}
+.background{
+  background-color: black;
+  .main_content{
+    margin: 0 50px;
+    background-color: #201f1d;
+  }
+}
+.selected{font-weight:bold;color:white}
 .header{
-  background-color: #201f1d;
+  // background-color: #201f1d;
   // background-color: red;
-  height: 60px;
+  height: 70px;
   padding: 20px 20px 0 20px;
   display: flex;
   &_left{
     text-align: initial;
     flex: 1 1 auto;
     display: flex;
-    align-items: center;
+    align-items:baseline;
     >img{
       cursor: pointer;
     }
@@ -147,21 +159,20 @@ a:hover { text-decoration:underline; }
   &_right{
     flex:0 1 auto;
     display: flex;
-    align-items: center;
+    align-items:flex-end;
     .searchBox{
       width: 344px;
       height: 36px;
-      background-color: green;
+      background-color: #2E2D2C;
       text-align: left;
       border-radius: 10px;
       margin-right: 60px;
-      >el-icon-search{
-        vertical-align: middle;
-      }
+      padding-left: 5px;
       >input{
         // height: 15px;
         vertical-align: middle;
         font-size: 24px;
+        background-color: #2E2D2C;
       }
     }
     .logined{
@@ -180,12 +191,15 @@ a:hover { text-decoration:underline; }
         display: flex;
         align-items: center;
         font-size: 20px;
-        margin-bottom: 5px;
+        // margin-bottom: 20px;
         cursor: pointer;
         >span{
           margin-left: 10px;
           color: #CFF9FE;
         }
+      }
+      >div:first-of-type{
+        margin-bottom: 12px;
       }
     }
   }
