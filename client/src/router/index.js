@@ -5,6 +5,7 @@ import Login from '@/views/Login/index.vue'
 import Register from '@/views/Login/register.vue'
 import Homepage from '@/views//homepage/index.vue'
 import MovieList from '@/views//movieList/index.vue'
+import Quick from '@/views//quick/index.vue'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/movielist',
       name: 'MovieList',
       component: MovieList
+    },
+    {
+      path: '/quick',
+      name: 'Quick',
+      component: Quick
     },
   ]
 })

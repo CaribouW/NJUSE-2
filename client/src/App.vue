@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
   name: 'App',
   data () {
@@ -44,7 +45,7 @@ export default {
       navList: [
         {text: '首页', isActive: true, route: 'index'},
         {text: '影库', isActive: false, route: 'movielist'},
-        {text: '快速购票', isActive: false, route: 'marchant'},
+        {text: '快速购票', isActive: false, route: 'quick'},
       ]
     }
   },
@@ -56,7 +57,7 @@ export default {
       this.$router.push("/register")
     },
     goHomepage() {
-      this.$router.push("/index")
+      $("#test li:first").click()
     },
     // 导航栏切换
     activeFun: function(data){
@@ -69,8 +70,9 @@ export default {
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    console.log("fdsf")
+    
     var path = this.$route.path.split('/')[1]
+    console.log(path)
     if (path === "login" || path === "register") {
       this.header_show = false
     } else {
