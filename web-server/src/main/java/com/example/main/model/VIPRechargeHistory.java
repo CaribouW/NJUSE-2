@@ -9,12 +9,22 @@ import java.util.Date;
 @Entity
 @Table(name = "vip_recharge_history")
 public class VIPRechargeHistory {
+    private String id;
     private String vipId;
     private Date rechargeTime;
-    private int amount;
+    private double amount;
 
     @Id
     @Column(name = "id", length = 32)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Column(name = "vip_id", length = 32)
     public String getVipId() {
         return vipId;
     }
@@ -35,11 +45,11 @@ public class VIPRechargeHistory {
 
     @Basic
     @Column(name = "amount")
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

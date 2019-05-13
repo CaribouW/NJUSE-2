@@ -8,4 +8,8 @@ public interface VIPCardRepository extends BaseRepository<VIPCard> {
      */
     VIPCard findByUserId(String uid);
 
+    /**
+     * 通过id得到
+     */
+    VIPCard findVIPCardByCardId(String id);
 }

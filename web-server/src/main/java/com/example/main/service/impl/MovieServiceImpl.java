@@ -1,5 +1,9 @@
 package com.example.main.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.ResponseType;
+import com.example.main.core.response.Response;
 import com.example.main.repository.FavorListRepository;
 import com.example.main.repository.MovieInfoRepository;
 import com.example.main.repository.TimeSlotRepository;
@@ -20,4 +24,16 @@ public class MovieServiceImpl implements MovieService {
     private FavorListRepository favorListRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
+
+    @Override
+    public JSON getMovieFavorNum(String mid) {
+        try {
+            int sum = favorListRepository.findFavorListsByMovieId(mid).size();
+            JSONObject ans = new JSONObject();
+            ans.put("sum", sum);
+            return Response.success(ans);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
 }

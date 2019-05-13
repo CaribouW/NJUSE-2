@@ -1,7 +1,10 @@
 package com.example.main.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -10,10 +13,11 @@ public class VIPCard implements Serializable {
     private String cardId;
     private String userId;
     private Double remainValue;
-    private String cardNumber;
+    private Date ownDate;
+    private String vipLevel;
 
     @Id
-    @Column(name = "id",length = 32)
+    @Column(name = "id", length = 32)
     public String getCardId() {
         return cardId;
     }
@@ -23,7 +27,7 @@ public class VIPCard implements Serializable {
     }
 
     @Basic
-    @Column(name = "user_id",length = 32)
+    @Column(name = "user_id", length = 32)
     public String getUserId() {
         return userId;
     }
@@ -42,16 +46,6 @@ public class VIPCard implements Serializable {
         this.remainValue = remainValue;
     }
 
-    @Basic
-    @Column(name = "card_number")
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,12 +53,31 @@ public class VIPCard implements Serializable {
         VIPCard that = (VIPCard) o;
         return Objects.equals(cardId, that.cardId) &&
                 Objects.equals(userId, that.userId) &&
-                Objects.equals(remainValue, that.remainValue) &&
-                Objects.equals(cardNumber, that.cardNumber);
+                Objects.equals(remainValue, that.remainValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardId, userId, remainValue, cardNumber);
+        return Objects.hash(cardId, userId, remainValue);
+    }
+
+    @Basic
+    @Column(name = "own_date")
+    public Date getOwnDate() {
+        return ownDate;
+    }
+
+    public void setOwnDate(Date ownDate) {
+        this.ownDate = ownDate;
+    }
+
+    @Basic
+    @Column(name = "vip_level")
+    public String getVipLevel() {
+        return vipLevel;
+    }
+
+    public void setVipLevel(String vipLevel) {
+        this.vipLevel = vipLevel;
     }
 }

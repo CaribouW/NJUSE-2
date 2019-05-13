@@ -10,4 +10,8 @@ public interface FavorListRepository extends BaseRepository<FavorList> {
      */
     List<FavorList> findFavorListsByMovieId(String movieId);
 
+    /**
+     * 根据movieId , userId共同查询
+     */
+    FavorList findFavorListByUserIdAndMovieId(String uid, String mid);
 }

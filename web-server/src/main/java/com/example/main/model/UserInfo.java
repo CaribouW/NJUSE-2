@@ -2,6 +2,7 @@ package com.example.main.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +13,7 @@ public class UserInfo implements Serializable {
     private String name;    //姓名
     private String avatarUrl;   //头像url
     private String sex;     //性别
+    private Date birth;
 
     @Id
     @Column(name = "user_id",length = 32)
@@ -77,5 +79,15 @@ public class UserInfo implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    @Basic
+    @Column(name = "birth")
+    public Date getBirth() {
+        return birth;
+    }
+
+    public void setBirth(Date birth) {
+        this.birth = birth;
     }
 }
