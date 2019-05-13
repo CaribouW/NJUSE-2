@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
                 JSONObject res = new JSONObject();
                 res.put("id", user.getUserId());
                 res.put("account", account);
-                res.put("roleName",roleRepository.findRoleByUserID(user.getUserId()).getRoleName());
+                res.put("roleName", roleRepository.findRoleByUserID(user.getUserId()).getRoleName());
                 return Response.success(res);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -102,4 +102,18 @@ public class LoginServiceImpl implements LoginService {
         return user.getUserId();
     }
 
+    @Override
+    public JSON logout(String uid) {
+        try {
+            User record = userRepository.findUserByUserId(uid);
+            if (null == record) {
+                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+            } else if (!tokenManager.isLogin()) {//未登录
+                return Response.fail(ResponseType.USER_OUT);
+            }
+            tokenManager.logout();
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
 }

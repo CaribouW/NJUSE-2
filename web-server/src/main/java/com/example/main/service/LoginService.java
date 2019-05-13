@@ -9,4 +9,6 @@ public interface LoginService {
     User findUserByAccount(String account);
 
     JSON register(String account, String password);
+
+    JSON logout(String uid);
 }

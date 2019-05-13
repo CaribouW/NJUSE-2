@@ -8,7 +8,8 @@ public enum ResponseType {
     PASSWORD_ERROR(501, "Password Error"), //密码错误
     USER_IN(504, "user has already login"),
     USER_OUT(505, "user not login"),
-    REFUND_DENY(604, "Refund denied");
+    REFUND_DENY(604, "Refund denied"),
+    UNKNOWN_ERROR(1000, "unknown error");
     private Integer status;
 
     private String message;
