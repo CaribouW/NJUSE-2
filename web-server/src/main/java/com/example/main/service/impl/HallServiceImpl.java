@@ -19,4 +19,9 @@ public class HallServiceImpl implements HallService {
     private TimeSlotRepository timeSlotRepository;
     @Autowired
     private MovieTicketRepository movieTicketRepository;
+
+    @Override
+    public void run() {
+
+    }
 }

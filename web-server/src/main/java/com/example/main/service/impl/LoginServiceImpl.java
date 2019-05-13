@@ -1,9 +1,9 @@
 package com.example.main.service.impl;
 
-import com.alibaba.dubbo.container.page.Page;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.main.core.response.BaseResponse;
+import com.example.main.core.enums.ResponseType;
+import com.example.main.core.response.Response;
 import com.example.main.core.security.token.TokenManager;
 import com.example.main.model.User;
 import com.example.main.model.UserInfo;
@@ -17,8 +17,6 @@ import com.example.main.utils.SignUpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.awt.print.Pageable;
 
 /**
  * 登录,登出,注册
@@ -41,7 +39,7 @@ public class LoginServiceImpl implements LoginService {
     private IDUtils idUtils;
 
     @Override
-    public BaseResponse login(String account, String password) {
+    public JSON login(String account, String password) {
         User u = userRepository.findUserByAccount(account);
 
         if (null != u) {
@@ -52,13 +50,13 @@ public class LoginServiceImpl implements LoginService {
                 JSONObject res = new JSONObject();
                 res.put("id", user.getUserId());
                 res.put("account", account);
-                return BaseResponse.SUCCESS(res);
+                return res;
             } catch (Exception e) {
                 e.printStackTrace();
-                return BaseResponse.FAIL(500);
+                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
             }
         } else {
-            return BaseResponse.FAIL(500);
+            return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
         }
     }
 
@@ -68,16 +66,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public BaseResponse register(String account, String password) {
+    public JSON register(String account, String password) {
         User u = findUserByAccount(account);
         if (null != u) { //账户已存在
-            return BaseResponse.FAIL(405);
+            return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
         }
         String id = insertUser(account, password);
         JSONObject res = new JSONObject();
         res.put("id", id);
         res.put("account", account);
-        return BaseResponse.SUCCESS(res);
+        return Response.success(res);
     }
 
     /**

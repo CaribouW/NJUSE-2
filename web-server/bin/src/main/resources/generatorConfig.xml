@@ -6,7 +6,7 @@
         <jdbcConnection connectionURL="jdbc:mysql://106.14.140.93:3306/ARHuawei?nullCatalogMeansCurrent=true"
                         driverClass="com.mysql.cj.jdbc.Driver" userId="root"  password="lfm"/>
         <javaModelGenerator targetPackage="com.example.main.model" targetProject="web-server">
-            <property name="constructorBased" value="true"/>
+            <property name="constructorBased" status="true"/>
         </javaModelGenerator>
         <sqlMapGenerator targetPackage="com.example.main.mapper" targetProject="web-server"  />
         <javaClientGenerator targetPackage="com.example.main.mapper" targetProject="web-server"
