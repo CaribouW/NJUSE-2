@@ -1,16 +1,83 @@
 <template>
   <div id="app">
+    <div class="header" v-if="header_show">
+      <div class="header_left">
+        <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
+        <ul id="test">
+            <li>首页</li>
+            <li>影库</li>
+            <li>快速购票</li>
+        </ul>
+      </div>
+      <div class="header_right">
+        <div class="searchBox">
+          <i class="el-icon-search"></i>
+          <input type="text" placeholder="Search">
+        </div>
+        <div class="logined" v-if="logined">
+          <img src="@/assets/images/header/fullsizerender(4).png" alt="">
+          <img src="@/assets/images/header/personal-image.png" alt="">
+        </div>
+        <div v-else>
+          <div @click="goLogin()">
+            <img src="@/assets/images/header/denglu.png" alt=""><span>登录</span> 
+          </div>
+          <div @click="goRegister()">
+            <img src="@/assets/images/header/zhuce.png" alt=""><span>注册</span> 
+          </div>
+        </div>
+      </div>
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      // 是否显示header
+      header_show: true,
+      // 登陆or未登录
+      logined: false
+    }
+  },
+  methods: {
+    goLogin() {
+      this.$router.push("/login")
+    },
+    goRegister() {
+      this.$router.push("/register")
+    },
+    goHomepage() {
+      this.$router.push("/index")
+    }
+  },
+  // 保证header在登录注册时不会显示
+  created: function () {
+    console.log("fdsf")
+    var path = this.$route.path.split('/')[1]
+    if (path === "login" || path === "register") {
+      this.header_show = false
+    } else {
+      this.header_show = true
+    }
+  },
+  watch: {
+    $route (to, from) {
+      var path = this.$route.path.split('/')[1]
+      if (path === "login" || path === "register") {
+        this.header_show = false
+      } else {
+        this.header_show = true
+      }
+    }
+  }
 }
 </script>
 
-<style>
+<style lang="scss">
 /* CSS Document */
 /* 基本css格式，清除浏览器默认配置 */
 * { color:#444; }
@@ -38,6 +105,73 @@ a:hover { text-decoration:underline; }
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   height: 100%;
-  /* color: #2c3e50; */
+  font-size: 28px;
 }
+  .header{
+    background-color: #201f1d;
+    // background-color: red;
+    height: 60px;
+    padding: 20px 20px 0 20px;
+    display: flex;
+    &_left{
+      text-align: initial;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      >img{
+        cursor: pointer;
+      }
+      li{
+        display: inline-block;
+        color: #CFF9FE;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+    }
+    &_right{
+      flex:0 1 auto;
+      display: flex;
+      align-items: center;
+      .searchBox{
+        width: 344px;
+        height: 36px;
+        background-color: green;
+        text-align: left;
+        border-radius: 10px;
+        margin-right: 60px;
+        >el-icon-search{
+          vertical-align: middle;
+        }
+        >input{
+          // height: 15px;
+          vertical-align: middle;
+          font-size: 24px;
+        }
+      }
+      .logined{
+        >img:first-of-type{
+          // display: inline-block;
+          cursor: pointer;
+          margin-right: 20px;
+        }
+        >img:last-of-type{
+          height: 50px;
+          cursor: pointer;
+        }
+      }
+      >div:last-of-type{
+        >div{
+          display: flex;
+          align-items: center;
+          font-size: 20px;
+          margin-bottom: 5px;
+          cursor: pointer;
+          >span{
+            margin-left: 10px;
+            color: #CFF9FE;
+          }
+        }
+      }
+    }
+  }
 </style>
