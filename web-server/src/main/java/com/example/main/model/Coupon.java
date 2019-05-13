@@ -10,7 +10,7 @@ import java.util.Objects;
  * 给予用户，和用户连接(优惠策略里面的不一样)
  */
 @Entity
-@Table(name = "strategy_coupon",schema = "SE2")
+@Table(name = "strategy_coupon", schema = "SE2")
 public class Coupon implements Serializable {
     private String couponId;    //id
     private String name;        //名称
@@ -18,6 +18,7 @@ public class Coupon implements Serializable {
     private Date endDate;       //结束(过期)时间
     private int amount;         //总量
     private int discount;       //减价
+    private int threshHold;     //满减阈值
 
     @Id
     @Column(name = "coupon_id", length = 32)
@@ -93,5 +94,15 @@ public class Coupon implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(couponId, name, startDate, endDate);
+    }
+
+    @Basic
+    @Column(name = "threshHold")
+    public int getThreshHold() {
+        return threshHold;
+    }
+
+    public void setThreshHold(int threshHold) {
+        this.threshHold = threshHold;
     }
 }
