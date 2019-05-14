@@ -13,4 +13,8 @@ public interface HallService {
      * */
     JSON adminAllSchedule();
 
+    /**
+     * 获取影厅信息
+     * */
+    JSON getHallList();
 }

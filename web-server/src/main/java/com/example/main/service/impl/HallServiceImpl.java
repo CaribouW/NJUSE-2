@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.paging.PagingVO;
 import com.example.main.core.response.Response;
+import com.example.main.model.MovieHall;
 import com.example.main.model.TimeSlot;
 import com.example.main.repository.MovieHallRepository;
 import com.example.main.repository.MovieTicketRepository;
@@ -16,6 +17,7 @@ import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.image.Kernel;
 import java.util.Comparator;
 import java.util.List;
 
@@ -62,6 +64,28 @@ public class HallServiceImpl implements HallService {
 
             return Response.success(ans);
 
+        } catch (Exception e) {
+
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON getHallList() {
+        try {
+            List<MovieHall> movieHalls = movieHallRepository.findAll();
+            JSONArray array = new JSONArray();
+            movieHalls.forEach(item -> {
+                JSONObject object = new JSONObject();
+                object.put("hallID", item.getHallId());
+                object.put("state", item.getState());
+                object.put("size", item.getSize());
+                object.put("type", item.getCategory());
+                array.add(object);
+            });
+            JSONObject ans = new JSONObject();
+            ans.put("list", array);
+            return Response.success(ans);
         } catch (Exception e) {
 
             return Response.fail(ResponseType.UNKNOWN_ERROR);

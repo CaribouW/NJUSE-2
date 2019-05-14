@@ -24,4 +24,14 @@ public class MovieRoleController {
     public JSON addAdmin(@RequestBody JSONObject req) {
         return roleService.addAdmin(req);
     }
+
+    @PutMapping("/")
+    public JSON updateAdmin(@RequestBody JSONObject req){
+        return roleService.updateAdmin(req);
+    }
+
+    @DeleteMapping("/")
+    public JSON deleteAdmin(@RequestBody JSONObject req){
+        return roleService.deleteAdmin(req.getString("userId"));
+    }
 }

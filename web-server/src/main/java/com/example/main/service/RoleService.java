@@ -13,4 +13,14 @@ public interface RoleService {
      * 添加管理员
      * */
     JSON addAdmin(JSONObject req);
+
+    /**
+     * 更新管理员信息
+     * */
+    JSON updateAdmin(JSONObject req);
+
+    /**
+     * 删去管理员,角色回到普通用户
+     * */
+    JSON deleteAdmin(String userId);
 }

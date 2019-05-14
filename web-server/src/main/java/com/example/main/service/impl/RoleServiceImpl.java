@@ -8,13 +8,11 @@ import com.example.main.core.enums.RoleType;
 import com.example.main.core.response.Response;
 import com.example.main.model.MapperUserRole;
 import com.example.main.model.UserInfo;
-import com.example.main.repository.PermissionRepository;
-import com.example.main.repository.RoleRepository;
-import com.example.main.repository.UserInfoRepository;
-import com.example.main.repository.UserRepository;
+import com.example.main.repository.*;
 import com.example.main.service.RoleService;
 import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +28,8 @@ public class RoleServiceImpl implements RoleService {
     private PermissionRepository permissionRepository;
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private MapperUserRoleRepository userRoleRepository;
     @Autowired
     private IDUtils idUtils;
 
@@ -57,16 +57,54 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public JSON addAdmin(JSONObject req) {
         try {
-            JSONObject ans = new JSONObject();
-            String uid = "";
-            MapperUserRole role = new MapperUserRole();
-            role.setRoleId(idUtils.getUUID32());
-            role.setRoleId("");
+            String uid = req.getString("userId");
+            if (userRoleRepository.findByUserId(uid) != null) { //already admin
+                return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
+            }
+            //update name
+            UserInfo userInfo = userInfoRepository.findUserInfoByUserId(uid);
+            userInfo.setName(req.getString("name"));
+            userInfoRepository.saveAndFlush(userInfo);
+            //insert role
+            MapperUserRole mapperUserRole =
+                    new MapperUserRole();
+            mapperUserRole.setRoleId(roleRepository.findRoleByRoleName(RoleType.ADMIN.getContent()).getRoleId());
+            mapperUserRole.setId(idUtils.getUUID32());
+            mapperUserRole.setUserId(uid);
+            userRoleRepository.saveAndFlush(mapperUserRole);
 
-            return Response.success("");
+            return Response.success(null);
 
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
 
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON updateAdmin(JSONObject req) {
+        try {
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON deleteAdmin(String userId) {
+        try {
+            MapperUserRole mapperUserRole = userRoleRepository.findByUserId(userId);
+            //update role id
+            mapperUserRole.setRoleId(roleRepository.findRoleByRoleName(RoleType.AUDIENCE.getContent()).getRoleId());
+            //remove name
+
+            userRoleRepository.saveAndFlush(mapperUserRole);
+            return Response.success(null);
+        } catch (NullPointerException e) { //record not present
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
