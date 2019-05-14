@@ -12,7 +12,8 @@
             <li>正在热映</li>
             <li>即将上映</li>
           </ul>
-          <img src="@/assets/images/homepage/fullsizerender(16).png" alt="">
+          <img src="@/assets/images/homepage/fullsizerender(16).png" alt=""><br/>
+          <img src="@/assets/images/homepage/GO！GET A MOVIE.png" alt="">
         </div>
         <div class="homepage_movie_middle_right">
           <div class="homepage_movie_middle_right_title">
@@ -25,6 +26,10 @@
           </div>
           </div>
         </div>
+      </div>
+      <div class="homepage_movie_buttom">
+        <span>更多内容</span>
+        <img src="@/assets/images/homepage/fullsizerender(17).png" alt="">
       </div>
     </div>
   </div>
@@ -63,9 +68,13 @@ export default {
       display: flex;
       &_left{
         flex: 1 1 auto;
+        margin-top: 50px;
+        >img:first-of-type{
+          margin-bottom: 60px;
+        }
       }
       &_right{
-        width: 900px;
+        width: 860px;
         flex: 0 1 auto;
         &_title{
           padding: 0 50px;
@@ -73,7 +82,9 @@ export default {
           display: flex;
           align-items: center;
           margin-bottom: 30px;
-          >div{flex: 1 0 auto;text-align: left;display: flex; align-items: center;font-size: 24px;color:#EAEAEA}
+          >div{flex: 1 0 auto;text-align: left;display: flex; align-items: center;font-size: 24px;color:#EAEAEA;
+            >img{ margin-right: 20px;}
+          }
         >i{flex: 0 1 auto; }
         }
         &_movie{
@@ -86,6 +97,9 @@ export default {
           >img{display: block;}
         }
       }
+    }
+    &_buttom{
+      text-align: right;
     }
   }
 }
