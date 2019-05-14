@@ -155,6 +155,7 @@ a:hover { text-decoration:underline; }
     flex: 1 0 auto;
     display: flex;
     align-items:baseline;
+    font-size: 28px;
     >img{
       cursor: pointer;
       margin-right: 40px;
