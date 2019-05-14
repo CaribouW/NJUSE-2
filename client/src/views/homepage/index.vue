@@ -1,6 +1,8 @@
 <template>
   <div class="homepage">
-    <div class="homepage_poster">走马灯</div>
+    <div class="homepage_poster">
+      zoumadeng
+    </div>
     <div class="homepage_movie">
       <div class="homepage_movie_top">
         <img src="@/assets/images/homepage/dianying.png" alt="">
@@ -28,8 +30,7 @@
         </div>
       </div>
       <div class="homepage_movie_buttom">
-        <span>更多内容</span>
-        <img src="@/assets/images/homepage/fullsizerender(17).png" alt="">
+        <span @click="goMovieList()">更多内容</span>
       </div>
     </div>
   </div>
@@ -50,6 +51,11 @@ export default {
         {id: '123456',url: '123456',name: '头号玩家'},
       ]
     }
+  },
+  methods: {
+    goMovieList () {
+      this.$router.push('/movielist')
+    }
   }
 }
 </script>
@@ -58,6 +64,11 @@ export default {
 <style lang="scss">
 .homepage{
   padding: 0 20px;
+  &_poster{
+    background: url('../../assets/images/homepage/Assets.png') no-repeat;
+    background-size: 100%;
+    height: 600px;
+  }
   &_movie{
     &_top{
       color: #CFF9FE;
@@ -100,6 +111,16 @@ export default {
     }
     &_buttom{
       text-align: right;
+      height: 50px;
+      background: url('../../assets/images/homepage/fullsizerender(17).png') no-repeat;
+      background-position: right bottom;
+      >span{
+        display: inline-block;
+        margin-right: 160px;
+        margin-top: 7px;
+        color: #CFF9FE;
+        cursor: pointer;
+      }
     }
   }
 }

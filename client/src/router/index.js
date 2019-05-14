@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/views/Login/index.vue'
 import Register from '@/views/Login/register.vue'
-import Homepage from '@/views//homepage/index.vue'
-import MovieList from '@/views//movieList/index.vue'
-import Quick from '@/views//quick/index.vue'
+import Homepage from '@/views/homepage/index.vue'
+import MovieList from '@/views/movieList/index.vue'
+import Quick from '@/views/quick/index.vue'
 
 Vue.use(Router)
 
