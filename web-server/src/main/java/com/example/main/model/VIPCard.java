@@ -10,11 +10,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "vip", schema = "SE2", catalog = "")
 public class VIPCard implements Serializable {
-    private String cardId;
-    private String userId;
-    private Double remainValue;
-    private Date ownDate;
-    private String vipLevel;
+    private String cardId;      //vip卡id
+    private String userId;      //用户id
+    private Double remainValue; //余额
+    private Date ownDate;       //拥有时间
+    private String vipLevel;    //vip等级
 
     @Id
     @Column(name = "id", length = 32)

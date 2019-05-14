@@ -17,7 +17,7 @@ public class VIPController {
 
     /**
      * 添加会员卡
-     * */
+     */
     @PostMapping("/")
     public JSON addVipCard(@RequestBody JSONObject req) {
         return vipService.addVipCard(req);
@@ -25,7 +25,7 @@ public class VIPController {
 
     /**
      * 根据userId得到会员卡信息
-     * */
+     */
     @GetMapping("/")
     public JSON getVipCard(@RequestParam(value = "userId") String uid) {
         return vipService.findVipByUid(uid);
@@ -33,20 +33,24 @@ public class VIPController {
 
     /**
      * 会员卡充值
-     * */
+     */
     @PutMapping("/recharge")
-    public JSON vipRecharge(@RequestBody JSONObject req){
+    public JSON vipRecharge(@RequestBody JSONObject req) {
         return vipService.recharge(req);
     }
 
     @PutMapping("/consume")
-    public JSON vipConsume(@RequestBody JSONObject req){
+    public JSON vipConsume(@RequestBody JSONObject req) {
         return vipService.consume(req);
     }
 
     @GetMapping("/history/list")
-    public JSON getHistoryVip(@RequestParam(value = "userId")String uid){
+    public JSON getHistoryVip(@RequestParam(value = "userId") String uid) {
         return vipService.findHistoryListByUid(uid);
     }
 
+    @GetMapping("/strategy")
+    public JSON getStrategyList() {
+        return strategyService.getVIPStrategy();
+    }
 }

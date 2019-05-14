@@ -2,7 +2,7 @@ package com.example.main.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -17,8 +17,8 @@ public class Coupon implements Serializable {
     private Date startDate;     //开始时间
     private Date endDate;       //结束(过期)时间
     private int amount;         //总量
-    private int discount;       //减价
-    private int threshHold;     //满减阈值
+    private double discount;       //减价
+    private double threshHold;     //满减阈值
 
     @Id
     @Column(name = "coupon_id", length = 32)
@@ -72,11 +72,11 @@ public class Coupon implements Serializable {
 
     @Basic
     @Column(name = "discount")
-    public int getDiscount() {
+    public double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
@@ -98,11 +98,11 @@ public class Coupon implements Serializable {
 
     @Basic
     @Column(name = "threshHold")
-    public int getThreshHold() {
+    public double getThreshHold() {
         return threshHold;
     }
 
-    public void setThreshHold(int threshHold) {
+    public void setThreshHold(double threshHold) {
         this.threshHold = threshHold;
     }
 }

@@ -14,4 +14,5 @@ public interface CouponRepository extends BaseRepository<Coupon> {
             "(select m.coupon_id from mapper_user_coupon m where m.user_id = :uid)", nativeQuery = true)
     List<Coupon> findCouponsByUserId(@Param(value = "uid") String uid);
 
+    Coupon findCouponByCouponId(String cid);
 }

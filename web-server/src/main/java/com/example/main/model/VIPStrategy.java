@@ -1,20 +1,21 @@
 package com.example.main.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "strategy_vip")
 public class VIPStrategy implements Serializable {
     private String id;
-    private String name;
-    private String description;
+    private String rankName;    //会员级别名称
+    private String rank;        //会员级别
+    private double minRecharge; //初始充值最低值
+    private int rankLevel;      //rank 等级,整数
+    private double discount;    //
 
     @Id
-    @Column(name = "id",length = 32)
+    @Column(name = "id", length = 32)
     public String getId() {
         return id;
     }
@@ -23,21 +24,53 @@ public class VIPStrategy implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @Basic
+    @Column(name = "min_recharge")
+    public double getMinRecharge() {
+        return minRecharge;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMinRecharge(double minRecharge) {
+        this.minRecharge = minRecharge;
     }
 
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    @Basic
+    @Column(name = "rank_level")
+    public int getRankLevel() {
+        return rankLevel;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRankLevel(int rankLevel) {
+        this.rankLevel = rankLevel;
+    }
+
+    @Basic
+    @Column(name = "discount")
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    @Basic
+    @Column(name = "rank_name")
+    public String getRankName() {
+        return rankName;
+    }
+
+    public void setRankName(String rankName) {
+        this.rankName = rankName;
+    }
+
+    @Basic
+    @Column(name = "rank")
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 }

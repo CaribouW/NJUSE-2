@@ -1,9 +1,24 @@
 package com.example.main.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.DateStrPattern;
+import com.example.main.core.enums.ResponseType;
+import com.example.main.core.response.Response;
+import com.example.main.model.Coupon;
+import com.example.main.model.VIPStrategy;
 import com.example.main.repository.CouponRepository;
+import com.example.main.repository.RefundStrategyRepository;
+import com.example.main.repository.VIPStrategyRepository;
 import com.example.main.service.StrategyService;
+import com.example.main.utils.DateUtils;
+import com.example.main.utils.IDUtils;
+import com.example.main.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 经理策略制定
@@ -13,4 +28,88 @@ import org.springframework.stereotype.Service;
 public class StrategyServiceImpl implements StrategyService {
     @Autowired
     private CouponRepository couponRepository;
+    @Autowired
+    private VIPStrategyRepository vipStrategyRepository;
+    @Autowired
+    private RefundStrategyRepository refundStrategyRepository;
+    @Autowired
+    private DateUtils dateUtils;
+    @Autowired
+    private IDUtils idUtils;
+    @Autowired
+    private JsonUtils jsonUtils;
+
+    @Override
+    public JSON updateCouponStrategy(JSONObject req) {
+        try {
+            Coupon coupon = couponRepository.findCouponByCouponId(req.getString("couponID"));
+            coupon.setName(req.getString("couponName"));
+            coupon.setStartDate(dateUtils.strToDate(req.getString("startDate"),
+                    DateStrPattern.YEAR_MONTH_DAY.getPat()));
+            coupon.setEndDate(dateUtils.strToDate(req.getString("endDate"),
+                    DateStrPattern.YEAR_MONTH_DAY.getPat()));
+            coupon.setDiscount(req.getDouble("discountPrice"));
+            coupon.setThreshHold(req.getDouble("couponNumber"));
+
+            //update
+            couponRepository.save(coupon);
+            return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON addCouponStrategy(JSONObject req) {
+        return null;
+    }
+
+    @Override
+    public JSON getCouponStrategyList(JSONObject req) {
+        return null;
+    }
+
+    @Override
+    public JSON removeCouponStrategy(JSONObject req) {
+        return null;
+    }
+
+    @Override
+    public JSON getVIPStrategy() {
+        try {
+            List<VIPStrategy> strategies =
+                    vipStrategyRepository.findAll();
+            JSONArray array = new JSONArray();
+            JSONObject ans = new JSONObject();
+
+            strategies.forEach(item -> {
+                JSONObject object = new JSONObject();
+                object.put("rankName", item.getRankName());
+                object.put("rank", item.getRank());
+                object.put("rechargePrice", item.getMinRecharge());
+                object.put("discount", item.getDiscount());
+                array.add(object);
+            });
+            ans.put("vipRank", array);
+            return Response.success(ans);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON updateVIPStrategy(JSONObject req) {
+        try {
+            return null;
+        } catch (Exception e) {
+
+            return null;
+        }
+    }
+
+
 }

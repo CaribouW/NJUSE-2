@@ -28,7 +28,7 @@ public class HallServiceImpl implements HallService {
 
     @Override
     public JSON getAllSchedule() {
-        
+
         return null;
     }
 }

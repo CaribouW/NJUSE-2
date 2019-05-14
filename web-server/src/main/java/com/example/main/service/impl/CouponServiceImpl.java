@@ -11,6 +11,7 @@ import com.example.main.model.MapperMovieCoupon;
 import com.example.main.model.MapperUserCoupon;
 import com.example.main.repository.*;
 import com.example.main.service.CouponService;
+import com.example.main.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,8 @@ public class CouponServiceImpl implements CouponService {
     private CouponRepository couponRepository;
     @Autowired
     private MapperMovieCouponRepository movieCouponRepository;
+    @Autowired
+    private DateUtils dateUtils;
 
     @Override
     public JSON findAllCouponsByUid(String uid) {
@@ -48,8 +51,8 @@ public class CouponServiceImpl implements CouponService {
                 single.put("couponName", item.getName());
                 single.put("couponAmount", item.getDiscount());
                 single.put("useCondition", item.getThreshHold());
-                single.put("startDate", item.getStartDate().toLocalDate().toString()); //封装一个时间格式处理工具类
-                single.put("endDate", item.getStartDate().toLocalDate().toString());
+                single.put("startDate", dateUtils.dateToStr(item.getStartDate())); //封装一个时间格式处理工具类
+                single.put("endDate", dateUtils.dateToStr(item.getEndDate()));
                 single.put("type", null == userCoupon.getVipId() ? 0 : 1);
                 single.put("state", userCoupon.getState());
                 List<String> ids = movieCouponRepository.findMovieIdsByCouponId(item.getCouponId())
