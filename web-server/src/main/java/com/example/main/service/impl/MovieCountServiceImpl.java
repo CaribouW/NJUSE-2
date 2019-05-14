@@ -1,16 +1,18 @@
 package com.example.main.service.impl;
 
-import com.example.main.repository.MovieHallRepository;
-import com.example.main.repository.MovieInfoRepository;
-import com.example.main.repository.MovieTicketRepository;
-import com.example.main.repository.TimeSlotRepository;
+import com.alibaba.fastjson.JSON;
+import com.example.main.model.FavorList;
+import com.example.main.repository.*;
 import com.example.main.service.MovieCountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 专用于电影数据统计
- *
+ * <p>
  * 可选的统计数据：
  * 近期最受欢迎电影（票房越高越受欢迎）,
  * 上座率（当日某影片上座率=当日该影片观影人数/∑【当日每场电影放映场次*每场所在影厅的座位数】），
@@ -28,4 +30,13 @@ public class MovieCountServiceImpl implements MovieCountService {
     private MovieTicketRepository movieTicketRepository;
     @Autowired
     private MovieHallRepository movieHallRepository;
+    @Autowired
+    private FavorListRepository favorListRepository;
+
+    @Override
+    public JSON getTopMovieFavor(int top) {
+        List<FavorList> favorLists = favorListRepository.findAll();
+
+        return null;
+    }
 }

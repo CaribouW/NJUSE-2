@@ -20,4 +20,9 @@ public interface MovieInfoRepository extends BaseRepository<MovieInfo> {
     /**
      * 通过电影场次得到电影
      * */
+
+    /**
+     * 通过id得到电影
+     */
+    MovieInfo findByMovieId(String mid);
 }

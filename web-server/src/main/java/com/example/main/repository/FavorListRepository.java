@@ -14,4 +14,5 @@ public interface FavorListRepository extends BaseRepository<FavorList> {
      * 根据movieId , userId共同查询
      */
     FavorList findFavorListByUserIdAndMovieId(String uid, String mid);
+
 }

@@ -10,7 +10,11 @@ spring:
       hibernate:
         ddl-auto: update
       show-sql: true
-
+    resources:
+      static-locations: classpath:/templates/
+    mvc:
+      view:
+        suffix: .html
     redis:
       # redis数据库索引（默认为0），我们使用索引为3的数据库，避免和其他数据库冲突
       database: 3

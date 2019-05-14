@@ -1,16 +1,15 @@
 package com.example.main.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.example.main.model.User;
 import com.example.main.service.HallService;
 import com.example.main.utils.OssUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@RestController
+@Controller
 public class TestController {
     @Autowired
     private OssUtils ossUtils;
@@ -18,9 +17,9 @@ public class TestController {
     private HallService hallService;
 
     @GetMapping("/")
-    public JSON he() {
-        Object object = new User("aa", "ss");
-        return null;
+    @ResponseBody
+    public String he() {
+        return "index";
     }
 
 

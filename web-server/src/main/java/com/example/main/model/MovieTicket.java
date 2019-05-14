@@ -2,21 +2,22 @@ package com.example.main.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "movie_ticket", schema = "SE2", catalog = "")
 public class MovieTicket implements Serializable {
-    private String ticketId;
-    private String veriCode;
-    private String slotId;
-    private String position;
-    private String preferentialId;
-    private String userId;
-    private int status;
+    private String ticketId;//ticketId
+    private String slotId;  //场次
+    private String position;//座位
+    private String userId;  //用户id
+    private int status;     //状态
+    private double price;   //实际付款
+    private Date confirmDate;//付款确认时间
 
     @Id
-    @Column(name = "ticket_id",length = 32)
+    @Column(name = "ticket_id", length = 32)
     public String getTicketId() {
         return ticketId;
     }
@@ -26,7 +27,7 @@ public class MovieTicket implements Serializable {
     }
 
     @Basic
-    @Column(name = "user_id",length = 32)
+    @Column(name = "user_id", length = 32)
     public String getUserId() {
         return userId;
     }
@@ -45,18 +46,9 @@ public class MovieTicket implements Serializable {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "veri_code")
-    public String getVeriCode() {
-        return veriCode;
-    }
-
-    public void setVeriCode(String veriCode) {
-        this.veriCode = veriCode;
-    }
 
     @Basic
-    @Column(name = "slot_id",length = 32)
+    @Column(name = "slot_id", length = 32)
     public String getSlotId() {
         return slotId;
     }
@@ -75,30 +67,38 @@ public class MovieTicket implements Serializable {
         this.position = position;
     }
 
-    @Basic
-    @Column(name = "preferential_id")
-    public String getPreferentialId() {
-        return preferentialId;
-    }
-
-    public void setPreferentialId(String preferentialId) {
-        this.preferentialId = preferentialId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MovieTicket that = (MovieTicket) o;
         return Objects.equals(ticketId, that.ticketId) &&
-                Objects.equals(veriCode, that.veriCode) &&
                 Objects.equals(slotId, that.slotId) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(preferentialId, that.preferentialId);
+                Objects.equals(position, that.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, veriCode, slotId, position, preferentialId);
+        return Objects.hash(ticketId, slotId, position);
+    }
+
+    @Basic
+    @Column(name = "price")
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Basic
+    @Column(name = "confirm_date")
+    public Date getConfirmDate() {
+        return confirmDate;
+    }
+
+    public void setConfirmDate(Date confirmDate) {
+        this.confirmDate = confirmDate;
     }
 }
