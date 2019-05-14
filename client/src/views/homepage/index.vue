@@ -63,11 +63,10 @@ export default {
 
 <style lang="scss">
 .homepage{
-  padding: 0 20px;
+  padding: 30px 20px 0px 20px;
   &_poster{
     background: url('../../assets/images/homepage/Assets.png') no-repeat;
-    background-size: 100%;
-    margin-top: 50px;
+    background-size: 100% 100%;
     height: 600px;
   }
   &_movie{
