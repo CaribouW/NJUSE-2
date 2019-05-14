@@ -8,9 +8,10 @@ import java.util.Objects;
 @Table(name = "movie_hall", schema = "SE2", catalog = "")
 public class MovieHall implements Serializable {
     private String hallId;
-    private String hallName;
-    private String size;
-    private String category;
+    private String hallName;    //影厅名
+    private String size;        //尺寸
+    private String category;    //类型
+    private int state;          //是否可用
 
     @Id
     @Column(name = "hall_id",length = 32)
@@ -70,5 +71,15 @@ public class MovieHall implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(hallId, hallName, size, category);
+    }
+
+    @Basic
+    @Column(name = "state")
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

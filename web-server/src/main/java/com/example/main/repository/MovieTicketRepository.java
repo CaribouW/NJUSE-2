@@ -14,7 +14,7 @@ public interface MovieTicketRepository extends BaseRepository<MovieTicket> {
     List<MovieTicket> findMovieTicketsBySlotId(String slotId);
 
     /**
-     * 得到给定userid 的电影票列表
-     */
-    List<MovieTicket> findMovieTicketsByUserId(String userId);
+     * 得到orderId对应的ticket
+     * */
+    List<MovieTicket> findMovieTicketsByOrderId(String oid);
 }

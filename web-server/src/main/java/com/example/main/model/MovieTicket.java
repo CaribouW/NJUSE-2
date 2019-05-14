@@ -11,10 +11,10 @@ public class MovieTicket implements Serializable {
     private String ticketId;//ticketId
     private String slotId;  //场次
     private String position;//座位
-    private String userId;  //用户id
     private int status;     //状态
     private double price;   //实际付款
-    private Date confirmDate;//付款确认时间
+    private String orderId;//ticketId
+
 
     @Id
     @Column(name = "ticket_id", length = 32)
@@ -26,15 +26,6 @@ public class MovieTicket implements Serializable {
         this.ticketId = ticketId;
     }
 
-    @Basic
-    @Column(name = "user_id", length = 32)
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     @Basic
     @Column(name = "status")
@@ -93,12 +84,12 @@ public class MovieTicket implements Serializable {
     }
 
     @Basic
-    @Column(name = "confirm_date")
-    public Date getConfirmDate() {
-        return confirmDate;
+    @Column(name = "order_id", length = 32)
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setConfirmDate(Date confirmDate) {
-        this.confirmDate = confirmDate;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }

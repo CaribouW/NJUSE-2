@@ -19,7 +19,15 @@ public class SlotController {
     private HallService hallService;
 
     @GetMapping("/purchase/schedule")
-    public JSON getAllSchedule(){
+    public JSON getAllSchedule() {
         return hallService.getAllSchedule();
+    }
+
+    /**
+     * 管理员得到所有排片信息
+     */
+    @GetMapping("/schedule/list")
+    public JSON getAllScheduleAdmin() {
+        return hallService.adminAllSchedule();
     }
 }

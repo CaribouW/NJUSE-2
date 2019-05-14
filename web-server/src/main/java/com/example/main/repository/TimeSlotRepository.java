@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TimeSlotRepository extends BaseRepository<TimeSlot> {
+    TimeSlot findTimeSlotBySlotId(String sid);
+
     /**
      * 根据movie_id 得到所有相关场次
      */
@@ -19,4 +21,7 @@ public interface TimeSlotRepository extends BaseRepository<TimeSlot> {
      * */
     @Query(value = "select T.* from time_slot T WHERE T.movie_id in (select m.movie_id from movie_info m where m.name = name);", nativeQuery = true)
     List<TimeSlot> findTimeSlotByMovieName(@Param("name") String movieId);
+
+    @Query(value = "select T.* from time_slot T where T.slot_id in (select m.slot_id from movie_ticket m  where m.ticket_id = :ticketId)",nativeQuery = true)
+    TimeSlot findTimeSlotByTicketId(@Param("ticketId")String ticketId);
 }
