@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
     <div class="homepage_poster">
-      zoumadeng
+      UI真是弟弟
     </div>
     <div class="homepage_movie">
       <div class="homepage_movie_top">
@@ -67,6 +67,7 @@ export default {
   &_poster{
     background: url('../../assets/images/homepage/Assets.png') no-repeat;
     background-size: 100%;
+    margin-top: 50px;
     height: 600px;
   }
   &_movie{
