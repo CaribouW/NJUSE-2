@@ -31,7 +31,7 @@
           </div>
         </div>
         <router-view/>
-        <Footer v-if="header_show"></Footer>
+        <foot v-if="header_show"></foot>
       </div>
     </div>
   </div>
@@ -39,11 +39,11 @@
 
 <script>
 import $ from 'jquery'
-import Footer from '@/components/footer.vue'
+import foot from '@/components/footer.vue'
 export default {
   name: 'App',
   components: {
-    Footer
+    foot
   },
   data () {
     return {
@@ -104,7 +104,7 @@ export default {
 <style lang="scss">
 /* CSS Document */
 /* 基本css格式，清除浏览器默认配置 */
-* { color:#444; }
+* { color:#EAEAEA; }
 body, html { height: 100%;}
 body { font:16px/1.5 "微软雅黑",Arial,Tahoma, Helvetica,\5b8b\4f53, sans-serif}
 html,body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,object,code,em,span,var,legend,button,input,textarea,th,td,a,img,header,footer,nav,aside,audio,datalist,section { margin:0;padding:0;border:0;outline:0; }/*清除内外边距*/
@@ -129,15 +129,18 @@ a:hover { text-decoration:underline; }
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   height: 100%;
-  font-size: 28px;
+  font-size: 18px;
 }
 .background{
   background-color: black;
   min-height: 100vh;
   .main_content{
-    margin: 0 80px;
+    margin: 0 auto;
     background-color: #201f1d;
     min-height: inherit;
+    width: 1300px;
+    min-width: 1270px;
+    // max-width: 1350px;
   }
 }
 .selected{font-weight:bold;color:white}
@@ -145,7 +148,7 @@ a:hover { text-decoration:underline; }
   // background-color: #201f1d;
   // background-color: red;
   height: 70px;
-  padding: 20px 20px 0 20px;
+  padding: 50px 20px 0 20px;
   display: flex;
   &_left{
     text-align: initial;
@@ -206,7 +209,7 @@ a:hover { text-decoration:underline; }
         }
       }
       >div:first-of-type{
-        margin-bottom: 12px;
+        margin-bottom: 20px;
       }
     }
   }
