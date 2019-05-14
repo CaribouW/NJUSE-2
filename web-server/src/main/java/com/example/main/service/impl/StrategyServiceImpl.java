@@ -102,12 +102,32 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public JSON updateVIPStrategy(JSONObject req) {
+    public JSON updateVIPStrategy(JSONArray req) {
         try {
-            return null;
+            req.stream()
+                    .map(item -> jsonUtils.toJSONObject(item))
+                    .forEach(item -> {
+                        VIPStrategy strategy = new VIPStrategy();
+                        if (item.getString("id") == null) {
+                            strategy.setId(idUtils.getUUID32());
+                        } else
+                            strategy.setId(item.getString("id"));
+                        strategy.setRank(item.getString("rank"));
+                        strategy.setMinRecharge(item.getDouble("rechargePrice"));
+                        strategy.setRankName(item.getString("rankName"));
+                        strategy.setDiscount(item.getDouble("discount"));
+                        if (!vipStrategyRepository.existsById(strategy.getId())) {
+                            throw new NullPointerException();
+                        }
+                        //save
+                        vipStrategyRepository.saveAndFlush(strategy);
+                    });
+            return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
 
-            return null;
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
 

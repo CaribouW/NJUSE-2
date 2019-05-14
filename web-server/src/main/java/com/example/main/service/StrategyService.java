@@ -1,6 +1,7 @@
 package com.example.main.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public interface StrategyService {
@@ -31,6 +32,7 @@ public interface StrategyService {
 
     /**
      * 修改会员策略
+     * @param req
      */
-    JSON updateVIPStrategy(JSONObject req);
+    JSON updateVIPStrategy(JSONArray req);
 }
