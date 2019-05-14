@@ -51,4 +51,12 @@ public class UserController {
         return userService.getUserInfo(uid);
     }
 
+    /**
+     * 获取用户的想看电影列表
+     */
+    @GetMapping("/favor/user/list")
+    public JSON getUserFavorMovie(@RequestParam(value = "userId") String uid) {
+        return userService.getUserFavorMovie(uid);
+    }
+
 }

@@ -23,4 +23,9 @@ public interface UserService {
      * 修改指定用户个人信息
      * */
     JSON modifyInfo(JSONObject req);
+
+    /**
+     * 获取用户的想看电影列表
+     * */
+    JSON getUserFavorMovie(String uid);
 }

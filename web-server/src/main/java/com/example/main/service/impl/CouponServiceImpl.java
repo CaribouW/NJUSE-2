@@ -12,11 +12,9 @@ import com.example.main.model.MapperUserCoupon;
 import com.example.main.repository.*;
 import com.example.main.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service

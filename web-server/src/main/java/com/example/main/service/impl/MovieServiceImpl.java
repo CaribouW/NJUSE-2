@@ -3,6 +3,7 @@ package com.example.main.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.CrewRoleType;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.MovieCrew;
@@ -118,7 +119,7 @@ public class MovieServiceImpl implements MovieService {
                 JSONObject object = new JSONObject();
                 object.put("name", item.getName());
                 object.put("pic", item.getAvatar());
-                if (item.getRole().equals("actor")) {
+                if (item.getRole().equals(CrewRoleType.ACTOR.getRole())) { //depend on the val
                     actorList.add(object);
                 } else {
                     directorList.add(object);

@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class MovieCrew {
     private String id;
     private String movieId;
-    private String role; //剧组角色
+    private String role; //剧组角色 "actor","director"
     private String name; //名称
     private String avatar;//图片url
 

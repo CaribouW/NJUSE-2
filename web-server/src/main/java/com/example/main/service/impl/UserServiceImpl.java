@@ -1,16 +1,14 @@
 package com.example.main.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.CrewRoleType;
 import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
-import com.example.main.model.FavorList;
-import com.example.main.model.User;
-import com.example.main.model.UserInfo;
-import com.example.main.repository.FavorListRepository;
-import com.example.main.repository.UserInfoRepository;
-import com.example.main.repository.UserRepository;
+import com.example.main.model.*;
+import com.example.main.repository.*;
 import com.example.main.service.UserService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
@@ -21,6 +19,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户个人信息的操作
@@ -28,11 +28,13 @@ import java.util.Date;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserInfoRepository userInfoRepository;
     @Autowired
     private FavorListRepository favorListRepository;
+    @Autowired
+    private MovieCrewRepository movieCrewRepository;
+    @Autowired
+    private MovieInfoRepository movieInfoRepository;
     @Autowired
     private IDUtils idUtils;
     @Autowired
@@ -117,6 +119,49 @@ public class UserServiceImpl implements UserService {
                 return Response.success(null);
             }
         } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON getUserFavorMovie(String uid) {
+        try {
+            //得到相关联的电影
+            List<MovieInfo> movies = movieInfoRepository.findMovieByUserId(uid);
+            List<String> targetFavor =
+                    favorListRepository.findAllByUserId(uid)
+                            .stream()
+                            .map(FavorList::getMovieId)
+                            .collect(Collectors.toList());
+
+            movies = movies.stream()
+                    .filter(item -> targetFavor.contains(item.getMovieId()))
+                    .collect(Collectors.toList());
+            JSONObject ans = new JSONObject();
+            JSONArray favorList = new JSONArray();
+            movies.forEach(item -> {
+                JSONObject object = new JSONObject();
+                object.put("movieId", item.getMovieId());
+                object.put("movieName", item.getName());
+                object.put("releaseDate", dateUtils.dateToStr(item.getUploadDate()));
+                object.put("releaseArea", item.getNation());
+                object.put("imgURL", item.getPoster());
+                //get all crews
+                List<MovieCrew> movieCrews = movieCrewRepository.findAllByMovieId(item.getMovieId())
+                        .stream()
+                        .filter(it -> it.getRole().equals(CrewRoleType.ACTOR.getRole()))
+                        .collect(Collectors.toList());
+                //put name
+                object.put("mainActor", movieCrews.stream()
+                        .map(MovieCrew::getName)
+                        .collect(Collectors.toList()));
+                favorList.add(object);
+            });
+
+            ans.put("favorList", favorList);
+            return Response.success(ans);
+        } catch (Exception e) {
+
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }

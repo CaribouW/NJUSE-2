@@ -1,5 +1,6 @@
 package com.example.main.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.example.main.repository.MovieHallRepository;
 import com.example.main.repository.MovieTicketRepository;
 import com.example.main.repository.TimeSlotRepository;
@@ -23,5 +24,11 @@ public class HallServiceImpl implements HallService {
     @Override
     public void run() {
 
+    }
+
+    @Override
+    public JSON getAllSchedule() {
+        
+        return null;
     }
 }
