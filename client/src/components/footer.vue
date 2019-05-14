@@ -23,7 +23,6 @@
 
 <script>
 export default {
-  name: 'footer',
 }
 </script>
 
@@ -33,7 +32,6 @@ export default {
   font-size: 18px;
   display: flex;
   align-items: center;
-  
   &_left{
     flex: 1 1 auto;
   }

@@ -31,7 +31,7 @@
           </div>
         </div>
         <router-view/>
-        <Footer v-if="header_show"></Footer>
+        <foot v-if="header_show"></foot>
       </div>
     </div>
   </div>
@@ -39,11 +39,11 @@
 
 <script>
 import $ from 'jquery'
-import Footer from '@/components/footer.vue'
+import foot from '@/components/footer.vue'
 export default {
   name: 'App',
   components: {
-    Footer
+    foot
   },
   data () {
     return {
@@ -135,9 +135,11 @@ a:hover { text-decoration:underline; }
   background-color: black;
   min-height: 100vh;
   .main_content{
-    margin: 0 80px;
+    margin: 0 auto;
     background-color: #201f1d;
     min-height: inherit;
+    min-width: 1270px;
+    max-width: 1350px;
   }
 }
 .selected{font-weight:bold;color:white}
@@ -145,7 +147,7 @@ a:hover { text-decoration:underline; }
   // background-color: #201f1d;
   // background-color: red;
   height: 70px;
-  padding: 20px 20px 0 20px;
+  padding: 50px 20px 0 20px;
   display: flex;
   &_left{
     text-align: initial;
@@ -206,7 +208,7 @@ a:hover { text-decoration:underline; }
         }
       }
       >div:first-of-type{
-        margin-bottom: 12px;
+        margin-bottom: 20px;
       }
     }
   }
