@@ -6,6 +6,7 @@ import Register from '@/views/Login/register.vue'
 import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
+import basicInfo from '@/views/basicInfo/basicInfo.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/quick',
       name: 'Quick',
       component: Quick
+    },
+    {
+      path: '/basicinfo',
+      name: 'basicInfo',
+      component: basicInfo
     },
   ]
 })

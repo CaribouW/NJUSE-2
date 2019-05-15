@@ -65,6 +65,9 @@ export default {
     goRegister() {
       this.$router.push("/register")
     },
+    goPersonalCenter_basicInfo(){
+      this.$router.push("/basicInfo")
+    },
     goHomepage() {
       $("#test li:first").click()
     },
