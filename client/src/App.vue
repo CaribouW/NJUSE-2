@@ -138,7 +138,7 @@ a:hover { text-decoration:underline; }
     margin: 0 auto;
     background-color: #201f1d;
     min-height: inherit;
-    width: 1300px;
+    width: 88%;
     min-width: 1270px;
     // max-width: 1350px;
   }
