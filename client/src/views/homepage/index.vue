@@ -2,6 +2,11 @@
   <div class="homepage">
     <div class="homepage_poster">
       yyp弟弟做不出一模一样的我就是一刀( ￣ ▽￣)o╭╯☆#╰ _─﹏─)╯
+      <el-carousel :interval="4000" type="card" height="400px" :autoplay="false" indicator-position="none"> 
+        <el-carousel-item v-for="item in 6" :key="item">
+          <h3 class="medium">{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
     </div>
     <div class="homepage_movie">
       <div class="homepage_movie_top">
@@ -20,7 +25,7 @@
         <div class="homepage_movie_middle_right">
           <div class="homepage_movie_middle_right_title">
             <div><img src="@/assets/images/homepage/fullsizerender(6).png" alt="">正在热映</div>
-            <i class="el-icon-d-arrow-right"></i>
+            <i class="el-icon-d-arrow-right" @click="changePage()"></i>
           </div>
           <div class="homepage_movie_middle_right_movie" v-for="movie in movieList">
             <img src="@/assets/images/homepage/161905.30186585_1000 copy.png" alt="">
@@ -55,6 +60,9 @@ export default {
   methods: {
     goMovieList () {
       this.$router.push('/movielist')
+    },
+    changePage () {
+      // 翻页
     }
   }
 }
@@ -67,8 +75,28 @@ export default {
   &_poster{
     background: url('../../assets/images/homepage/Assets.png') no-repeat;
     background-size: 100% 100%;
-    height: 600px;
-    margin-bottom: 50px ;
+    height: 520px;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding: 50px 70px 0 70px;
+    .el-carousel__item h3 {
+      color: #475669;
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 400px;
+      margin: 0;
+    }
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+    
+    .el-carousel__item:nth-child(2n+1) {
+      background-color: #d3dce6;
+    }
+    .is-active{
+      width: 80%;
+      left: -170px;
+    }
   }
   &_movie{
     &_top{
@@ -97,7 +125,7 @@ export default {
           >div{flex: 1 0 auto;text-align: left;display: flex; align-items: center;font-size: 24px;color:#EAEAEA;
             >img{ margin-right: 20px;}
           }
-        >i{flex: 0 1 auto; }
+        >i{flex: 0 1 auto; cursor: pointer;}
         }
         &_movie{
           display: inline-block;
