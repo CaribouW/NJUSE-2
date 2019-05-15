@@ -1,7 +1,6 @@
 <template>
   <div class="homepage">
     <div class="homepage_poster">
-      yyp弟弟做不出一模一样的我就是一刀( ￣ ▽￣)o╭╯☆#╰ _─﹏─)╯
       <el-carousel :interval="4000" type="card" height="400px" :autoplay="false" indicator-position="none"> 
         <el-carousel-item v-for="item in 6" :key="item">
           <h3 class="medium">{{ item }}</h3>
