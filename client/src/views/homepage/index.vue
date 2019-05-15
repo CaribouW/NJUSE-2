@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
     <div class="homepage_poster">
-      UI真是弟弟
+      yyp弟弟做不出一模一样的我就是一刀( ￣ ▽￣)o╭╯☆#╰ _─﹏─)╯
     </div>
     <div class="homepage_movie">
       <div class="homepage_movie_top">
@@ -63,11 +63,12 @@ export default {
 
 <style lang="scss">
 .homepage{
-  padding: 30px 20px 0px 20px;
+  padding: 29px 50px 50px 50px;
   &_poster{
     background: url('../../assets/images/homepage/Assets.png') no-repeat;
     background-size: 100% 100%;
     height: 600px;
+    margin-bottom: 50px ;
   }
   &_movie{
     &_top{

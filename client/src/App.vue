@@ -163,7 +163,7 @@ a:hover { text-decoration:underline; }
     li{
       display: inline-block;
       color: #CFF9FE;
-      margin-left: 30px;
+      margin-left: 40px;
       cursor: pointer;
     }
   }
