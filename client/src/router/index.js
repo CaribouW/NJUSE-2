@@ -6,7 +6,7 @@ import Register from '@/views/Login/register.vue'
 import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
-import basicInfo from '@/views/basicInfo/basicInfo.vue'
+import User from '@/views/basicInfo/basicInfo.vue'
 
 Vue.use(Router)
 
@@ -44,9 +44,9 @@ export default new Router({
       component: Quick
     },
     {
-      path: '/basicinfo',
-      name: 'basicInfo',
-      component: basicInfo
+      path: '/user',
+      name: 'User',
+      component: User
     },
   ]
 })

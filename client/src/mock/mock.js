@@ -2,8 +2,8 @@
  * @Description: mock
  * @Author: Zhou
  * @Date: 2019-05-12 23:48:07
- * @LastEditTime: 2019-05-14 23:02:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-05-16 12:51:38
+ * @LastEditors: 周政
  */
 import Mock from 'mockjs';
 
@@ -15,6 +15,14 @@ Mock.mock('http://localhost:3000/user/Login', {
   'role': 1
 
 });
+
+// 有需要在下面增加就行了
+Mock.mock('http://localhost:3000/user/Logout', {
+    //模拟返回数据自行定义
+
+
+});
+
 
 var todolist = [
   {
@@ -58,7 +66,7 @@ Mock.mock('http://localhost:3000/vuex/test/add', function(todoItem){
   };
   todolist.unshift(newItem);
   return newItem;
-});
+})
 
 Mock.mock('http://localhost:3000/vuex/test/change',function(id){
   var index = todolist.findIndex(id);

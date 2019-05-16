@@ -47,8 +47,9 @@ export default {
     position:absolute;  
     &_motto{
       position: relative;
+      width: 330px;
       top: 135px;
-      left: -190px;
+      left: -10px;
     }
     &_left{
       box-sizing: border-box;

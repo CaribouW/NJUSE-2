@@ -18,7 +18,7 @@
             </div>
             <div class="logined" v-if="logined">
               <img src="@/assets/images/header/fullsizerender(4).png" alt="">
-              <img src="@/assets/images/header/personal-image.png" alt="">
+              <img src="@/assets/images/header/personal-image.png" alt="" @click="showDropdown = !showDropdown">
             </div>
             <div v-else>
               <div @click="goLogin()">
@@ -28,6 +28,13 @@
                 <img src="@/assets/images/header/zhuce.png" alt=""><span>注册</span> 
               </div>
             </div>
+          </div>
+          <!-- 头像下拉框 -->
+          <div class="header_dropdown" v-if="showDropdown">
+            <ul>
+              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}</li>
+              
+            </ul>
           </div>
         </div>
         <router-view/>
@@ -50,11 +57,17 @@ export default {
       // 是否显示header,footer
       header_show: true,
       // 登陆or未登录
-      logined: false,
+      logined: true,
+      showDropdown: false,
       navList: [
-        {text: '首页', isActive: true, route: 'index'},
-        {text: '影库', isActive: false, route: 'movielist'},
-        {text: '快速购票', isActive: false, route: 'quick'},
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '快速购票', isActive: false, index: 'quick'},
+      ],
+      userCenterList: [
+        {text: '个人中心',index: 'user'},
+        {text: '消息', index: 'message'},
+        {text: '退出登陆', index: 'logout'},
       ]
     }
   },
@@ -73,18 +86,36 @@ export default {
     },
     // 导航栏切换
     activeFun: function(data){
-      this.$router.push(data.route)
+      this.$router.push(data.index)
         this.navList.forEach(function(obj){
             obj.isActive = false;
         });
         data.isActive = !data.isActive;
+    },
+    clickDropdown: function (data) {
+      this.showDropdown = !this.showDropdown
+      if (data.index === 'logout') {
+        this.logout()
+      } else {
+        this.$router.push(data.index)
+      }
+    },
+    // 登出
+    logout () {
+      this.$axios.post('http://localhost:3000/user/Logout',{
+        account: '123456'
+      }).then(res => {
+        // this.$router.push('login')
+        console.log(res)
+        this.logined = !this.logined
+      }).catch(err => {
+        this.$message.error('出错啦，请稍后再试')
+      })
     }
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    
     var path = this.$route.path.split('/')[1]
-    console.log(path)
     if (path === "login" || path === "register") {
       this.header_show = false
     } else {
@@ -153,6 +184,7 @@ a:hover { text-decoration:underline; }
   height: 70px;
   padding: 50px 20px 0 20px;
   display: flex;
+  position: relative;
   &_left{
     text-align: initial;
     flex: 1 0 auto;
@@ -216,6 +248,22 @@ a:hover { text-decoration:underline; }
         margin-bottom: 20px;
       }
     }
+  }
+  &_dropdown{
+    z-index: 2;
+    width: 138px;
+    height: 156px;
+    box-sizing: border-box;
+    background-color: #201f1d;
+    position: absolute;
+    border: #CFF9FE solid 2px;
+    border-radius: 15px;
+    right: 30px;
+    top: 118px;
+    >ul >li{line-height: 51.5px; color: #CFF9FE;cursor: pointer;}
+    >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
+    >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}
+    >ul >li:last-of-type{border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
   }
 }
 </style>
