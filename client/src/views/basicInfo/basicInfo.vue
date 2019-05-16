@@ -1,14 +1,28 @@
 <template>
-  <div class="homepage">
-    <div class="homepage_poster">
+  <div class="basicinfo">
+    <div class="basicinfo_rectangle">
       <el-container>
       <el-aside width="260px">Aside
 
       </el-aside>
       <el-main>
         <div class="main_portrait">  
-          <img src="@/assets/images/homepage/personal-image.png" alt="" style="width: 100px;height:100px;">
-          ID:1234567
+          <img src="@/assets/images/homepage/personal-image.png" alt="" style="width:140px;height:140px;">
+        </div>
+        <div class="main_id">
+          <b>啊我前端好菜 </b><br/>
+          ID:12345678
+        </div>
+        <div class="main_other">
+          <span>
+            <img src="@/assets/images/header/fullsizerender(4).png" alt="" style="width:22px;height:31px;">
+            VIP 1
+          </span><br/>
+          <span>
+            <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:21px;height:21px;">
+            生日：2019-01-01
+          </span><br/>
+          <el-button round>修改信息</el-button>
         </div>
       </el-main>
     </el-container>
@@ -29,9 +43,9 @@ export default {
 
 
 <style lang="scss">
-.homepage{
+.basicinfo{
   padding: 29px 50px 50px 50px;
-  &_poster{
+  &_rectangle{
     background: url('../../assets/images/homepage/Assets.png') no-repeat;
     background-size: 100% 100%;
     height: 790px;
@@ -41,32 +55,42 @@ export default {
     background-color: #131C1C;
     color: #FFFFFF;
     // text-align: center;
-    line-height: 565px;
+    height: 565px;
   }
   
   .el-main {
     background-color: rgba($color: #131C1C, $alpha: 0.5);
     color: #FFFFFF;
-    text-align: center;
-    line-height: 565px;
+    height: 565px;
   }
-    &_portrait{
-      height: 140px;
-    }
-  
+  .main_portrait{
+    height: 140px;
+    padding-top: 70px;
+  }
+  .main_id{
+    background-color:rgba($color: #D8D8D8, $alpha: 0.05);
+    padding: 22px;
+    margin-top: 28px;
+    text-align: center
+  }
+  .main_id>b{
+    font-size: 30px;
+    
+  }
   .el-container {
-    margin-bottom: 40px;
-    padding: 70px 150px 70px 130px
+    margin-bottom: 20px;
+    padding: 100px 140px 20px 140px
   }
-  
-  // .el-container:nth-child(5) .el-aside,
-  // .el-container:nth-child(6) .el-aside {
-  //   line-height: 360px;
-  // }
-  
-  // .el-container:nth-child(7) .el-aside {
-  //   line-height: 320px;
-  // }
+  .main_other{
+    margin-top: 10px
+  }
+  .el-button{
+    margin-top: 20px;
+    border-radius: 25px;
+    padding: 8px 65px;
+    background-color: rgba($color: #131C1C, $alpha: 0.5);
+    font-size: 20px;
+  }
 }
 </style>
 
