@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import mock from '@/mock/mock.js'
 
 export default {
   data () {
@@ -36,8 +37,9 @@ export default {
         'account':123,
         'password':123456
       }).then(res => {
-        console.log(res);
-        this.$router.push('index')
+        localStorage.setItem('account', this.account)
+        localStorage.setItem('roleId', res.data.role)
+        this.$router.push('/')
       }).catch(err => {
         console.log(err);
       })

@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import mock from '@/mock/mock.js'
 import $ from 'jquery'
 import foot from '@/components/footer.vue'
 export default {
@@ -100,6 +101,15 @@ export default {
         this.$router.push(data.index)
       }
     },
+    // 切换到登录时不显示header
+    hideHeader () {
+      var path = this.$route.path.split('/')[1]
+      if (path === "login" || path === "register") {
+        this.header_show = false
+      } else {
+        this.header_show = true
+      }
+    },
     // 登出
     logout () {
       this.$axios.post('http://localhost:3000/user/Logout',{
@@ -108,27 +118,30 @@ export default {
         // this.$router.push('login')
         console.log(res)
         this.logined = !this.logined
+        localStorage.setItem('roleId', '0')
       }).catch(err => {
         this.$message.error('出错啦，请稍后再试')
       })
+      this.$router.push('/index')
     }
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    var path = this.$route.path.split('/')[1]
-    if (path === "login" || path === "register") {
-      this.header_show = false
+    this.hideHeader()
+    console.log(localStorage.getItem('roleId'))
+    if (localStorage.getItem('roleId') !== '0') {
+      this.logined = true
     } else {
-      this.header_show = true
+      this.logined = false
     }
   },
   watch: {
     $route (to, from) {
-      var path = this.$route.path.split('/')[1]
-      if (path === "login" || path === "register") {
-        this.header_show = false
+      this.hideHeader()
+      if (localStorage.getItem('roleId') !== '0') {
+        this.logined = true
       } else {
-        this.header_show = true
+        this.logined = false
       }
     }
   }
