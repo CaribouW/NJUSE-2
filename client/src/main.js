@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-04-26 09:41:58
- * @LastEditTime: 2019-05-12 23:41:48
+ * @LastEditTime: 2019-05-14 18:08:40
  * @LastEditors: Please set LastEditors
  */
 // The Vue build version to load with the `import` command
@@ -23,6 +23,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 Vue.prototype.$axios = axios
 
+// 加入vuex
+import store from './store/store.js'
+
 
 Vue.config.productionTip = false
 
@@ -32,6 +35,7 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

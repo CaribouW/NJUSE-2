@@ -7,7 +7,7 @@
       </el-aside>
       <el-main>
         <div class="main_portrait">  
-          <img src="@/assets/images/homepage/personal-image.png" alt="">
+          <img src="@/assets/images/homepage/personal-image.png" alt="" style="width: 100px;height:100px;">
           ID:1234567
         </div>
       </el-main>
