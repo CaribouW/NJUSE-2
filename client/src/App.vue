@@ -37,7 +37,7 @@
           <!-- 头像下拉框 -->
           <div class="header_dropdown" v-if="showDropdown">
             <ul>
-              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}</li>
+              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}<el-badge class="mark" :value="12" v-if="items.index==='message'"/></li>
               
             </ul>
           </div>
@@ -224,21 +224,6 @@ a:hover { text-decoration:underline; }
     flex:0 1 auto;
     display: flex;
     align-items:flex-end;
-    .searchBox{
-      width: 344px;
-      height: 36px;
-      background-color: #2E2D2C;
-      text-align: left;
-      border-radius: 10px;
-      margin-right: 60px;
-      padding-left: 5px;
-      >input{
-        // height: 15px;
-        vertical-align: middle;
-        font-size: 24px;
-        background-color: #2E2D2C;
-      }
-    }
     >div:first-of-type{
       width: 350px;
       margin-right: 60px;
@@ -284,6 +269,7 @@ a:hover { text-decoration:underline; }
     border-radius: 15px;
     right: 30px;
     top: 118px;
+    
     >ul >li{line-height: 51.5px; color: #CFF9FE;cursor: pointer;}
     >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
     >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}
