@@ -1,9 +1,9 @@
 <template>
   <div class="homepage">
     <div class="homepage_poster">
-      <el-carousel :interval="4000" type="card" height="400px" :autoplay="false" indicator-position="none"> 
+      <el-carousel :interval="4000" type="card" height="400px" indicator-position="none"> 
         <el-carousel-item v-for="item in posters" :key="item">
-          <img :src="item.pic" alt="">
+          <img :src="item.url" alt="">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -27,7 +27,7 @@
             <i class="el-icon-d-arrow-right" @click="changePage()"></i>
           </div>
           <div class="homepage_movie_middle_right_movie" v-for="movie in movieList">
-            <img src="@/assets/images/homepage/161905.30186585_1000 copy.png" alt="">
+            <img :src="movie.url" alt="">
             <span>{{movie.name}}</span>
           </div>
           </div>
@@ -45,20 +45,20 @@ export default {
   data () {
     return {
       movieList: [
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
-        {id: '123456',url: '123456',name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster3.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster4.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头号玩家'},
       ],
       posters: [
-        {index: 0, pic: require('@/assets/images/test/pictest0.jpg')},
-        {index: 1, pic: require('@/assets/images/test/pictest1.jpg')},
-        {index: 2, pic: require('@/assets/images/test/pictest2.jpg')},
-        {index: 3, pic: require('@/assets/images/test/pictest3.jpg')}
+        {index: 0, url: require('@/assets/images/test/pictest0.jpg')},
+        {index: 1, url: require('@/assets/images/test/pictest1.jpg')},
+        {index: 2, url: require('@/assets/images/test/pictest2.jpg')},
+        {index: 3, url: require('@/assets/images/test/pictest3.jpg')}
       ],
     }
   },
@@ -105,7 +105,11 @@ export default {
         flex: 1 1 auto;
         margin-top: 50px;
         >img:first-of-type{
-          margin-bottom: 60px;
+          margin-top: 20px;
+          margin-bottom: 40px;
+          transition: 0.5s;
+          transform-origin: 50% 50%;  
+          animation: rotate 10s linear infinite;
         }
       }
       &_right{
@@ -126,10 +130,13 @@ export default {
           display: inline-block;
           margin: 10px 30px;
           font-size: 18px;
+          width: 154px;
+          height: 255px;
           >span{
             color: #EAEAEA;
+            cursor: pointer;
           }
-          >img{display: block;}
+          >img{display: block;cursor: pointer;margin-bottom: 10px;}
         }
       }
     }

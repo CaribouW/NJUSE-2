@@ -186,8 +186,7 @@ a:hover { text-decoration:underline; }
     background-color: #201f1d;
     min-height: inherit;
     width: 88%;
-    min-width: 1270px;
-    // max-width: 1350px;
+    min-width: 1300px;
   }
 }
 .selected{font-weight:bold;color:white}
