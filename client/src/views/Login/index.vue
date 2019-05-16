@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import Mock from '@/mock/mock.js'
 
 export default {
   data () {
@@ -38,6 +37,7 @@ export default {
         'password':123456
       }).then(res => {
         console.log(res);
+        this.$router.push('index')
       }).catch(err => {
         console.log(err);
       })
@@ -66,8 +66,9 @@ export default {
     position:absolute;
     &_motto{
       position: relative;
+      width: 330px;
       top: 135px;
-      left: -190px;
+      left: -10px;
     }
     &_left{
       box-sizing: border-box;

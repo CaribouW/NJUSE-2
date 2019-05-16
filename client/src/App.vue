@@ -99,13 +99,23 @@ export default {
       } else {
         this.$router.push(data.index)
       }
+    },
+    // 登出
+    logout () {
+      this.$axios.post('http://localhost:3000/user/Logout',{
+        account: '123456'
+      }).then(res => {
+        // this.$router.push('login')
+        console.log(res)
+        this.logined = !this.logined
+      }).catch(err => {
+        this.$message.error('出错啦，请稍后再试')
+      })
     }
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    
     var path = this.$route.path.split('/')[1]
-    console.log(path)
     if (path === "login" || path === "register") {
       this.header_show = false
     } else {
@@ -251,7 +261,7 @@ a:hover { text-decoration:underline; }
     right: 30px;
     top: 118px;
     >ul >li{line-height: 51.5px; color: #CFF9FE;cursor: pointer;}
-    >ul >li:hover{ background-color:#EAEAEA;}
+    >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
     >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}
     >ul >li:last-of-type{border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
   }

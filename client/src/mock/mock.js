@@ -17,8 +17,7 @@ Mock.mock('http://localhost:3000/user/Login', {
 });
 
 // 有需要在下面增加就行了
-Mock.mock('http://localhost:3000/user/register', {
+Mock.mock('http://localhost:3000/user/Logout', {
     //模拟返回数据自行定义
-
 
 });
