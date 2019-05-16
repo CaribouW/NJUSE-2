@@ -12,10 +12,11 @@
             </ul>
           </div>
           <div class="header_right">
-            <div class="searchBox">
-              <i class="el-icon-search"></i>
-              <input type="text" placeholder="Search">
-            </div>
+            <el-input
+              placeholder="Search"
+              prefix-icon="el-icon-search"
+              v-model="search">
+            </el-input>
             <div class="logined" v-if="logined">
               <img src="@/assets/images/header/fullsizerender(4).png" alt="">
               <img src="@/assets/images/header/personal-image.png" alt="" @click="showDropdown = !showDropdown">
@@ -32,7 +33,7 @@
           <!-- 头像下拉框 -->
           <div class="header_dropdown" v-if="showDropdown">
             <ul>
-              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}</li>
+              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}<el-badge class="mark" :value="12" v-if="items.index==='message'"/></li>
               
             </ul>
           </div>
@@ -55,6 +56,7 @@ export default {
   },
   data () {
     return {
+      search: '',
       // 是否显示header,footer
       header_show: true,
       // 登陆or未登录
@@ -98,6 +100,9 @@ export default {
       if (data.index === 'logout') {
         this.logout()
       } else {
+        this.navList.forEach(function(obj){
+            obj.isActive = false;
+        });
         this.$router.push(data.index)
       }
     },
@@ -218,20 +223,11 @@ a:hover { text-decoration:underline; }
     flex:0 1 auto;
     display: flex;
     align-items:flex-end;
-    .searchBox{
-      width: 344px;
-      height: 36px;
-      background-color: #2E2D2C;
-      text-align: left;
-      border-radius: 10px;
+    >div:first-of-type{
+      width: 350px;
       margin-right: 60px;
-      padding-left: 5px;
-      >input{
-        // height: 15px;
-        vertical-align: middle;
-        font-size: 24px;
-        background-color: #2E2D2C;
-      }
+      border-radius: 10px;
+      >input{background-color: #2E2D2C;border: none}
     }
     .logined{
       >img:first-of-type{
@@ -272,6 +268,7 @@ a:hover { text-decoration:underline; }
     border-radius: 15px;
     right: 30px;
     top: 118px;
+    
     >ul >li{line-height: 51.5px; color: #CFF9FE;cursor: pointer;}
     >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
     >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}

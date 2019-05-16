@@ -2,7 +2,7 @@
   <div class="homepage">
     <div class="homepage_poster">
       <el-carousel :interval="4000" type="card" height="400px" indicator-position="none"> 
-        <el-carousel-item v-for="item in posters" :key="item">
+        <el-carousel-item v-for="item in posters" :key="item.index">
           <img :src="item.url" alt="">
         </el-carousel-item>
       </el-carousel>
@@ -15,18 +15,17 @@
       <div class="homepage_movie_middle">
         <div class="homepage_movie_middle_left">
           <ul>
-            <li>正在热映</li>
-            <li>即将上映</li>
+            <li v-for="item in type" :key="item.index" :class="{selectedType:item.isSelected}" @click="getMovie(item)">{{item.text}}</li>
           </ul>
           <img src="@/assets/images/homepage/fullsizerender(16).png" alt=""><br/>
           <img src="@/assets/images/homepage/GO！GET A MOVIE.png" alt="">
         </div>
         <div class="homepage_movie_middle_right">
           <div class="homepage_movie_middle_right_title">
-            <div><img src="@/assets/images/homepage/fullsizerender(6).png" alt="">正在热映</div>
+            <div><img src="@/assets/images/homepage/fullsizerender(6).png" alt="">{{selected}}</div>
             <i class="el-icon-d-arrow-right" @click="changePage()"></i>
           </div>
-          <div class="homepage_movie_middle_right_movie" v-for="movie in movieList">
+          <div class="homepage_movie_middle_right_movie" v-for="movie in movieList" :key="movie.id">
             <img :src="movie.url" alt="">
             <span>{{movie.name}}</span>
           </div>
@@ -41,18 +40,19 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
   data () {
     return {
       movieList: [
-        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster3.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster4.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号玩家'},
-        {id: '123456',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头号玩家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩'},
+        {id: '12345',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号家'},
+        {id: '12346',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头玩家'},
+        {id: '13456',url: require('@/assets/images/test/filmPoster3.jpg'),name: '号玩家'},
+        {id: '12356',url: require('@/assets/images/test/filmPoster4.jpg'),name: '头fsf号玩家'},
+        {id: '134565',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号gfd玩家'},
+        {id: '1456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号a玩家'},
+        {id: '156',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头ff家'},
       ],
       posters: [
         {index: 0, url: require('@/assets/images/test/pictest0.jpg')},
@@ -60,15 +60,28 @@ export default {
         {index: 2, url: require('@/assets/images/test/pictest2.jpg')},
         {index: 3, url: require('@/assets/images/test/pictest3.jpg')}
       ],
+      type: [
+        {index: 1, text: '正在热映', isSelected: true},
+        {index: 2, text: '即将上映', isSelected: false}
+      ],
+      selected: '正在热映'
     }
   },
   methods: {
     goMovieList () {
       this.$router.push('/movielist')
+      $("#test li:eq(1)").click()
     },
     changePage () {
       // 翻页
-    }
+    },
+    getMovie: function (data) {
+      this.selected = data.text
+      this.type.forEach(function(obj){
+          obj.isSelected = false;
+        });
+        data.isSelected = !data.isSelected;
+      }
   }
 }
 </script>
@@ -104,13 +117,15 @@ export default {
       &_left{
         flex: 1 1 auto;
         margin-top: 50px;
+        li{cursor: pointer;margin-top: 20px;color:#CFF9FE;}
         >img:first-of-type{
           margin-top: 20px;
           margin-bottom: 40px;
-          transition: 0.5s;
+          border-radius:150px;
           transform-origin: 50% 50%;  
           animation: rotate 10s linear infinite;
         }
+        >img:first-of-type:hover{animation-play-state:paused;}
       }
       &_right{
         width: 860px;
@@ -121,7 +136,7 @@ export default {
           display: flex;
           align-items: center;
           margin-bottom: 30px;
-          >div{flex: 1 0 auto;text-align: left;display: flex; align-items: center;font-size: 24px;color:#EAEAEA;
+          >div{flex: 1 0 auto;text-align: left;display: flex; align-items: center;font-size: 24px;color:#CFF9FE;
             >img{ margin-right: 20px;}
           }
         >i{flex: 0 1 auto; cursor: pointer;}
@@ -155,5 +170,6 @@ export default {
     }
   }
 }
+.selectedType{color:#CDED02!important;}
 </style>
 
