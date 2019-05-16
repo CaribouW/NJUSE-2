@@ -12,10 +12,15 @@
             </ul>
           </div>
           <div class="header_right">
-            <div class="searchBox">
+            <!-- <div class="searchBox">
               <i class="el-icon-search"></i>
               <input type="text" placeholder="Search">
-            </div>
+            </div> -->
+            <el-input
+              placeholder="请输入内容"
+              prefix-icon="el-icon-search"
+              v-model="search">
+            </el-input>
             <div class="logined" v-if="logined">
               <img src="@/assets/images/header/fullsizerender(4).png" alt="">
               <img src="@/assets/images/header/personal-image.png" alt="" @click="showDropdown = !showDropdown">
@@ -55,6 +60,7 @@ export default {
   },
   data () {
     return {
+      search: '',
       // 是否显示header,footer
       header_show: true,
       // 登陆or未登录
@@ -232,6 +238,12 @@ a:hover { text-decoration:underline; }
         font-size: 24px;
         background-color: #2E2D2C;
       }
+    }
+    >div:first-of-type{
+      width: 350px;
+      margin-right: 60px;
+      border-radius: 10px;
+      >input{background-color: #2E2D2C;border: none}
     }
     .logined{
       >img:first-of-type{

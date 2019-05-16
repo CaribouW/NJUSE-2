@@ -107,6 +107,7 @@ export default {
         >img:first-of-type{
           margin-top: 20px;
           margin-bottom: 40px;
+          border-radius:150px;
           transition: 0.5s;
           transform-origin: 50% 50%;  
           animation: rotate 10s linear infinite;
