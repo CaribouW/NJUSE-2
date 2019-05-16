@@ -1,0 +1,93 @@
+<template>
+    <div class="_main">
+        <div class="_head_divider">
+            <el-divider></el-divider>
+        </div>
+        <div id="_test" class="_main_content">
+            <el-container>
+                <el-aside width="250px" style="border:solid 1px #cff9fe;">
+                    <!-- 左边导航栏 -->
+                    <div class="_leftBar">
+                        <el-col :span="24">
+                            <el-menu
+                            class="el-menu-vertical"
+                            @open="handleOpen"
+                            @close="handleClose"
+                            background-color="#131c1c"
+                            text-color="#fff"
+                            active-text-color="#ffd04b"
+                            router>
+                            <el-submenu index=''>
+                                <template slot="title">
+                                    <i class="el-icon-document"></i>
+                                    <span>电影上架</span>
+                                </template>
+                                <!-- <el-menu-item-group>
+                                <template slot="title">分组一</template> -->
+                                <el-menu-item index="1-1">选项1</el-menu-item>
+                                <el-menu-item index="1-2">选项2</el-menu-item>
+                                <!-- </el-menu-item-group> -->
+                                <!-- <el-menu-item-group title="分组2"> -->
+                                <el-menu-item index="1-3">选项3</el-menu-item>
+                                <!-- </el-menu-item-group>
+                                <el-submenu index="1-4"> -->
+                                <!-- <template slot="title">选项4</template>
+                                <el-menu-item index="1-4-1">选项1</el-menu-item>
+                                </el-submenu> -->
+                            </el-submenu>
+                            <el-menu-item index="/Login">
+                                <i class="el-icon-menu"></i>
+                                <span slot="title">排片管理</span>
+                            </el-menu-item>
+                            <el-menu-item index="3">
+                                <i class="el-icon-setting"></i>
+                                <span slot="title">信息统计</span>
+                            </el-menu-item>
+                            </el-menu>
+                        </el-col>
+                    </div>
+                </el-aside>
+                <el-main>
+                    Main
+                    <slot></slot>
+                </el-main>
+            </el-container>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
+}
+</script>
+
+<style>
+._main_content{
+    background-color: #131c1c;
+    width:92%; 
+    margin-left:auto; 
+    margin-right:auto; 
+    margin-top:10px
+}
+._head_divider{
+    width:93%; 
+    margin-left:auto; 
+    margin-right:auto;
+}
+.leftBar{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.el-submenu__title,.el-menu-item {
+    font-size: 18px;
+}
+</style>

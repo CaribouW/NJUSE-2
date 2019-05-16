@@ -7,7 +7,9 @@ import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
 import User from '@/views/basicInfo/basicInfo.vue'
-import Test from '@/views/test/test.vue'
+import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
+import movieManage from '@/components/admin/movieManage'
+import scheduleManage from '@/components/admin/scheduleManage'
 
 Vue.use(Router)
 
@@ -53,6 +55,21 @@ export default new Router({
       path: '/test',
       name: 'Test',
       component: Test
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: HelloWorld
+    },
+    {
+      path: '/admin/movieManage',
+      name: 'movieManage',
+      component: movieManage
+    },
+    {
+      path: '/admin/scheduleManage',
+      name: 'scheduleManage',
+      component: scheduleManage
     }
   ]
 })
