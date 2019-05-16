@@ -2,8 +2,8 @@
   <div class="homepage">
     <div class="homepage_poster">
       <el-carousel :interval="4000" type="card" height="400px" :autoplay="false" indicator-position="none"> 
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 class="medium">{{ item }}</h3>
+        <el-carousel-item v-for="item in posters" :key="item">
+          <img :src="item.pic" alt="">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -53,7 +53,13 @@ export default {
         {id: '123456',url: '123456',name: '头号玩家'},
         {id: '123456',url: '123456',name: '头号玩家'},
         {id: '123456',url: '123456',name: '头号玩家'},
-      ]
+      ],
+      posters: [
+        {index: 0, pic: require('@/assets/images/test/pictest0.jpg')},
+        {index: 1, pic: require('@/assets/images/test/pictest1.jpg')},
+        {index: 2, pic: require('@/assets/images/test/pictest2.jpg')},
+        {index: 3, pic: require('@/assets/images/test/pictest3.jpg')}
+      ],
     }
   },
   methods: {
@@ -78,19 +84,9 @@ export default {
     box-sizing: border-box;
     padding-top: 30px;
     padding: 50px 70px 0 70px;
-    .el-carousel__item h3 {
-      color: #475669;
-      font-size: 14px;
-      opacity: 0.75;
-      line-height: 400px;
-      margin: 0;
-    }
-    .el-carousel__item:nth-child(2n) {
-      background-color: #99a9bf;
-    }
-    
-    .el-carousel__item:nth-child(2n+1) {
-      background-color: #d3dce6;
+    .el-carousel__item img {
+      width: 100%;
+      height: 100%;
     }
     .is-active{
       width: 80%;
