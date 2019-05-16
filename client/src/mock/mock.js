@@ -1,10 +1,3 @@
-/*
- * @Description: mock
- * @Author: Zhou
- * @Date: 2019-05-12 23:48:07
- * @LastEditTime: 2019-05-16 12:51:38
- * @LastEditors: 周政
- */
 import Mock from 'mockjs';
 
 // 登录接口

@@ -7,6 +7,7 @@ import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
 import User from '@/views/basicInfo/basicInfo.vue'
+import Test from '@/views/test/test.vue'
 
 Vue.use(Router)
 
@@ -48,5 +49,10 @@ export default new Router({
       name: 'User',
       component: User
     },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
+    }
   ]
 })
