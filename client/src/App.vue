@@ -12,12 +12,8 @@
             </ul>
           </div>
           <div class="header_right">
-            <!-- <div class="searchBox">
-              <i class="el-icon-search"></i>
-              <input type="text" placeholder="Search">
-            </div> -->
             <el-input
-              placeholder="请输入内容"
+              placeholder="Search"
               prefix-icon="el-icon-search"
               v-model="search">
             </el-input>
@@ -104,6 +100,9 @@ export default {
       if (data.index === 'logout') {
         this.logout()
       } else {
+        this.navList.forEach(function(obj){
+            obj.isActive = false;
+        });
         this.$router.push(data.index)
       }
     },
