@@ -6,7 +6,7 @@ import Register from '@/views/Login/register.vue'
 import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
-import User from '@/views/basicInfo/basicInfo.vue'
+import User from '@/views/user/basicInfo/basicInfo.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
 import movieManage from '@/components/admin/movieManage'
 import scheduleManage from '@/components/admin/scheduleManage'
