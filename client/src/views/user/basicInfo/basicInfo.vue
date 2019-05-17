@@ -76,10 +76,6 @@ export default {
     font-size: 30px;
     
   }
-  .el-container {
-    margin-bottom: 20px;
-    padding: 100px 140px 20px 140px
-  }
   .main_other{
     margin-top: 10px
   }
@@ -90,6 +86,7 @@ export default {
     background-color: rgba($color: #131C1C, $alpha: 0.5);
     font-size: 20px;
     color: #CFF9FE;
+    border-color: #CFF9FE
   }
 }
 </style>
