@@ -87,7 +87,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .homepage{
   padding: 29px 50px 50px 50px;
   &_poster{

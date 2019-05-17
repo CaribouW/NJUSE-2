@@ -33,7 +33,9 @@
           <!-- 头像下拉框 -->
           <div class="header_dropdown" v-if="showDropdown">
             <ul>
-              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}<el-badge class="mark" :value="12" v-if="items.index==='message'"/></li>
+              <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}
+                <el-badge class="mark" type='primary' :value="12" v-if="items.index==='message'"/>
+              </li>
               
             </ul>
           </div>
@@ -270,7 +272,10 @@ a:hover { text-decoration:underline; }
     right: 30px;
     top: 118px;
     
-    >ul >li{line-height: 51.5px; color: #CFF9FE;cursor: pointer;}
+    >ul >li{
+      line-height: 51.5px; color: #CFF9FE;cursor: pointer;
+      .el-badge__content{color:#201f1d;background-color: white;border: #CFF9FE solid 1px;}
+    }
     >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
     >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}
     >ul >li:last-of-type{border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
