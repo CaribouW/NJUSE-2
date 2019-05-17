@@ -1,6 +1,6 @@
 <template>
     <admin>
-        <div class="movie_manage">
+        <div class="schedule_manage">
 
         </div>
     </admin>
@@ -9,7 +9,7 @@
 <script>
 import admin from '../../views/admin/index.vue'
 export default {
-    name: 'movieManagement',
+    name: 'scheduleManagement',
     components: {
         admin
     },
