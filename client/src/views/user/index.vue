@@ -3,12 +3,54 @@
     <div class="basicinfo_rectangle">
       <el-container>
       <el-aside width="260px">
-        <el-tabs :tab-position="tabPosition" style="height: 200px;">
-          <el-tab-pane label="用户管理"></el-tab-pane>
-          <el-tab-pane label="配置管理"></el-tab-pane>
-          <el-tab-pane label="角色管理"></el-tab-pane>
-          <el-tab-pane label="定时任务补偿"></el-tab-pane>
-        </el-tabs>
+        <el-row class="tac">
+          <el-col :span="12">
+            <el-menu
+              default-active="2"
+              class="el-menu-vertical-demo"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#131c1c"
+              text-color="#fff"
+              active-text-color="#ffd04b">
+              <el-menu-item index="1">
+                  <i class="el-icon-location"></i>
+                  <span>基本信息</span>
+              </el-menu-item>
+              <el-submenu index="2">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>优惠券</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-1">会员优惠券</el-menu-item>
+                  <el-menu-item index="1-2">普通优惠券</el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item index="3">
+                <i class="el-icon-document"></i>
+                <span slot="title">历史订单</span>
+              </el-menu-item>
+              <el-menu-item index="4">
+                <i class="el-icon-setting"></i>
+                <span slot="title">标记喜爱</span>
+              </el-menu-item>
+              <el-submenu index="5">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>帮助中心</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-1">优惠政策</el-menu-item>
+                  <el-menu-item index="1-2">观影须知</el-menu-item>
+                  <el-menu-item index="1-3">常见问题</el-menu-item>
+                  <el-menu-item index="1-4">联系我们</el-menu-item>
+                  <el-menu-item index="1-5">投诉建议</el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-row>
       </el-aside>
       <el-main>
         <slot></slot>
@@ -26,6 +68,9 @@ export default {
     }
   },
   methods: {
+    handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+    },
   }
 }
 </script>
