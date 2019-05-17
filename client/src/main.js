@@ -16,6 +16,8 @@ Vue.prototype.$axios = axios
 // 加入vuex
 import store from './store/store.js'
 
+import Global from '../config/global.js'
+Vue.prototype.GLOBAL = Global
 
 Vue.config.productionTip = false
 

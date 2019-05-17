@@ -24,7 +24,14 @@ export default {
   },
   methods: {
     rigister() {
-      this.$message.error('别试了，接口还没写呢！');
+      this.$axios.post(this.GLOBAL + '/user/register', {
+        account: 'admin',
+        password: '12345678'
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

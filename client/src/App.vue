@@ -91,7 +91,7 @@ export default {
     },
     // 导航栏切换
     activeFun: function(data){
-      this.$router.push(data.index)
+      this.$router.push('/' +data.index)
         this.navList.forEach(function(obj){
             obj.isActive = false;
         });
@@ -105,7 +105,7 @@ export default {
         this.navList.forEach(function(obj){
             obj.isActive = false;
         });
-        this.$router.push(data.index)
+        this.$router.push('/' + data.index)
       }
     },
     // 切换到登录时不显示header

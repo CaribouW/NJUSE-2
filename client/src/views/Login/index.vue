@@ -21,22 +21,25 @@
 </template>
 
 <script>
-import mock from '@/mock/mock.js'
-
 export default {
   data () {
     return {
-      ruleForm: []
+
     }
   },
   methods: {
     login() {
       // this.$message.error('别试了，接口还没写呢！');
+      // console.log('fsf')
       // 测试axios + mock
-      this.$axios.post('http://localhost:3000/user/Login',{
+      var _this = this
+      console.log(_this.GLOBAL.server+'/user/login')
+      
+      this.$axios.post(_this.GLOBAL.server + '/user/login',{
         'account':123,
         'password':123456
       }).then(res => {
+        console.log(res)
         localStorage.setItem('account', this.account)
         localStorage.setItem('roleId', res.data.role)
         this.$router.push('/')
@@ -50,7 +53,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
 .login_body{
