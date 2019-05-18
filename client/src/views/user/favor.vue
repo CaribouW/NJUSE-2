@@ -16,6 +16,9 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>按上映时间排序</el-dropdown-item>
+                        <div class="test">
+                        <el-divider></el-divider>
+                        </div>
                         <el-dropdown-item>按标记时间排序</el-dropdown-item>
                     </el-dropdown-menu>
                     </el-dropdown>
@@ -23,7 +26,6 @@
               </el-col>
           </el-row>
       </div>
-      <el-divider></el-divider>
       <div class="favor_movies">
         
       </div>
@@ -84,10 +86,6 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-  .el-divider{
-    color: #979797;
-    margin: 7px;
-  }
   .el-dropdown-link {
     cursor: pointer;
     color: #ffffff;
@@ -101,6 +99,11 @@ export default {
     li{
       background-color: #131C1C;
     }
+  }
+  .test{
+    color: #979797;
+    margin: 1px;
+    height: 1px;
   }
   .el-dropdown-item{
       color: #fff;
