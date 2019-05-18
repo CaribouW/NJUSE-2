@@ -6,8 +6,8 @@
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
       <div class="login_body_content_right">
-          <input type="text" placeholder="请输入账号"><br>
-          <input type="password" placeholder="请输入密码"><br>
+          <input type="text" placeholder="请输入账号" v-model="account"><br>
+          <input type="password" placeholder="请输入密码" v-model="password"><br>
           <div>
             <input type="checkbox"><span>一周之内自动登录</span>
           </div>
@@ -24,7 +24,8 @@
 export default {
   data () {
     return {
-
+      account: '',
+      password: ''
     }
   },
   methods: {
@@ -33,16 +34,22 @@ export default {
       // console.log('fsf')
       // 测试axios + mock
       var _this = this
-      console.log(_this.GLOBAL.server+'/user/login')
       
       this.$axios.post(_this.GLOBAL.server + '/user/login',{
-        'account':123,
-        'password':123456
+        'account': _this.account,
+        'password': _this.password
       }).then(res => {
         console.log(res)
-        localStorage.setItem('account', this.account)
-        localStorage.setItem('roleId', res.data.role)
-        this.$router.push('/')
+        if (res.data.status === 200) {
+          this.$message.success('登陆成功')
+          localStorage.setItem('account', this.account)
+          localStorage.setItem('roleName', res.data.roleName)
+          localStorage.setItem('id', res.data.id)
+          this.$router.push('/')
+        } else {
+          this.$message.error("出错了，请稍后再试")
+        }
+        
       }).catch(err => {
         console.log(err);
       })

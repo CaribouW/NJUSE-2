@@ -119,13 +119,21 @@ export default {
     },
     // 登出
     logout () {
-      this.$axios.post('http://localhost:3000/user/Logout',{
-        account: '123456'
+      var _this = this
+      console.log(localStorage.getItem('account'))
+      this.$axios.post(_this.GLOBAL.server + '/user/login',{
+        account: localStorage.getItem('id')
       }).then(res => {
         // this.$router.push('login')
-        console.log(res)
-        this.logined = !this.logined
-        localStorage.setItem('roleId', '0')
+        if (res.data.status === 200) {
+          this.$message.success('已退出登录')
+          localStorage.removeItem('roleName')
+          localStorage.removeItem('account')
+          localStorage.removeItem('id')
+          this.logined = !this.logined
+        } else {
+          this.$message.error('出错了，请稍后再试')
+        }
       }).catch(err => {
         this.$message.error('出错啦，请稍后再试')
       })
@@ -210,7 +218,7 @@ a:hover { text-decoration:underline; }
     flex: 1 0 auto;
     display: flex;
     align-items:baseline;
-    font-size: 28px;
+    font-size: 22px;
     >img{
       cursor: pointer;
       margin-right: 40px;
