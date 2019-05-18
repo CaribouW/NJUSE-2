@@ -98,11 +98,19 @@ export default {
   .el-dropdown-menu{
     background-color: #131C1C;
     border: #ffffff;
-
+    li{
+      background-color: #131C1C;
+    }
   }
   .el-dropdown-item{
       color: #fff;
   }
+}
+.el-popper{
+  background-color: #131C1C;
+}
+.el-dropdown-menu__item{
+  color: #ffffff;
 }
 </style>
 
