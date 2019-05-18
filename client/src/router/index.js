@@ -11,6 +11,7 @@ import Test from '@/views/test/test.vue'               //自己玩儿的测试�
 import movieManage from '@/components/admin/movieManage'
 import scheduleManage from '@/components/admin/scheduleManage'
 import Coupon from '@/views/user/coupon.vue'
+import Favor from '@/views/user/favor.vue'
 
 Vue.use(Router)
 
@@ -76,6 +77,11 @@ export default new Router({
       path:'/user/coupon',
       name:'Coupon',
       component:Coupon
-    }
+    },
+    {
+      path:'/user/favor',
+      name:'Favor',
+      component:Favor
+    },
   ]
 })

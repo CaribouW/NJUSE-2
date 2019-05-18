@@ -49,19 +49,7 @@ export default {
     background-size: 100% 100%;
     height: 790px;
     margin-bottom: 50px ;
-  }  
-  .el-aside {
-    background-color: #131C1C;
-    color: #FFFFFF;
-    // text-align: center;
-    height: 565px;
-  }
-  
-  .el-main {
-    background-color: rgba($color: #131C1C, $alpha: 0.5);
-    color: #FFFFFF;
-    // height: 565px;
-  }
+  }   
   .main_portrait{
     height: 140px;
     padding-top: 70px;

@@ -99,6 +99,11 @@ export default {
     padding: 100px 100px 20px 120px
 
   }
+  .el-main {
+    background-color: rgba($color: #131C1C, $alpha: 0.5);
+    color: #FFFFFF;
+    // height: 565px;
+  }
 }
 </style>
 

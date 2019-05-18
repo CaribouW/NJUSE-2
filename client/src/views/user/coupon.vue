@@ -111,6 +111,11 @@ export default {
     padding-top: 30px;
     padding-left: 50px;
   }
+  .el-main {
+    background-color: rgba($color: #131C1C, $alpha: 0.5);
+    color: #FFFFFF;
+    // height: 565px;
+  }
   .el-divider{
     color: #979797;
   }
