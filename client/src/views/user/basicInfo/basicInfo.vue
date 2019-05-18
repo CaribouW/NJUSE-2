@@ -60,7 +60,7 @@ export default {
   .el-main {
     background-color: rgba($color: #131C1C, $alpha: 0.5);
     color: #FFFFFF;
-    height: 565px;
+    // height: 565px;
   }
   .main_portrait{
     height: 140px;

@@ -10,6 +10,7 @@ import User from '@/views/user/basicInfo/basicInfo.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
 import movieManage from '@/components/admin/movieManage'
 import scheduleManage from '@/components/admin/scheduleManage'
+import Coupon from '@/views/user/coupon.vue'
 
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ export default new Router({
       path: '/admin/scheduleManage',
       name: 'scheduleManage',
       component: scheduleManage
+    },
+    {
+      path:'/user/coupon',
+      name:'Coupon',
+      component:Coupon
     }
   ]
 })

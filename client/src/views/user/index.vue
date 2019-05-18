@@ -4,7 +4,7 @@
       <el-container>
       <el-aside width="260px">
         <el-row class="tac">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-menu
               default-active="2"
               class="el-menu-vertical-demo"
@@ -18,9 +18,9 @@
                   <span>基本信息</span>
               </el-menu-item>
               <el-submenu index="2">
-                <template slot="title">
+                <template slot="title" style="padding-left:5px;">
                   <i class="el-icon-location"></i>
-                  <span>优惠券</span>
+                  <span>相关优惠</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="1-1">会员优惠券</el-menu-item>
@@ -71,6 +71,9 @@ export default {
     handleOpen(key, keyPath) {
         console.log(key, keyPath);
     },
+    handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
   }
 }
 </script>
@@ -91,40 +94,10 @@ export default {
     // text-align: center;
     height: 565px;
   }
-  
-  .el-main {
-    background-color: rgba($color: #131C1C, $alpha: 0.5);
-    color: #FFFFFF;
-    height: 565px;
-  }
-  .main_portrait{
-    height: 140px;
-    padding-top: 70px;
-  }
-  .main_id{
-    background-color:rgba($color: #D8D8D8, $alpha: 0.05);
-    padding: 22px;
-    margin-top: 28px;
-    text-align: center
-  }
-  .main_id>b{
-    font-size: 30px;
-    
-  }
   .el-container {
     margin-bottom: 20px;
-    padding: 100px 140px 20px 140px
-  }
-  .main_other{
-    margin-top: 10px
-  }
-  .el-button{
-    margin-top: 20px;
-    border-radius: 25px;
-    padding: 8px 65px;
-    background-color: rgba($color: #131C1C, $alpha: 0.5);
-    font-size: 20px;
-    color: #CFF9FE;
+    padding: 100px 100px 20px 120px
+
   }
 }
 </style>
