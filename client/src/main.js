@@ -6,7 +6,9 @@ import router from './router'
 // YYP2019/4/24加
 // element组件
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
+// import '../theme/index.css'
+import 'element-theme-dark';
 
 // 加入axios、mock
 import axios from 'axios'
