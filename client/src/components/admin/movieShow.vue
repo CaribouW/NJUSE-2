@@ -3,14 +3,14 @@
         <div class="_movieShow">
             <div class="_movieShow_header" >
                 <div class="_movieShow_header_title">已上架电影</div>
-                <div class="_movieShow_header_divider"><el-divider></el-divider></div>
+                <div class="_movieShow_header_divider"></div>
             </div>
             <div class="_movieShow_menu">
                 <div class="_movieShow_menu_item startTime">
                     <span>电影上映日期: </span>
                     <div class="block">
                         <el-date-picker
-                        v-model="value1"
+                        v-model="startTime"
                         type="date"
                         placeholder="选择日期">
                         </el-date-picker>
@@ -20,7 +20,7 @@
                     <span>电影下映日期: </span>
                     <div class="block">
                         <el-date-picker
-                        v-model="value1"
+                        v-model="endTime"
                         type="date"
                         placeholder="选择日期">
                         </el-date-picker>
@@ -57,6 +57,10 @@
                     sortable>
                     </el-table-column>
                     <el-table-column
+                    label="状态"
+                    prop="state">
+                    </el-table-column>
+                    <el-table-column
                     align="right">
                     <template slot="header" slot-scope="scope">
                         <el-input
@@ -67,11 +71,11 @@
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                        @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                         <el-button
                         size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                        type="info"
+                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                     </el-table-column>
                 </el-table>
@@ -94,24 +98,25 @@ export default {
           value: '选项2',
           label: '未上映'
         }],
-        value: '',
-        value1: '',
+        value: '',     // 电影状态筛选值
+        startTime: '',  //电影上映时间
+        endTime: '',   //电影下映时间
         tableData: [{
           date: '2016-05-02',
           name: '复仇者联盟',
-          address: '上海市普陀区金沙江路 1518 弄'
+          state: '已上映'
         }, {
           date: '2016-05-04',
-          name: '复仇者联盟',
-          address: '上海市普陀区金沙江路 1517 弄'
+          name: '蜘蛛侠',
+          state: '未上映'
         }, {
           date: '2016-05-01',
           name: '复仇者联盟',
-          address: '上海市普陀区金沙江路 1519 弄'
+          state: '已上映'
         }, {
           date: '2016-05-03',
-          name: '复仇者联盟',
-          address: '上海市普陀区金沙江路 1516 弄'
+          name: '蚁人',
+          state: '未上映'
         }],
         search: '',
       }
@@ -140,6 +145,12 @@ export default {
         ._movieShow_header_title{
             font-size: 20px;
             padding-top: 10px;
+        }
+        ._movieShow_header_divider{
+            width: 100%;
+            height: 1px;
+            background-color: #979797;
+            margin: 10px auto;
         }
     }
     // 分级选择器
