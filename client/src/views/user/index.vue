@@ -38,11 +38,11 @@
               <el-submenu index="5">
                 <template slot="title">
                   <i class="el-icon-location"></i>
-                  <span>帮助中心</span>
+                  <span @click="goPolicy()">帮助中心 </span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1">优惠政策</el-menu-item>
-                  <el-menu-item index="1-2">观影须知</el-menu-item>
+                  <el-menu-item index="1-1" @click="goPolicy()">优惠政策</el-menu-item>
+                  <el-menu-item index="1-2" @click="goNotice()">观影须知</el-menu-item>
                   <el-menu-item index="1-3">常见问题</el-menu-item>
                   <el-menu-item index="1-4">联系我们</el-menu-item>
                   <el-menu-item index="1-5">投诉建议</el-menu-item>
@@ -82,6 +82,12 @@ export default {
     },
     goFavor() {
       this.$router.push("/user/favor")
+    },
+    goPolicy() {
+      this.$router.push("/user/helper/preferentialpolicy")
+    },
+    goNotice() {
+      this.$router.push("/user/helper/notice")
     },
   }
 }

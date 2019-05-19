@@ -10,7 +10,7 @@
           <el-row>
             <el-col :span="12">
               <div class="grid-content bg-purple">
-                <el-button round >立即使用</el-button>
+                <el-button round @click="goMovieList()">立即使用</el-button>
               </div>
             </el-col>
             <el-col :span="12">
@@ -81,6 +81,9 @@ export default {
     }
   },
   methods: {
+    goMovieList() {
+      this.$router.push("/movielist")
+    },
   }
 }
 </script>
@@ -111,11 +114,6 @@ export default {
     padding-top: 30px;
     padding-left: 50px;
   }
-  // .el-main {
-  //   background-color: rgba($color: #131C1C, $alpha: 0.5);
-  //   color: #FFFFFF;
-  //   // height: 565px;
-  // }
   .el-divider{
     color: #979797;
   }
@@ -146,22 +144,11 @@ export default {
   .el-button{
     margin-top: 20px;
     padding: 8px 155px;
-    background-color: rgba($color: #131C1C, $alpha: 0);
+    background-color: transparent;
     font-size: 16px;
     color: #ffffff;
     border: 0
   }
-
-// .el-scrollbar{
-//   height: 100%;
-// }
-// .el-scrollbar__wrap{
-//   overflow: scroll;
-//   overflow-x:auto
-// }
-  // .demo-image__lazy{
-    
-  // }
 }
 </style>
 

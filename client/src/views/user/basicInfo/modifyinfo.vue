@@ -35,17 +35,31 @@
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                    <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:16px;height:16px;">
+                    <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:16px;height:16px;"> 男
                 </el-dropdown-item>
                 <el-divider></el-divider>
-                <el-dropdown-item>按标记时间排序</el-dropdown-item>
+                <el-dropdown-item>
+                    <img src="@/assets/images/basicinfo/nv.png" alt="" style="width:16px;height:16px;"> 女
+                </el-dropdown-item>
             </el-dropdown-menu>
             </el-dropdown>
         <span><br/>
-          <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:21px;height:21px;">
-          生日：2019-01-01
-        </span><br/>
-        <el-button round style="color:#CFF9FE;" @click="goInfo()">保存</el-button>
+           <div class="block">
+                <span class="demonstration">生日： </span>
+                <el-date-picker
+                v-model="value1"
+                type="date"
+                placeholder="选择日期"
+                class="date-picker"
+                :picker-options="pickerOptions">
+                </el-date-picker>
+            </div>
+        </span>
+      <br/>
+        <span>
+            <el-button round style="color:#CFF9FE;" @click="goInfo()">保存</el-button>
+            <el-button round style="color:#CFF9FE;" @click="goInfo()">取消</el-button>
+        </span>
       </div>
     </div>
   </user>
@@ -64,6 +78,12 @@ export default {
       imageUrl: '',
       text: '',
       textarea: '',
+      pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+      },
+      value1:'',
     }
   },
   methods: {
@@ -126,55 +146,62 @@ export default {
     background-color:rgba($color: #D8D8D8, $alpha: 0.05);
     padding: 20px 22px 10px 22px;
     margin-top: 28px;
+    margin-bottom:20px; 
     text-align: center
   }
-  .el-input__inner{
+  .modify_id .el-input__inner{
     background-color: #131C1C;
     border-color: #CFF9FE;
     border-radius:10px;
-    width: 40%; 
+    width: 200px; 
     margin-bottom: 10px;
     color: #ffffff;
     // font-size: 30px;
   }
   .el-input__count{
-      padding-right: 70px;
+      padding-right: 170px;
+  }
+  .el-input__suffix{
+      margin-top: 19px;
   }
   .el-input .el-input__count .el-input__count-inner {
       background: transparent;
       color:#D8D8D8;
   }
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #ffffff;
-  }
-  .el-icon-arrow-down {
-    font-size: 15px;
-  }
-  .el-dropdown-menu{
-    background-color: #131C1C;
-    border: #ffffff;
-  }
-  .el-dropdown-item{
-      color: #fff;
-  }
-  .el-popper{
-  background-color: #131C1C;
-  padding: 0;
+.el-input__prefix{
+    height: 5px;
 }
-.el-dropdown-menu__item{
-  color: #ffffff;
-  padding: 0 10px 0 10px;
-  
+.el-input__inner{
+    background-color: #131C1C;
+    width: 150px;
+}
+.el-dropdown-link{
+    font-size: 16px;
 }
   .el-button{
-    margin-top: 20px;
+    // margin-top: 20px;
     border-radius: 25px;
-    padding: 8px 65px;
+    padding: 8px 40px;
     background-color: rgba($color: #131C1C, $alpha: 0.5);
-    font-size: 20px;
+    font-size: 18px;
     color: #CFF9FE;
     border-color: #CFF9FE
+  }
+  
+  .block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .demonstration{
+    width:220px;
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 16px;
+  }
+  .date-picker{
+    width: 220px;
   }
 }
 </style>

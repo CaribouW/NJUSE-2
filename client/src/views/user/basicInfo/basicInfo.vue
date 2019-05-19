@@ -70,7 +70,7 @@ export default {
   .main_other{
     margin-top: 10px
   }
-  .el-button{
+  .main_other .el-button{
     margin-top: 20px;
     border-radius: 25px;
     padding: 8px 65px;

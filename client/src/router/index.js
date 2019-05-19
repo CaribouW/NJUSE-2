@@ -15,6 +15,8 @@ import statistic from '@/components/admin/statistic'
 import Coupon from '@/views/user/coupon.vue'
 import Favor from '@/views/user/favor.vue'
 import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
+import PreferentialPolicy from '@/views/user/helper/preferentialpolicy.vue'
+import Notice from '@/views/user/helper/notice.vue'
 
 Vue.use(Router)
 
@@ -100,6 +102,16 @@ export default new Router({
       path:'/user/modifyinfo',
       name:'ModifyInfo',
       component:ModifyInfo
+    },
+    {
+      path:'/user/helper/preferentialpolicy',
+      name:'PreferentialPolicy',
+      component:PreferentialPolicy
+    },
+    {
+      path:'/user/helper/notice',
+      name:'Notice',
+      component:Notice
     },
   ]
 })
