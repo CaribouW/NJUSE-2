@@ -201,7 +201,7 @@ a:hover { text-decoration:underline; }
     margin: 0 auto;
     background-color: #201f1d;
     min-height: inherit;
-    width: 88%;
+    width: 85%;
     min-width: 1300px;
   }
 }
