@@ -13,14 +13,14 @@
               background-color="#131c1c"
               text-color="#fff"
               active-text-color="#ffd04b">
-              <el-menu-item index="1">
+              <el-menu-item index="1" @click="goBasicInfo()">
                   <i class="el-icon-location"></i>
                   <span>基本信息</span>
               </el-menu-item>
               <el-submenu index="2">
                 <template slot="title" style="padding-left:5px;">
                   <i class="el-icon-location"></i>
-                  <span>相关优惠</span>
+                  <span @click="goCoupon()">相关优惠</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="1-1">会员优惠券</el-menu-item>
@@ -31,9 +31,9 @@
                 <i class="el-icon-document"></i>
                 <span slot="title">历史订单</span>
               </el-menu-item>
-              <el-menu-item index="4">
+              <el-menu-item index="4" @click="goFavor()">
                 <i class="el-icon-setting"></i>
-                <span slot="title">标记喜爱</span>
+                <span slot="title" >标记喜爱</span>
               </el-menu-item>
               <el-submenu index="5">
                 <template slot="title">
@@ -73,7 +73,16 @@ export default {
     },
     handleClose(key, keyPath) {
         console.log(key, keyPath);
-      }
+    },
+    goBasicInfo() {
+      this.$router.push("/user")
+    },
+    goCoupon() {
+      this.$router.push("/user/coupon")
+    },
+    goFavor() {
+      this.$router.push("/user/favor")
+    },
   }
 }
 </script>
