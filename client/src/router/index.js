@@ -10,6 +10,8 @@ import User from '@/views/user/basicInfo/basicInfo.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
 import movieManage from '@/components/admin/movieManage'
 import scheduleManage from '@/components/admin/scheduleManage'
+import movieShow from '@/components/admin/movieShow'
+import statistic from '@/components/admin/statistic'
 import Coupon from '@/views/user/coupon.vue'
 import Favor from '@/views/user/favor.vue'
 import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
@@ -73,6 +75,16 @@ export default new Router({
       path: '/admin/scheduleManage',
       name: 'scheduleManage',
       component: scheduleManage
+    },
+    {
+      path: '/admin/movieShow',
+      name: 'movieShow',
+      component: movieShow
+    },
+    {
+      path: '/admin/statistic',
+      name: 'statistic',
+      component: statistic
     },
     {
       path:'/user/coupon',

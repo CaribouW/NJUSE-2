@@ -9,6 +9,7 @@
                     <!-- 左边导航栏 -->
                     <div class="_leftBar">
                         <el-col :span="24">
+                            <img src="../../assets/images/footer/{5C52A913-CCB9-6A3B-A07F-40653AF2D82D}.png" alt="This is our logo!">
                             <el-menu
                             class="el-menu-vertical"
                             @open="handleOpen"
@@ -22,24 +23,15 @@
                                     <i class="el-icon-document"></i>
                                     <span>电影上架</span>
                                 </template>
-                                <!-- <el-menu-item-group>
-                                <template slot="title">分组一</template> -->
                                 <el-menu-item index="/admin/movieManage">添加</el-menu-item>
-                                <el-menu-item index="/admin/movieManage">选项2</el-menu-item>
-                                <!-- </el-menu-item-group> -->
-                                <!-- <el-menu-item-group title="分组2"> -->
+                                <el-menu-item index="/admin/movieShow">查看</el-menu-item>
                                 <el-menu-item index="/admin/movieManage">选项3</el-menu-item>
-                                <!-- </el-menu-item-group>
-                                <el-submenu index="1-4"> -->
-                                <!-- <template slot="title">选项4</template>
-                                <el-menu-item index="1-4-1">选项1</el-menu-item>
-                                </el-submenu> -->
                             </el-submenu>
                             <el-menu-item index="/admin/scheduleManage">
                                 <i class="el-icon-menu"></i>
                                 <span slot="title">排片管理</span>
                             </el-menu-item>
-                            <el-menu-item index="3">
+                            <el-menu-item index="/admin/statistic">
                                 <i class="el-icon-setting"></i>
                                 <span slot="title">信息统计</span>
                             </el-menu-item>
@@ -81,10 +73,9 @@ export default {
     margin-left:auto; 
     margin-right:auto;
 }
-.leftBar{
-    position: fixed;
-    width: 100%;
-    height: 100%;
+._leftBar img{
+    width: 100px;
+    height: 100px;
 }
 .el-submenu__title,.el-menu-item {
     font-size: 18px;
