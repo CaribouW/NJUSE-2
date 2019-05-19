@@ -5,7 +5,7 @@
                 <div class="_box_card" id="info1">
                     <div class="_box_card_title">
                         <div class="_box_card_title_name">基础信息</div>
-                        <div class="_box_card_title_divider"><el-divider></el-divider></div>
+                        <div class="_box_card_title_divider"></div>
                     </div>
                     <div class="_box_card_item">
                         <div class="_box_card_item_title"><span><strong>* </strong>电影名称</span></div>
@@ -84,7 +84,7 @@
                 <div class="_box_card" id="info2">
                     <div class="_box_card_title">
                         <div class="_box_card_title_name">放映信息</div>
-                        <div class="_box_card_title_divider"><el-divider></el-divider></div>
+                        <div class="_box_card_title_divider"></div>
                     </div>
                     <div class="_box_card_item">
                         <div class="_box_card_item_title"><span><strong>* </strong>电影时长</span></div>
@@ -124,7 +124,7 @@
                 <div class="_box_card" id="info3">
                     <div class="_box_card_title">
                         <div class="_box_card_title_name">更多信息</div>
-                        <div class="_box_card_title_divider"><el-divider></el-divider></div>
+                        <div class="_box_card_title_divider"></div>
                     </div>
                     <div class="_box_card_item">
                         <div class="_box_card_item_title"><span>电影预告片</span></div>
@@ -241,9 +241,10 @@ export default {
             font-size: 20px;
             }
             ._box_card_title_divider{
-                width: 97%;
-                margin-left: auto;
-                margin-right: auto;
+                width: 98%;
+                height: 1px;
+                background-color: #979797;
+                margin: 10px auto;
             }
         }
         ._box_card_item{
