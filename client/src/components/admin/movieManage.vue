@@ -88,7 +88,7 @@
                     </div>
                     <div class="_box_card_item">
                         <div class="_box_card_item_title"><span><strong>* </strong>电影时长</span></div>
-                        <div class="_box_card_item_content"><el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" ></el-input-number><span>分钟</span></div>
+                        <div class="_box_card_item_content"><el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" ></el-input-number><span id="lasting">分钟</span></div>
                     </div>
                     <div class="_box_card_item">
                         <div class="_box_card_item_title"><span><strong>* </strong>电影上映日期</span></div>
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="_box_card_item">
-                        <div class="_box_card_item_title"><span><strong>*</strong>电影下映日期</span></div>
+                        <div class="_box_card_item_title"><span><strong>* </strong>电影下映日期</span></div>
                         <div class="_box_card_item_content">
                             <div class="block">
                                 <el-date-picker
@@ -145,6 +145,9 @@
                         </div>
                     </div>
 
+                </div>
+                <div class="_box_card" id="_bt_submit">
+                    <button id="submit"><span>确认上架</span></button>
                 </div>
             </div>
         </div>
@@ -225,10 +228,11 @@ export default {
     padding-top: 3%;
     padding-bottom: 3%;
     ._box_card{
+        color: #ffffff;
         background-color: rgba($color: #d8d8d8, $alpha: 0.08);
         border-radius: 3px;
         text-align: start;
-        padding-left: 20px;
+        padding-left: 25px;
         padding-bottom: 20px;
         ._box_card_title{
             ._box_card_title_name{
@@ -243,22 +247,28 @@ export default {
             }
         }
         ._box_card_item{
-            padding-left: 20px;
+            padding-left: 30px;
             margin-top: 25px;
             margin-bottom: 10px;
-            
+            #lasting{
+                margin-left: 12px;
+            }
             ._box_card_item_content{
                 padding-left: 18px;
                 margin-top: 10px;
             }
+            // 电影名称的输入框
             #movieName{
                 background-color: transparent;
                 border: solid 1px #cff9fe;
                 border-radius: 4px;
                 width: 90%;
-                height: 30px;
+                height: 40px;
                 padding-left: 10px;
+                color: #ffffff;
+                font-size: 17px;
             }
+            // 电影简介的多行输入框
             #movieDescription{
                 background-color: transparent;
                 border: solid 1px #cff9fe;
@@ -266,12 +276,36 @@ export default {
                 width: 90%;
                 height: 200px;
                 padding: 10px;
+                color: #ffffff;
+                font-size: 17px;
             }
+            // 处理element组件背景不一致的问题
             *{
                 background-color: transparent;
             }
         }
-    }  
+        // 处理确认提交的按钮
+        #submit{
+            display: block;
+            background-color: transparent;
+            border-radius: 4px;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 23px;
+            font-weight: 400;
+            width: 170px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 0px auto;
+            border: solid #cff9fe;
+        }
+    }
+    #_bt_submit{
+        margin-top: 20px;
+        padding-top: 20px;
+        background-color: #131c1c;
+    }
 }
 </style>
 
