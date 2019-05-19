@@ -96,14 +96,6 @@ export default {
   .el-dropdown-menu{
     background-color: #131C1C;
     border: #ffffff;
-    li{
-      background-color: #131C1C;
-    }
-  }
-  .test{
-    color: #979797;
-    margin: 1px;
-    height: 1px;
   }
   .el-dropdown-item{
       color: #fff;
@@ -114,6 +106,9 @@ export default {
 }
 .el-dropdown-menu__item{
   color: #ffffff;
+}
+.el-divider--horizontal{
+      margin: 1px;
 }
 </style>
 
