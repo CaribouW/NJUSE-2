@@ -12,6 +12,7 @@ import movieManage from '@/components/admin/movieManage'
 import scheduleManage from '@/components/admin/scheduleManage'
 import Coupon from '@/views/user/coupon.vue'
 import Favor from '@/views/user/favor.vue'
+import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
 
 Vue.use(Router)
 
@@ -82,6 +83,11 @@ export default new Router({
       path:'/user/favor',
       name:'Favor',
       component:Favor
+    },
+    {
+      path:'/user/modifyinfo',
+      name:'ModifyInfo',
+      component:ModifyInfo
     },
   ]
 })
