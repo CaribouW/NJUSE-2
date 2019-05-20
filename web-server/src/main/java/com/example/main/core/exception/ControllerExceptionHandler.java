@@ -1,10 +1,14 @@
 package com.example.main.core.exception;
 
+import com.example.main.controller.UserController;
 import com.example.main.core.response.ExceptionResponse;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +32,13 @@ public class ControllerExceptionHandler {
 //            log.error(ex.getMessage(), ex);
             return ExceptionResponse.create(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
         }
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public Resource<?> handleNullPointer(Exception e) {
+        return new Resource<>(e);
     }
 }
 
