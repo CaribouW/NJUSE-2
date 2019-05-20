@@ -44,7 +44,7 @@
                   <el-menu-item index="1-1" @click="goPolicy()">优惠政策</el-menu-item>
                   <el-menu-item index="1-2" @click="goNotice()">观影须知</el-menu-item>
                   <el-menu-item index="1-3">常见问题</el-menu-item>
-                  <el-menu-item index="1-4">联系我们</el-menu-item>
+                  <el-menu-item index="1-4" @click="goContact()">联系我们</el-menu-item>
                   <el-menu-item index="1-5">投诉建议</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
@@ -88,6 +88,9 @@ export default {
     },
     goNotice() {
       this.$router.push("/user/helper/notice")
+    },
+    goContact() {
+      this.$router.push("/user/helper/contact")
     },
   }
 }

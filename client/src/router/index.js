@@ -17,6 +17,7 @@ import Favor from '@/views/user/favor.vue'
 import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
 import PreferentialPolicy from '@/views/user/helper/preferentialpolicy.vue'
 import Notice from '@/views/user/helper/notice.vue'
+import Contact from '@/views/user/helper/contact.vue'
 
 Vue.use(Router)
 
@@ -112,6 +113,11 @@ export default new Router({
       path:'/user/helper/notice',
       name:'Notice',
       component:Notice
+    },
+    {
+      path:'/user/helper/contact',
+      name:'Contact',
+      component:Contact
     },
   ]
 })
