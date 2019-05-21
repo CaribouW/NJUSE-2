@@ -27,7 +27,7 @@
                   <el-menu-item index="1-2">普通优惠券</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="3">
+              <el-menu-item index="3" @click="goHistory()">
                 <i class="el-icon-document"></i>
                 <span slot="title">历史订单</span>
               </el-menu-item>
@@ -91,6 +91,9 @@ export default {
     },
     goContact() {
       this.$router.push("/user/helper/contact")
+    },
+    goHistory() {
+      this.$router.push("/user/history")
     },
   }
 }

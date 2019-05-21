@@ -18,6 +18,7 @@ import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
 import PreferentialPolicy from '@/views/user/helper/preferentialpolicy.vue'
 import Notice from '@/views/user/helper/notice.vue'
 import Contact from '@/views/user/helper/contact.vue'
+import History from '@/views/user/history.vue'
 
 Vue.use(Router)
 
@@ -118,6 +119,11 @@ export default new Router({
       path:'/user/helper/contact',
       name:'Contact',
       component:Contact
+    },
+    {
+      path:'/user/history',
+      name:'History',
+      component:History
     },
   ]
 })

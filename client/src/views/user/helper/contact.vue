@@ -56,7 +56,7 @@ export default {
     text-align: left;
     font-size: 14px;
 }
-.children_body,.student_body,.other_body,.vip_body{
-    margin: 6px 0 15px 35px;
-}
+// .children_body,.student_body,.other_body,.vip_body{
+//     margin: 6px 0 15px 35px;
+// }
 </style>
