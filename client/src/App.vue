@@ -2,7 +2,7 @@
   <div id="app">
     <div class="background">
       <div class="main_content">
-        <div class="header" v-if="header_show">
+        <!-- <div class="header" v-if="header_show">
           <div class="header_left">
             <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
             <ul id="test">
@@ -30,7 +30,6 @@
               </div>
             </div>
           </div>
-          <!-- 头像下拉框 -->
           <div class="header_dropdown" v-if="showDropdown">
             <ul>
               <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}
@@ -39,9 +38,11 @@
               
             </ul>
           </div>
-        </div>
+        </div> -->
+        <headnav v-if="header_show"></headnav>
         <router-view/>
         <foot v-if="header_show"></foot>
+        
       </div>
     </div>
   </div>
@@ -50,64 +51,20 @@
 <script>
 import mock from '@/mock/mock.js'
 import $ from 'jquery'
+import headnav from '@/components/header.vue'
 import foot from '@/components/footer.vue'
 export default {
   name: 'App',
   components: {
-    foot
+    headnav, foot
   },
   data () {
     return {
-      search: '',
       // 是否显示header,footer
       header_show: true,
-      // 登陆or未登录
-      logined: true,
-      showDropdown: false,
-      navList: [
-        {text: '首页', isActive: true, index: 'index'},
-        {text: '影库', isActive: false, index: 'movielist'},
-        {text: '快速购票', isActive: false, index: 'quick'},
-      ],
-      userCenterList: [
-        {text: '个人中心',index: 'user'},
-        {text: '消息', index: 'message'},
-        {text: '退出登陆', index: 'logout'},
-      ]
     }
   },
   methods: {
-    goLogin() {
-      this.$router.push("/login")
-    },
-    goRegister() {
-      this.$router.push("/register")
-    },
-    goPersonalCenter_basicInfo(){
-      this.$router.push("/basicInfo")
-    },
-    goHomepage() {
-      $("#test li:first").click()
-    },
-    // 导航栏切换
-    activeFun: function(data){
-      this.$router.push('/' +data.index)
-        this.navList.forEach(function(obj){
-            obj.isActive = false;
-        });
-        data.isActive = !data.isActive;
-    },
-    clickDropdown: function (data) {
-      this.showDropdown = !this.showDropdown
-      if (data.index === 'logout') {
-        this.logout()
-      } else {
-        this.navList.forEach(function(obj){
-            obj.isActive = false;
-        });
-        this.$router.push('/' + data.index)
-      }
-    },
     // 切换到登录时不显示header
     hideHeader () {
       var path = this.$route.path.split('/')[1]
@@ -116,28 +73,6 @@ export default {
       } else {
         this.header_show = true
       }
-    },
-    // 登出
-    logout () {
-      var _this = this
-      console.log(localStorage.getItem('account'))
-      this.$axios.post(_this.GLOBAL.server + '/user/login',{
-        account: localStorage.getItem('id')
-      }).then(res => {
-        // this.$router.push('login')
-        if (res.data.status === 200) {
-          this.$message.success('已退出登录')
-          localStorage.removeItem('roleName')
-          localStorage.removeItem('account')
-          localStorage.removeItem('id')
-          this.logined = !this.logined
-        } else {
-          this.$message.error('出错了，请稍后再试')
-        }
-      }).catch(err => {
-        this.$message.error('出错啦，请稍后再试')
-      })
-      this.$router.push('/index')
     }
   },
   // 保证header在登录注册时不会显示
@@ -205,88 +140,5 @@ a:hover { text-decoration:underline; }
     min-width: 1300px;
   }
 }
-.selected{font-weight:bold;color:white}
-.header{
-  // background-color: #201f1d;
-  // background-color: red;
-  height: 70px;
-  padding: 50px 20px 0 20px;
-  display: flex;
-  position: relative;
-  &_left{
-    text-align: initial;
-    flex: 1 0 auto;
-    display: flex;
-    align-items:baseline;
-    font-size: 22px;
-    >img{
-      cursor: pointer;
-      margin-right: 40px;
-    }
-    li{
-      display: inline-block;
-      color: #CFF9FE;
-      margin-left: 40px;
-      cursor: pointer;
-    }
-  }
-  &_right{
-    flex:0 1 auto;
-    display: flex;
-    align-items:flex-end;
-    >div:first-of-type{
-      width: 350px;
-      margin-right: 60px;
-      border-radius: 10px;
-      >input{background-color: #2E2D2C;border: none}
-    }
-    .logined{
-      >img:first-of-type{
-        // display: inline-block;
-        cursor: pointer;
-        margin-right: 20px;
-      }
-      >img:last-of-type{
-        height: 50px;
-        cursor: pointer;
-      }
-    }
-    >div:last-of-type{
-      >div{
-        display: flex;
-        align-items: center;
-        font-size: 20px;
-        // margin-bottom: 20px;
-        cursor: pointer;
-        >span{
-          margin-left: 10px;
-          color: #CFF9FE;
-        }
-      }
-      >div:first-of-type{
-        margin-bottom: 20px;
-      }
-    }
-  }
-  &_dropdown{
-    z-index: 2;
-    width: 138px;
-    height: 156px;
-    box-sizing: border-box;
-    background-color: #201f1d;
-    position: absolute;
-    border: #CFF9FE solid 2px;
-    border-radius: 15px;
-    right: 30px;
-    top: 118px;
-    
-    >ul >li{
-      line-height: 51.5px; color: #CFF9FE;cursor: pointer;
-      .el-badge__content{color:#201f1d;background-color: white;border: #CFF9FE solid 1px;}
-    }
-    >ul >li:hover{ background-color:#EAEAEA; color: #666; font-weight: bold;}
-    >ul >li:first-of-type{border-top-left-radius: 15px; border-top-right-radius: 15px;}
-    >ul >li:last-of-type{border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
-  }
-}
+
 </style>

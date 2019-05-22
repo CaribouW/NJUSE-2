@@ -19,6 +19,7 @@ import PreferentialPolicy from '@/views/user/helper/preferentialpolicy.vue'
 import Notice from '@/views/user/helper/notice.vue'
 import Contact from '@/views/user/helper/contact.vue'
 import History from '@/views/user/history.vue'
+import Search from '@/views/search/index.vue'
 
 Vue.use(Router)
 
@@ -124,6 +125,11 @@ export default new Router({
       path:'/user/history',
       name:'History',
       component:History
+    },
+    {
+      path:'/search',
+      name:'Search',
+      component: Search
     },
   ]
 })

@@ -14,7 +14,7 @@
       </div>
       <div class="movielist_movie_list">
         <div class="movielist_movie_list_each" v-for='i in 6'>
-          <img src="@/assets/images/movielist/161905.30186585_1000 copy.png" alt=""><br/>
+          <img src="@/assets/images/movielist/161905.30186585_1000 copy.png" alt="">
           <div>
             <span>头号玩家</span><span>9.1分</span><br>
           </div> 
@@ -83,15 +83,19 @@ export default {
         display: inline-block;
         padding: 20px 20px;
         color: white;
-        >img{width: 180px;height: 250px;}
+        >img{width: 180px;height: 250px;display: block;}
         >div{
           display: flex;
+          background-color: #343331;
           >span{
             text-align: left;
             flex: 1 1 auto;
+            
           }
           >span:last-of-type{text-align: right;}
         }
+        >span{display: block;
+            background-color: #343331;}
       }
     }
   }
