@@ -3,6 +3,7 @@ package com.example.main.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.MovieHall;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 影厅信息更改
@@ -95,5 +98,64 @@ public class HallServiceImpl implements HallService {
         }
     }
 
+    @Override
+    public JSON updateSlot(JSONObject req) {
+        try {
+            String slotId = req.getString("slotId");
+            TimeSlot slot = timeSlotRepository.findTimeSlotBySlotId(slotId);
+            //update
+            slot.setHallId(req.getString("hallID"));
+            slot.setMovieId(req.getString("movieId"));
+            Date startTime = dateUtils.strToDate(req.getString("startTime"), DateStrPattern.SECONDS.getPat());
+            Date endTime = dateUtils.strToDate(req.getString("endTime"), DateStrPattern.SECONDS.getPat());
+            slot.setStartTime(startTime);
+            slot.setEndTime(endTime);
+            slot.setTicketPrize(req.getDouble("price"));
+            timeSlotRepository.save(slot);
+            return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON newSlot(JSONObject req) {
+        try {
+            String slotId = req.getString("slotId");
+            TimeSlot slot = new TimeSlot();
+            //update
+            if (timeSlotRepository.existsById(slotId)) {
+                return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
+            }
+            slot.setHallId(req.getString("hallID"));
+            slot.setMovieId(req.getString("movieId"));
+            Date startTime = dateUtils.strToDate(req.getString("startTime"), DateStrPattern.SECONDS.getPat());
+            Date endTime = dateUtils.strToDate(req.getString("endTime"), DateStrPattern.SECONDS.getPat());
+            slot.setStartTime(startTime);
+            slot.setEndTime(endTime);
+            slot.setTicketPrize(req.getDouble("price"));
+            slot.setSlotId(idUtils.getUUID32());
+            timeSlotRepository.save(slot);
+            JSONObject ans = new JSONObject();
+            ans.put("slotId", slot.getSlotId());
+            return Response.success(ans);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON deleteSlot(String slotId) {
+        try {
+            timeSlotRepository.deleteById(slotId);
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
 
 }

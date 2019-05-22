@@ -72,8 +72,13 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public JSON removeCouponStrategy(JSONObject req) {
-        return null;
+    public JSON removeCouponStrategy(String cId) {
+        try {
+            couponRepository.deleteById(cId);
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
     }
 
     @Override

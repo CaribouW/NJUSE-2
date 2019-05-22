@@ -22,8 +22,9 @@ public interface StrategyService {
 
     /**
      * 删除优惠策略
+     * @param cId
      */
-    JSON removeCouponStrategy(JSONObject req);
+    JSON removeCouponStrategy(String cId);
     //------------------------------------------------------------------------
 
     /**

@@ -35,6 +35,9 @@ public class CouponController {
                                       String uid) {
         return couponService.findAllCouponsByUid(uid);
     }
+    /**
+     * 更新优惠策略
+     * */
 
     @PutMapping("/strategy")
     public JSON updateCouponStrategy(@RequestBody JSONObject req) {
