@@ -3,21 +3,23 @@ package com.example.main.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
-import com.example.main.model.MovieHall;
-import com.example.main.model.MovieTicket;
-import com.example.main.model.Order;
-import com.example.main.model.TimeSlot;
+import com.example.main.model.*;
 import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import com.example.main.utils.DateUtils;
-import io.swagger.models.auth.In;
+import com.example.main.utils.IDUtils;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.security.krb5.KdcComm;
 import sun.security.krb5.internal.Ticket;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 专门服务于购票/退改票 用例;
@@ -27,11 +29,7 @@ import java.util.List;
 @Service
 public class MovieTicketServiceImpl implements MovieTicketService {
     @Autowired
-    private MovieInfoRepository movieInfoRepository;
-    @Autowired
     private MovieTicketRepository movieTicketRepository;
-    @Autowired
-    private CouponRepository couponRepository;
     @Autowired
     private TimeSlotRepository timeSlotRepository;
     @Autowired
@@ -39,7 +37,11 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     @Autowired
     private MovieHallRepository movieHallRepository;
     @Autowired
+    private VIPCardRepository vipCardRepository;
+    @Autowired
     private DateUtils dateUtils;
+    @Autowired
+    private IDUtils idUtils;
 
     @Override
     public JSON getAllHisByUid(String uid) {
@@ -59,8 +61,8 @@ public class MovieTicketServiceImpl implements MovieTicketService {
                 object.put("scheduleStartTime", dateUtils.dateToStr(timeSlot.getStartTime()));
                 //hall
                 MovieHall hall = movieHallRepository.findByHallId(timeSlot.getHallId());
-                object.put("hallName",hall.getHallName());
-                object.put("type",hall.getCategory());
+                object.put("hallName", hall.getHallName());
+                object.put("type", hall.getCategory());
 
                 //seats
                 JSONArray seats = new JSONArray();
@@ -86,4 +88,110 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
+
+    @Override
+    public JSON orderRefund(String userId, String orderId) {
+        try {
+            //get vip card
+            VIPCard vipCard = vipCardRepository.findByUserId(userId);
+            //get order by order id
+            Order order = orderRepository.findOrderByOrderId(orderId);
+            if (0 != order.getState()) {//无法退票
+                return Response.fail(ResponseType.REFUND_DENY);
+            }
+            //update remain value
+            vipCard.setRemainValue(vipCard.getRemainValue() + order.getExpense());
+            //update the state
+            order.setState(1);
+
+            orderRepository.save(order);
+            vipCardRepository.save(vipCard);
+            return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON orderCancel(String orderId) {
+        try {
+            //get order by order id
+            Order order = orderRepository.findOrderByOrderId(orderId);
+            if (0 != order.getState()) {//无法退票
+                return Response.fail(ResponseType.REFUND_DENY);
+            }
+            //update the state
+            order.setState(1);
+            orderRepository.save(order);
+            return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON orderConfirm(JSONObject req) {
+        try {
+            String uid = req.getString("userId");
+            String shceduleId = req.getString("scheduleId");
+            Date date = dateUtils.strToDate("confirmTime", DateStrPattern.SECONDS.getPat());
+            JSONArray jsonArray = req.getJSONArray("seats");
+            List<String> seats = jsonArray.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toList());
+            Order order = new Order();
+            order.setUserId(uid);
+            order.setConfirmDate(date);
+            order.setOrderId(idUtils.getUUID32());
+            orderRepository.save(order);
+            //更新所有的电影票
+            seats.forEach(item -> {
+                MovieTicket movieTicket = new MovieTicket();
+                movieTicket.setTicketId(idUtils.getUUID32());
+                movieTicket.setOrderId(order.getOrderId());
+                movieTicket.setPosition(item);
+                movieTicket.setSlotId(shceduleId);
+                movieTicketRepository.save(movieTicket);
+            });
+            //添加一个orderId
+            JSONObject res = new JSONObject();
+            res.put("orderId", order.getOrderId());
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON orderConsume(JSONObject req) {
+        try {
+            String uid = req.getString("userId");
+            double consumption = req.getDouble("consumption");
+            String oid = req.getString("orderId");
+            Order order = orderRepository.findOrderByOrderId(oid);
+            VIPCard card = vipCardRepository.findByUserId(uid);
+
+            if (2 != order.getState() || card.getRemainValue() < consumption) { //支付失败
+                return Response.fail(ResponseType.CONSUME_FAIL);
+            }
+
+            card.setRemainValue(card.getRemainValue() - consumption);
+            vipCardRepository.save(card); //save the card
+            order.setState(0);            //set paid
+            orderRepository.save(order);
+            JSONObject ans = new JSONObject();
+            ans.put("cardBalance", order.getExpense());
+            return Response.success(ans);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+
 }

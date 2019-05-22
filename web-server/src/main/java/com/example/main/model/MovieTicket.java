@@ -11,8 +11,7 @@ public class MovieTicket implements Serializable {
     private String ticketId;//ticketId
     private String slotId;  //场次
     private String position;//座位
-    private int status;     //状态
-    private double price;   //实际付款
+//    private double price;   //实际付款
     private String orderId;//ticketId
 
 
@@ -25,18 +24,6 @@ public class MovieTicket implements Serializable {
     public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }
-
-
-    @Basic
-    @Column(name = "status")
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
 
     @Basic
     @Column(name = "slot_id", length = 32)
@@ -73,15 +60,6 @@ public class MovieTicket implements Serializable {
         return Objects.hash(ticketId, slotId, position);
     }
 
-    @Basic
-    @Column(name = "price")
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     @Basic
     @Column(name = "order_id", length = 32)
