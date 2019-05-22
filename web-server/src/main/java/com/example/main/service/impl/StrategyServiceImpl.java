@@ -82,7 +82,6 @@ public class StrategyServiceImpl implements StrategyService {
             List<VIPStrategy> strategies =
                     vipStrategyRepository.findAll();
             JSONArray array = new JSONArray();
-            JSONObject ans = new JSONObject();
 
             strategies.forEach(item -> {
                 JSONObject object = new JSONObject();
@@ -92,8 +91,7 @@ public class StrategyServiceImpl implements StrategyService {
                 object.put("discount", item.getDiscount());
                 array.add(object);
             });
-            ans.put("vipRank", array);
-            return Response.success(ans);
+            return Response.success(array);
         } catch (NullPointerException e) {
             return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
@@ -126,9 +124,22 @@ public class StrategyServiceImpl implements StrategyService {
         } catch (NullPointerException e) {
             return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
-
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
+    }
+
+    @Override
+    public JSON getRefundStrategy(JSONObject req) {
+        try {
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON updateRefundStrategy(JSONObject req) {
+        return null;
     }
 
 

@@ -15,11 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice // 这个注解是指这个类是处理其他controller抛出的异常
 public class ControllerExceptionHandler {
-    //这个注解是指当controller中抛出这个指定的异常类的时候，都会转到这个方法中来处理异常
     @ExceptionHandler(Exception.class)
-    //将返回的值转成json格式的数据
     @ResponseBody
-    //返回的状态码
 //    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)     //服务内部错误
     public ExceptionResponse handleException(HttpServletRequest request, HttpServletResponse response,
                                              Exception ex) {

@@ -1,6 +1,7 @@
 package com.example.main.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public interface HallService {
     /**
@@ -17,4 +18,9 @@ public interface HallService {
      * 获取影厅信息
      * */
     JSON getHallList();
+
+    /**
+     * 更新影厅信息
+     * */
+    JSON updateHall(JSONObject req);
 }

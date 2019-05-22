@@ -24,6 +24,7 @@ public interface StrategyService {
      * 删除优惠策略
      */
     JSON removeCouponStrategy(JSONObject req);
+    //------------------------------------------------------------------------
 
     /**
      * 获取会员策略
@@ -32,7 +33,23 @@ public interface StrategyService {
 
     /**
      * 修改会员策略
+     *
      * @param req
      */
     JSON updateVIPStrategy(JSONArray req);
+
+
+    //----------------------------------------------------------------------
+
+    /**
+     * 获取退票策略
+     */
+    JSON getRefundStrategy(JSONObject req);
+
+    /**
+     * 修改退票策略
+     * @param req
+     */
+    JSON updateRefundStrategy(JSONObject req);
+
 }

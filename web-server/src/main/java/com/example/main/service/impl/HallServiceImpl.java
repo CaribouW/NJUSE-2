@@ -83,11 +83,23 @@ public class HallServiceImpl implements HallService {
                 object.put("type", item.getCategory());
                 array.add(object);
             });
-            JSONObject ans = new JSONObject();
-            ans.put("list", array);
-            return Response.success(ans);
+            return Response.success(array);
         } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
 
+    @Override
+    public JSON updateHall(JSONObject req) {
+        try {
+            MovieHall movieHall = movieHallRepository.findByHallId(req.getString("hallId"));
+            movieHall.setState(req.getInteger("state"));
+            movieHall.setHallName(req.getString("name"));
+            movieHall.setSize(req.getString("size"));
+            movieHall.setCategory(req.getString("category"));
+            movieHallRepository.save(movieHall);
+            return Response.success(null);
+        } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
