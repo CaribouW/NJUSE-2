@@ -5,14 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 
 public interface HallService {
     /**
-     * 得到所有排片信息
-     * */
-    JSON getAllSchedule();
-
-    /**
      * 管理员得到所有排片信息
      * */
-    JSON adminAllSchedule();
+    JSON getAllSlots();
 
     /**
      * 获取影厅信息

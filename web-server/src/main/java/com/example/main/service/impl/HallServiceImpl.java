@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.ResponseType;
-import com.example.main.core.paging.PagingVO;
 import com.example.main.core.response.Response;
 import com.example.main.model.MovieHall;
 import com.example.main.model.TimeSlot;
@@ -17,7 +16,6 @@ import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.Kernel;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,13 +37,7 @@ public class HallServiceImpl implements HallService {
     private IDUtils idUtils;
 
     @Override
-    public JSON getAllSchedule() {
-
-        return null;
-    }
-
-    @Override
-    public JSON adminAllSchedule() {
+    public JSON getAllSlots() {
         try {
             List<TimeSlot> list = timeSlotRepository.findAll();
             //按照时间由小到大
@@ -53,22 +45,21 @@ public class HallServiceImpl implements HallService {
             JSONArray array = new JSONArray();
             list.forEach(item -> {
                 JSONObject object = new JSONObject();
-
+                object.put("slotID", item.getSlotId());
                 object.put("startTime", dateUtils.dateToStr(item.getStartTime()));
                 object.put("endTime", dateUtils.dateToStr(item.getEndTime()));
-
+                object.put("price", item.getTicketPrize());
+                array.add(object);
             });
             JSONObject ans = new JSONObject();
             //put arr
             ans.put("slot", array);
-
             return Response.success(ans);
-
         } catch (Exception e) {
-
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
+
 
     @Override
     public JSON getHallList() {
