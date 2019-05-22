@@ -87,14 +87,30 @@
           </el-row>
         </div>
         <div class="success_footer">
-          <el-collapse v-model="activeNames" @change="handleChange">
-            <el-collapse-item title="观影须知" name="1">
-              <div>1、请预先购票，凭票入场,对号入座，并保留电影票；1.3米以下儿童观看3D电影需购票。</div>
-              <div>2、请爱护影厅内的设施。</div>
-              <div> 3、影厅内严禁吸烟、大声喧哗。</div>
-              <div> 4、影厅内严禁录像、拍照。</div>
-            </el-collapse-item>
-          </el-collapse>
+          <el-row>
+            <el-col :span="12"><div class="grid-content bg-purple" style="padding:0;">
+              <el-collapse v-model="activeNames" @change="handleChange">
+                <el-collapse-item title="观影须知" name="1">
+                  <div>1、请预先购票，凭票入场,对号入座，并保留电影票；1.3米以下儿童观看3D电影需购票。</div>
+                  <div>2、请爱护影厅内的设施。</div>
+                  <div> 3、影厅内严禁吸烟、大声喧哗。</div>
+                  <div> 4、影厅内严禁录像、拍照。</div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="success_footer_right">
+                <div class="success_total">
+                共2张   合计：¥96.00
+                </div>
+                <div class="buttons" style="padding-top:5px;">
+                  <el-button round @click="goInfo()">  退票</el-button>
+                  <el-button round @click="goInfo()">改票</el-button>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -134,7 +150,7 @@ export default {
   }  
 .success{
   border:1px solid #CFF9FE;
-  height: 475px; 
+  height: 400px; 
   border-radius: 15px;
   padding-left: 40px;
   text-align: left;
@@ -153,10 +169,12 @@ export default {
   }
   .bg-purple-light {
     padding-top: 25px;
+    font-size: 14px;
+    height: 48px;
   }
   .grid-content {
     border-radius: 4px;
-    min-height: 36px;
+    // min-height: 36px;
     // margin-left:20px
   }
   .row-bg {
@@ -199,9 +217,23 @@ export default {
   .el-collapse-item__header{
     background-color: transparent;
     border: 0;
+    height: 25px;
   }
   .el-collapse{
     border: 0;
+  }
+  .el-button{
+    // margin-top: 20px;
+    border-radius: 9px;
+    padding: 4px 15px;
+    background-color: rgba($color: #131C1C, $alpha: 0.5);
+    font-size: 14px;
+    border-color: #CFF9FE
+  }
+  .success_footer_right{
+    text-align: right;
+    margin-right:10%; 
+    font-size: 14px;
   }
 }
 </style>
