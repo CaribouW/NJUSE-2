@@ -25,7 +25,7 @@
     components: {QuickTable},
     data() {
       return {
-        date: '',
+        date: new Date(),
       }
     },
     mounted() {
@@ -50,7 +50,7 @@
     .quick-container {
       background: url('../../assets/images/homepage/Assets.png') no-repeat;
       background-size: 100% 100%;
-      min-height: 520px;
+      min-height:550px;
       height: fit-content;
       box-sizing: border-box;
       padding: 4% 70px 0 70px;
@@ -72,7 +72,6 @@
         .table {
           width: 85%;
           margin: 14px auto 25px;
-          overflow: hidden;
         }
       }
     }
