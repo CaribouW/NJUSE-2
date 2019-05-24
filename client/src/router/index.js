@@ -27,7 +27,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/index',
+      redirect: '/index',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -92,43 +92,43 @@ export default new Router({
       component: statistic
     },
     {
-      path:'/user/coupon',
-      name:'Coupon',
-      component:Coupon
+      path: '/user/coupon',
+      name: 'Coupon',
+      component: Coupon
     },
     {
-      path:'/user/favor',
-      name:'Favor',
-      component:Favor
+      path: '/user/favor',
+      name: 'Favor',
+      component: Favor
     },
     {
-      path:'/user/modifyinfo',
-      name:'ModifyInfo',
-      component:ModifyInfo
+      path: '/user/modifyinfo',
+      name: 'ModifyInfo',
+      component: ModifyInfo
     },
     {
-      path:'/user/helper/preferentialpolicy',
-      name:'PreferentialPolicy',
-      component:PreferentialPolicy
+      path: '/user/helper/preferentialpolicy',
+      name: 'PreferentialPolicy',
+      component: PreferentialPolicy
     },
     {
-      path:'/user/helper/notice',
-      name:'Notice',
-      component:Notice
+      path: '/user/helper/notice',
+      name: 'Notice',
+      component: Notice
     },
     {
-      path:'/user/helper/contact',
-      name:'Contact',
-      component:Contact
+      path: '/user/helper/contact',
+      name: 'Contact',
+      component: Contact
     },
     {
-      path:'/user/history',
-      name:'History',
-      component:History
+      path: '/user/history',
+      name: 'History',
+      component: History
     },
     {
-      path:'/search',
-      name:'Search',
+      path: '/search',
+      name: 'Search',
       component: Search
     },
   ]
