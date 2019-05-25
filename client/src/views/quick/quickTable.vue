@@ -4,38 +4,48 @@
       :data="tableData"
       border
       class="table"
-      fit="true"
       style="width: 100%;">
       <el-table-column
         prop="date"
         label="日期"
-        >
+        width="140"
+      >
       </el-table-column>
       <el-table-column
         prop="movieName"
         label="电影名称"
-        >
+        width="180"
+      >
       </el-table-column>
       <el-table-column
         prop="price"
         label="票价"
+        width="100"
+
       >
       </el-table-column>
       <el-table-column
         prop="category"
         label="类型"
+        width="150"
+
       >
       </el-table-column>
       <el-table-column
         prop="info"
         label="座位剩余情况"
+        width="150"
+
       ></el-table-column>
       <el-table-column
         prop="refund"
         label="退改票"
+        width="160"
+
       ></el-table-column>
       <el-table-column
         prop="btn"
+        width="100"
       >
         <el-button
           type="text"
@@ -135,8 +145,10 @@
     font-family: "PingFangSC-Medium", serif;
     font-size: 18px;
     font-weight: 400;
+
     .table {
       background-color: transparent;
+
       .cell {
         text-align: center;
       }
@@ -144,12 +156,13 @@
 
     .el-table {
       position: relative;
-      left: -5%;
-      border-collapse: collapse;
+      /*border-collapse: collapse;*/
       overflow: hidden;
-      th.gutter{
-        display: table-cell!important;
+
+      th.gutter {
+        display: table-cell !important;
       }
+
       .el-table__header {
         th {
           background-color: transparent;
