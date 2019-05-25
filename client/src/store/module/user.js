@@ -1,9 +1,9 @@
-import {getUserInfo, userLogin, register} from '../../service/userService.js'
+import {getUserInfo, userLogin, register, logout} from '../../service/userService.js'
 
 const state = {
   basicInfo: {
-    account: 'Null and None',
-    name: 'yyp ',
+    account: 'Null and None a',
+    name: 'yyp a',
     userId: '',
     birth: '1998',
     roleName: ''
@@ -21,7 +21,6 @@ const actions = {
         state.basicInfo = res;
         return state.basicInfo
       });
-
   },
   userLogin: ({commit, state}, payload) => {
     return userLogin({
@@ -29,11 +28,12 @@ const actions = {
       password: payload.password
     }).then(response => {
       if (typeof response === "number") {
+        console.log('error occur');
         return response;
       } else {
         //更新model
         commit('updateUser', {
-          userId: response.userId,
+          userId: response.id,
           account: response.account,
           roleName: response.roleName,
         });
@@ -55,6 +55,16 @@ const actions = {
         return {
           userId: getUserInfo(state).userId,
         };
+      }
+    })
+  },
+  userLogout: ({commit, state}, payload) => {
+    return logout({
+      userId: payload.userId
+    }).then(response => {
+      if (typeof response === "number") {
+        console.log('error');
+        return response
       }
     })
   }

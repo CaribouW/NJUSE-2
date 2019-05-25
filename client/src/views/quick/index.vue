@@ -15,8 +15,9 @@
           <quick-table :date="this.date"></quick-table>
           <el-button v-on:click="changeName">change user name</el-button>
           <el-input v-model="name"></el-input>
-          <el-tag>{{user.account}}</el-tag>
+          <el-tag>{{user}}</el-tag>
           <el-button v-on:click="handleCheck">check ans</el-button>
+          <el-button v-on:click="logout">logout</el-button>
         </div>
       </div>
     </div>
@@ -37,7 +38,7 @@
       }
     },
     methods: {
-      ...mapActions(['userLogin']),
+      ...mapActions(['userLogin', 'userLogout']),
       changeName: function () {
         this.$store.commit('updateUser', {
           name: this.name
@@ -49,9 +50,18 @@
           account: 'yyp',
           password: '123',
         }).then(response => {
-          console.log(u.id);
+
+        });
+
+      },
+      logout: function () {
+        this.userLogout({
+          userId: this.user.userId
+        }).then(res => {
+          console.log(res);
         });
       }
+
     },
     computed: {
       ...mapGetters({

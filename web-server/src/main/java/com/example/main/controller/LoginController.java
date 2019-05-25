@@ -21,7 +21,7 @@ public class LoginController {
         return loginService.register(req.getString("account"), req.getString("password"));
     }
 
-    @DeleteMapping(value = "/user/login")
+    @DeleteMapping(value = "/user/logout")
     public JSON userLogout(@RequestParam(name = "userId") String uid) {
         return loginService.logout(uid);
     }

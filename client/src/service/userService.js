@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {dealResponse} from './baseService.js'
 
 const baseIP = 'http://localhost:18080';
 
@@ -13,7 +14,7 @@ export function getUserInfo(uid) {
     withCredentials: true,
     baseURL: baseIP
   }).then(res => {
-    return res.data;
+    return dealResponse(res);
   });
 }
 
@@ -28,16 +29,11 @@ export function userLogin({account, password}) {
     baseURL: baseIP,
     withCredentials: true,
     // responseType: 'application/json'
-  }).then(res => {
-    return res.data;
-  }).then(res => {
-    if (res.status === 200) {
-      return res.data
-    } else {
-      return res.status
-    }
-  });
+  }).then(response => {
+    return dealResponse(response);
+  })
 }
+
 /**
  * 用户注册
  * */
@@ -49,12 +45,25 @@ export function register({account, password}) {
     baseURL: baseIP,
     withCredentials: true,
     responseType: 'application/json'
-  }).then(res => {
-    return res.data;
-  }).then(res => {
-    if (res.status === 200)
-      return res.data;
-    else
-      return res.status
+  }).then(response => {
+    return dealResponse(response);
   })
 }
+
+/**
+ * 用户登出
+ * */
+export function logout({userId}) {
+  return axios.delete('/user/logout', {
+    params: {
+      userId: userId
+    },
+    responseType: 'application/json',
+    baseURL: baseIP,
+    withCredentials: true,
+  }).then(res => {
+    return dealResponse(res);
+  });
+}
+
+
