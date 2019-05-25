@@ -11,8 +11,8 @@
     <div class="header_right">
       <el-input
         placeholder="Search"
-        prefix-icon="el-icon-search"
-        v-model="search">
+        v-model="keyword" @keyup.enter.native="search()">
+        <i slot="prefix" class="el-input__icon el-icon-search" @click="search()"></i>
       </el-input>
       <div class="logined" v-if="logined">
         <img src="@/assets/images/header/fullsizerender(4).png" alt="">
@@ -45,7 +45,7 @@ import mock from '@/mock/mock.js'
 export default {
   data () {
     return {
-      search: '',
+      keyword: '',
       // 登陆or未登录
       logined: true,
       showDropdown: false,
@@ -114,6 +114,9 @@ export default {
         this.$message.error('出错啦，请稍后再试')
       })
       this.$router.push('/index')
+    },
+    search () {
+      console.log('search')
     }
   },
   // 保证header在登录注册时不会显示
@@ -165,6 +168,7 @@ export default {
       margin-right: 60px;
       border-radius: 10px;
       >input{background-color: #2E2D2C;border: none}
+      .el-icon-search{cursor: pointer;}
     }
     .logined{
       >img:first-of-type{
