@@ -13,6 +13,7 @@ import com.example.main.repository.*;
 import com.example.main.service.LoginService;
 import com.example.main.utils.IDUtils;
 import com.example.main.utils.SignUpHelper;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -53,9 +54,11 @@ public class LoginServiceImpl implements LoginService {
                 res.put("account", account);
                 res.put("roleName", roleRepository.findRoleByUserID(user.getUserId()).getRoleName());
                 return Response.success(res);
+            } catch (IncorrectCredentialsException e) {
+                return Response.fail(ResponseType.PASSWORD_ERROR);
             } catch (Exception e) {
                 e.printStackTrace();
-                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+                return Response.fail(ResponseType.UNKNOWN_ERROR);
             }
         } else {
             return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);

@@ -1,10 +1,11 @@
-import axios from 'axios'
+import {getUserInfo, userLogin} from '../../service/userService.js'
 
 const state = {
   basicInfo: {
-    name: 'yyp nb',
-    birth: '1998',
     account: 'Null and None',
+    name: 'yyp nb',
+    userId: '',
+    birth: '1998',
   }
 };
 
@@ -12,11 +13,35 @@ const getters = {
   getBasicInfo: state => state.basicInfo
 };
 
-const actions = {};
+const actions = {
+  getUserInfo: ({commit, state}, userId) => {
+    const data = getUserInfo()
+      .then(res => {
+        state.basicInfo = res;
+        return state.basicInfo
+      });
+
+  },
+  userLogin: ({commit, state}, payload) => {
+    return  userLogin({
+      account: payload.account,
+      password: payload.password
+    }).then(response => {
+      if (typeof response === "number") {
+        console.log(response)
+      } else {
+        commit('updateUser', response);
+        return getUserInfo(state).userId;
+      }
+    });
+
+  }
+};
 
 const mutations = {
   updateUser: (state, payload) => {
-    state.basicInfo = payload.user
+    console.log(payload);
+    state.basicInfo = payload
   },
 };
 export default {

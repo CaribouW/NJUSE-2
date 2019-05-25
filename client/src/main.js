@@ -12,13 +12,14 @@ import 'element-theme-dark';
 
 // 加入axios、mock
 import axios from 'axios'
+import store from './store/store'
 import Mock from './mock/mock.js'
-Vue.prototype.$axios = axios
 
+Vue.prototype.$axios = axios;
 // 加入vuex
-import store from './store/store.js'
 
 import Global from '../config/global.js'
+
 Vue.prototype.GLOBAL = Global
 
 Vue.config.productionTip = false
@@ -30,6 +31,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

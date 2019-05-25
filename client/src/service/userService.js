@@ -14,8 +14,6 @@ export function getUserInfo(uid) {
     baseURL: baseIP
   }).then(res => {
     return res.data;
-  }).then(res => {
-    console.log(res)
   });
 }
 
@@ -33,10 +31,10 @@ export function userLogin({account, password}) {
   }).then(res => {
     return res.data;
   }).then(res => {
-    if(res.status === 200){
-        return res.data
-    }else{
-        return res.status
+    if (res.status === 200) {
+      return res.data
+    } else {
+      return res.status
     }
-  })
+  });
 }
