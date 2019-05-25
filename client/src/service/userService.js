@@ -6,7 +6,7 @@ const baseIP = 'http://localhost:18080';
 /**
  * 获取用户信息
  * */
-export function getUserInfo(uid) {
+export function getUserInfo({uid}) {
   return axios.get('', {
     params: {
       userId: uid

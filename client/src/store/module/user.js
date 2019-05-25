@@ -15,14 +15,15 @@ const getters = {
 };
 
 const actions = {
-  getUserInfo: ({commit, state}, userId) => {
+  async getUserInfo({dispatch, commit, state}, userId) {
+    await dispatch('userLogin', userId);
     const data = getUserInfo()
       .then(res => {
         state.basicInfo = res;
         return state.basicInfo
       });
   },
-  userLogin: ({commit, state}, payload) => {
+  async userLogin({commit, state}, payload) {
     return userLogin({
       account: payload.account,
       password: payload.password

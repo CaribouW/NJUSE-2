@@ -2,12 +2,12 @@
 import {doGet, doDelete, doPost, doPut, dealResponse} from "./baseService";
 
 //用户消耗优惠券
-export function consumeCoupon(payload) {
+export function consumeCoupon({userId, couponId}) {
   return doPut({
     url: '/coupon',
     body: {
-      userId: payload.userId,
-      couponId: payload.couponId
+      userId: userId,
+      couponId: couponId
     }
   }).then(res => {
     return dealResponse(res)
@@ -15,11 +15,11 @@ export function consumeCoupon(payload) {
 }
 
 //获取用户拥有的优惠券信息
-export function getCouponList(payload) {
+export function getCouponList({userId}) {
   return doGet({
     url: '/coupon/list',
     params: {
-      userId: payload.userId
+      userId: userId
     }
   }).then(res => {
     return dealResponse(res)

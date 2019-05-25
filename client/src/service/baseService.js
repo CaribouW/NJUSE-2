@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const baseIP = 'http://localhost:18080';
 
-export function dealResponse(response) {
+export async function dealResponse(response) {
   const body = response.data;
   if (body.status === 200)
     return body.data;
@@ -10,7 +10,7 @@ export function dealResponse(response) {
     return body.status;
 }
 
-export function doGet({url, params}) {
+export async function doGet({url, params}) {
   return axios.get(url, {
     params: params,
     withCredentials: true,
@@ -19,7 +19,7 @@ export function doGet({url, params}) {
   })
 }
 
-export function doPost({url, params, body}) {
+export async function doPost({url, params, body}) {
   return axios.post(url, body, {
     params: params,
     withCredentials: true,
@@ -28,7 +28,7 @@ export function doPost({url, params, body}) {
   })
 }
 
-export function doPut({url, params, body}) {
+export async function doPut({url, params, body}) {
   return axios.put(url, body, {
     params: params,
     withCredentials: true,
@@ -37,7 +37,7 @@ export function doPut({url, params, body}) {
   })
 }
 
-export function doDelete({url, params, body}) {
+export async function doDelete({url, params, body}) {
   return axios.delete(url, body, {
     params: params,
     withCredentials: true,
