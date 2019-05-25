@@ -1,11 +1,12 @@
-import {getUserInfo, userLogin} from '../../service/userService.js'
+import {getUserInfo, userLogin, register} from '../../service/userService.js'
 
 const state = {
   basicInfo: {
     account: 'Null and None',
-    name: 'yyp nb',
+    name: 'yyp ',
     userId: '',
     birth: '1998',
+    roleName: ''
   }
 };
 
@@ -23,25 +24,44 @@ const actions = {
 
   },
   userLogin: ({commit, state}, payload) => {
-    return  userLogin({
+    return userLogin({
       account: payload.account,
       password: payload.password
     }).then(response => {
       if (typeof response === "number") {
-        console.log(response)
+        return response;
       } else {
-        commit('updateUser', response);
-        return getUserInfo(state).userId;
+        //更新model
+        commit('updateUser', {
+          userId: response.userId,
+          account: response.account,
+          roleName: response.roleName,
+        });
+        return state
       }
     });
 
+  },
+  userSignUp: ({commit, state}, payload) => {
+    return register({
+      account: payload.account,
+      password: payload.password
+    }).then(response => {
+      if (typeof response === "number") {
+        console.log(response);
+        return response;
+      } else {
+        commit('updateUser', response);
+        return {
+          userId: getUserInfo(state).userId,
+        };
+      }
+    })
   }
 };
-
 const mutations = {
   updateUser: (state, payload) => {
-    console.log(payload);
-    state.basicInfo = payload
+    state.basicInfo = payload;
   },
 };
 export default {

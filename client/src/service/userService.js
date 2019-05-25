@@ -27,7 +27,7 @@ export function userLogin({account, password}) {
   }, {
     baseURL: baseIP,
     withCredentials: true,
-    responseType: 'application/json'
+    // responseType: 'application/json'
   }).then(res => {
     return res.data;
   }).then(res => {
@@ -37,4 +37,24 @@ export function userLogin({account, password}) {
       return res.status
     }
   });
+}
+/**
+ * 用户注册
+ * */
+export function register({account, password}) {
+  return axios.post('/user/register', {
+    account: account,
+    password: password,
+  }, {
+    baseURL: baseIP,
+    withCredentials: true,
+    responseType: 'application/json'
+  }).then(res => {
+    return res.data;
+  }).then(res => {
+    if (res.status === 200)
+      return res.data;
+    else
+      return res.status
+  })
 }

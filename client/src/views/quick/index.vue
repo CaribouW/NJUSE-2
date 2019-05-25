@@ -15,6 +15,7 @@
           <quick-table :date="this.date"></quick-table>
           <el-button v-on:click="changeName">change user name</el-button>
           <el-input v-model="name"></el-input>
+          <el-tag>{{user.account}}</el-tag>
           <el-button v-on:click="handleCheck">check ans</el-button>
         </div>
       </div>
@@ -25,7 +26,6 @@
 <script lang="js">
   import QuickTable from "./quickTable";
   import {mapGetters, mapActions, mapMutations, mapState} from 'vuex'
-  import {userLogin} from "../../service/userService";
 
   export default {
     components: {QuickTable},
@@ -33,7 +33,7 @@
       return {
         date: new Date(),
         name: '',
-        this_: this
+        this_: this,
       }
     },
     methods: {
@@ -44,11 +44,12 @@
         })
       },
       handleCheck: function () {
-        userLogin({
-          account: 'admin',
-          password: '123'
+        let u = this.user;
+        this.userLogin({
+          account: 'yyp',
+          password: '123',
         }).then(response => {
-          console.log(response)
+          console.log(u.id);
         });
       }
     },
