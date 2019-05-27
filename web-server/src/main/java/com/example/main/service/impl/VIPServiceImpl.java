@@ -14,9 +14,7 @@ import com.example.main.repository.VIPRechargeHistoryRepository;
 import com.example.main.service.VIPService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

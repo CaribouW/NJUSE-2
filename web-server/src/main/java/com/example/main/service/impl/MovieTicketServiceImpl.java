@@ -11,11 +11,8 @@ import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.krb5.KdcComm;
-import sun.security.krb5.internal.Ticket;
 
 import java.util.Date;
 import java.util.List;

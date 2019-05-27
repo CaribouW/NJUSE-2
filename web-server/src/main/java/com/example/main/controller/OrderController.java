@@ -2,10 +2,8 @@ package com.example.main.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.main.model.MovieTicket;
 import com.example.main.service.HallService;
 import com.example.main.service.MovieTicketService;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
