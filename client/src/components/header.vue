@@ -116,12 +116,12 @@ export default {
       this.$router.push('/index')
     },
     search () {
-      console.log('search')
+      this.$router.push('/search')
     }
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    console.log(localStorage.getItem('roleId'))
+    // console.log(localStorage.getItem('roleId'))
     if (localStorage.getItem('roleId') !== '0') {
       this.logined = true
     } else {

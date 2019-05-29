@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="search_movie">
+    <div class="search_movie" v-for="i in 6">
       <img class="search_movie_poster" src="@/assets/images/search/a_100294605_m_601_m1_180_236.jpg" alt="">
       <div class="search_movie_info">
         <div>我中国少年说第2季 2019</div>
@@ -10,11 +10,20 @@
         <div>查看资料</div>
       </div>
     </div>
+    <div class="search_page">
+      <el-pagination
+        :page-size="20"
+        :pager-count="11"
+        layout="prev, pager, next"
+        :total="1000">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
 .search{
+  padding-top: 30px;
   &_movie{
     width: inherit;
     margin: 0 auto;
@@ -22,28 +31,44 @@
     width: 800px;
     font-size:0;
     background-color: #2B2A28;
+    margin-bottom: 20px;
     &_poster{
       height: 236px;
       width: 180px;
       display: inline-block;
+      cursor: pointer;
     }
     &_info{
       display: inline-block;
       height: inherit;
       width: 620px;
+      padding: 10px 20px;
+      box-sizing: border-box;
       font-size: initial;
       vertical-align: top;
       color: white;
+      text-align: left;
+      >div{line-height: 40px;}
       >div:last-of-type{
         background-color: #D7F8FD;
+        margin-top: 10px;
         color: black;
         width: 110px;
         height: 40px;
         line-height: 40px;
         border-radius: 30px;
         cursor: pointer;
+        text-align: center;
       }
       >div:last-of-type:hover{}
+    }
+  }
+  &_page {
+    margin: 30px 0;
+    .el-pagination{
+      color: white;
+      li{background-color: #201f1d;font-size: 16px;}
+      button{background-color: #201f1d;}
     }
   }
 }
