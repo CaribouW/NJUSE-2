@@ -3,7 +3,7 @@
     <div class="homepage_poster">
       <el-carousel :interval="4000" type="card" height="400px" indicator-position="none"> 
         <el-carousel-item v-for="item in posters" :key="item.index">
-          <img :src="item.url" alt="">
+          <img :src="item.url" alt="" @click="selectMovie(item.id)">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -26,7 +26,7 @@
             <i class="el-icon-d-arrow-right" @click="changePage()"></i>
           </div>
           <div class="homepage_movie_middle_right_movie" v-for="movie in movieList" :key="movie.id">
-            <img :src="movie.url" alt="">
+            <img :src="movie.url" alt="" @click="selectMovie(movie.id)">
             <span>{{movie.name}}</span>
           </div>
           </div>
@@ -75,6 +75,15 @@ export default {
     changePage () {
       // 翻页
     },
+    selectMovie(id) {
+      this.$router.push({
+        path: '/movie/detail',
+        query: {
+          id: '1'
+          // id: id
+        }
+      })
+    },
     getMovie: function (data) {
       this.selected = data.text
       this.type.forEach(function(obj){
@@ -82,7 +91,7 @@ export default {
         });
         data.isSelected = !data.isSelected;
       }
-  }
+    }
 }
 </script>
 

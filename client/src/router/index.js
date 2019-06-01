@@ -20,6 +20,7 @@ import Notice from '@/views/user/helper/notice.vue'
 import Contact from '@/views/user/helper/contact.vue'
 import History from '@/views/user/history.vue'
 import Search from '@/views/search/index.vue'
+import MovieDetail from '@/views/movie/index.vue'
 
 Vue.use(Router)
 
@@ -131,5 +132,10 @@ export default new Router({
       name: 'Search',
       component: Search
     },
+    {
+      path: '/movie/detail',
+      name: 'MovieDetail',
+      component: MovieDetail
+    }
   ]
 })
