@@ -23,7 +23,7 @@ public class MovieInfo implements Serializable {
     private String stills;  //剧照,用逗号隔开
     private String video;   //电影预告片url
     private String videoList; //视频列表,逗号隔开
-    private Integer category;//类型,给予枚举类
+    private String  category;//类型,给予枚举类
     private String nation;  //国家
     private String lang;    //语言
     private String briefIntro;//简介
@@ -106,11 +106,11 @@ public class MovieInfo implements Serializable {
 
     @Basic
     @Column(name = "category")
-    public Integer getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
