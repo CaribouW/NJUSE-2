@@ -76,6 +76,7 @@ export default {
       // 翻页
     },
     selectMovie(id) {
+      // this.$store.dispatch('getUserInfo')
       this.$router.push({
         path: '/movie/detail',
         query: {
