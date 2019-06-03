@@ -1,7 +1,7 @@
 <template>
   <div class="movie">
     <div class="movie_poster">
-      <img src="@/assets/images/movie\海王.png" alt="@/assets/images/movie\海王.png">
+      <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
       <div class="movie_poster_mark">
         标记为喜爱
       </div>
