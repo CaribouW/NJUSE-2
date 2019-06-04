@@ -79,26 +79,54 @@
         </el-tabs>
       </div>
     </div>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="60%"
-      :before-close="handleClose">
-      <span>这是一段信息</span>
-      <div slot="title" class="header-title">
-          <img src="@/assets/images/movie/title.png" alt="">
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    <div class="movie_purchase">
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="60%"
+        :before-close="handleClose">
+        <div class="movieList">
+          <img src="@/assets/images/movie/timg.png" alt="" v-for="i in 5">
+        </div>
+        <div class="movieInfo">
+          <span>{{moviePurchase.ChineseName}}</span> <span>豆瓣评分 {{moviePurchase.score}}</span>
+          <span>{{moviePurchase.type}}</span><span>{{moviePurchase.duration}}分钟</span>
+        </div>
+        <div class="movieDate">
+          <span v-for="each in moviePurchase.date">{{each}}</span>
+        </div>
+        <div class="movieTime">
+          <el-carousel :interval="0" type="card" height="430px" indicator-position="none" :autoplay="false" :loop="false"> 
+            <el-carousel-item v-for="item in moviePurchase.date" :key="item.index">
+              <span class="medium">2019-{{ item }}</span>
+              <div class="movieTime_ticket">
+                <ticket v-for="i in 8" :key="i"></ticket>
+              </div>
+              
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+        <div slot="title" class="header-title">
+            <img src="@/assets/images/movie/title.png" alt="">
+        </div>
+        
+        <!-- <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span> -->
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 
 <script>
+import ticket from '@/views/movie/components/ticket.vue'
+
 export default {
+  components: {
+    ticket
+  },
   data () {
     return {
       dialogVisible: false,
@@ -109,7 +137,11 @@ export default {
         EnglishName: 'Aquaman',duration: '143',
         productionCompany: '华纳',showTime: '2018-12-7',
         distributionCompany: '华纳',director: '温子仁',
-        language: '英语', imdb: 'tt1477834'
+        language: '英语', imdb: 'tt1477834', score: 9.1
+      },
+      moviePurchase: {
+        ChineseName: '海王', score: 9.1, type:'科幻/动作', duration: '143',
+        date: ['05-09', '05-10', '05-11', '05-12', '05-13']
       }
     }
   }
@@ -234,6 +266,79 @@ export default {
             margin-bottom: 20px;
           }
         }
+      }
+    }
+  }
+  &_purchase{
+    .el-dialog{
+      background-color: #21201E;
+      border-radius: 15px;
+      border: 1.5px solid #D0F3F8;
+      &__body{padding: 0;}
+    }
+    .movieList{
+      padding: 20px 0px;
+      background-color: #3C3C3A; 
+      >img{
+        width: 138px;
+        height: 207px;
+        margin: 0 10px;
+      }
+    }
+    .movieInfo{
+      margin: 10px 0;
+      >span{
+        display: inline-block;
+        padding: 5px 10px;
+        color: white;
+      }
+      >span:first-of-type{font-size: 20px;font-weight: bold;color: #CFF9FE}
+      >span:nth-of-type(2){
+        border-left: 1px solid #CFF9FE;
+        border-right: 1px solid #CFF9FE;
+        width: 100px;
+      }
+      >span:nth-of-type(3){border-right: 1px solid #CFF9FE;width: 100px;}
+    }
+    .movieDate{
+      width: 500px;
+      margin: 0 auto;
+      border-top: 2px solid #3C3C3A;
+      padding: 10px 0;
+      >span{
+        display: inline-block;
+        margin: 0 30px;
+      }
+    }
+    .movieTime{
+      // margin-bottom: 20px;
+      padding: 20px 20px;
+      .el-carousel__item{
+        background-color: #3C3C3A;
+        border-radius: 10px;
+        // width: 680px;
+        padding: 15px 40px;
+        box-sizing: border-box;
+        text-align-last: left;
+        overflow: auto;
+        text-align: left;
+      }
+      .el-carousel__item::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
+        // height: 5px;
+      }
+      .el-carousel__item::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px #CFF9FE;;
+        background: #535353;
+      }
+      .is-active{
+        width: 680px;
+        left: -115px;
+      cursor: default;
+      }
+      &_ticket{
+        >div{display: inline-block;}
       }
     }
   }

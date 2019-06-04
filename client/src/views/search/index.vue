@@ -60,7 +60,7 @@
         cursor: pointer;
         text-align: center;
       }
-      >div:last-of-type:hover{}
+      // >div:last-of-type:hover{}
     }
   }
   &_page {
