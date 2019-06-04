@@ -1,7 +1,21 @@
 <template>
     <vip_aside>
         <div class="buyCard">
-
+            <div class="card_header">  
+                <b>会员注册</b>         
+            </div>
+            <div class="card_body">
+                <div class="hint">
+                    <p>您当前还不是会员！ 点击购买会员卡</p>
+                </div>
+                <div class="card">
+                    <img src="@/assets/images/vip/huiyuanqia.png" alt="" style="width:170px;height:150px;">
+                    <p>¥300/张</p>
+                </div>
+                <div class="card_button">
+                    <el-button round style="color:#CFF9FE;">购买</el-button>
+                </div>
+            </div>
         </div>
     </vip_aside>
 </template>
@@ -31,6 +45,24 @@ export default {
     height: 790px;
     margin-bottom: 50px ;
   }
+}
+.card_header{
+    font-size: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+.hint{
+    margin-top:50px;
+}
+.el-button{
+    margin-top: 20px;
+    border-radius: 25px;
+    padding: 8px 65px;
+    background-color: rgba($color: #131C1C, $alpha: 0.5);
+    font-size: 20px;
+    color: #CFF9FE;
+    border-color: #CFF9FE;
+    width:35%
 }
 
 

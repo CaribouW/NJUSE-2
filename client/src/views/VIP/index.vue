@@ -18,7 +18,7 @@
                 </el-menu-item>
                 <el-menu-item index="2" @click="goVIPrights()">
                   <i class="VIPrights"></i>
-                  <span >会员权益</span>
+                  <span>会员权益</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
