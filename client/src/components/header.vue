@@ -15,7 +15,7 @@
         <i slot="prefix" class="el-input__icon el-icon-search" @click="search()"></i>
       </el-input>
       <div class="logined" v-if="logined">
-        <img src="@/assets/images/header/fullsizerender(4).png" alt="">
+        <img src="@/assets/images/header/fullsizerender(4).png" alt="" @click="goVIP(id)">
         <img src="@/assets/images/header/personal-image.png" alt="" @click="showDropdown = !showDropdown">
       </div>
       <div v-else>
@@ -45,6 +45,8 @@ import mock from '@/mock/mock.js'
 export default {
   data () {
     return {
+      id: '',
+      VIP: false,
       keyword: '',
       // 登陆or未登录
       logined: true,
@@ -62,6 +64,25 @@ export default {
     }
   },
   methods: {
+    goVIP(id) {
+      if (this.VIP) {
+        this.$router.push({
+          path: '/VIP/VIPInfo',
+          query: {
+            id: '1'
+            // id: id
+          }
+        })
+      } else {
+        this.$router.push({
+          path: '/VIP/buyCard',
+          query: {
+            id: '1'
+            // id: id
+          }
+        })
+      }
+    },
     goLogin() {
       this.$router.push("/login")
     },

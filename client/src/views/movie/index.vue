@@ -2,10 +2,12 @@
   <div class="movie">
     <div class="movie_poster">
       <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
+      <div class="movie_poster_name">Aquaman</div>
+      <div class="movie_poster_typeAndFavour">动作、科幻 <span>1.8万人想看</span></div>
       <div class="movie_poster_mark">
         标记为喜爱
       </div>
-      <div class="movie_poster_purchase">
+      <div class="movie_poster_purchase" @click="dialogVisible = true">
         立即购票
       </div>
     </div>
@@ -77,6 +79,20 @@
         </el-tabs>
       </div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <div slot="title" class="header-title">
+          <img src="@/assets/images/movie/title.png" alt="">
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -85,6 +101,9 @@
 export default {
   data () {
     return {
+      dialogVisible: false,
+      name: 'fff',
+      age: 20,
       movieInfo: {
         ChineseName: '海王',type:'科幻/动作',
         EnglishName: 'Aquaman',duration: '143',
@@ -115,12 +134,25 @@ export default {
       border: 2px solid #CFF9FE;
       font-size: 24px;
       left: 200px;
-      top: 300px;
+      top: 350px;
       cursor: pointer;
     }
     &_purchase{
-      top: 400px;
+      top: 450px;
       font-weight: bold;
+    }
+    &_name,&_typeAndFavour{
+      position: absolute;
+      left: 200px;
+      top: 130px;
+      font-size: 80px;
+      // font-weight: bold;
+    }
+    &_typeAndFavour{
+      // font-weight: normal;
+      top: 260px;
+      font-size: 16px;
+      >span{display: inline-block;margin-left: 70px;}
     }
   }
   &_info{
@@ -134,9 +166,13 @@ export default {
       .el-tabs__item{
         height: 100px;
         line-height: 100px;
+        font-size: 20px;
         color: #CFF9FE;
-        &:hover{color: #00adff;}
-        &.is-active{color: #00adff;}
+        &:hover{color: #CFF9FE;font-weight: 1000;}
+        &.is-active{font-weight: 1000; color: #CFF9FE;}
+      }
+      .el-tabs__active-bar{
+        background-color: #CFF9FE;
       }
       .el-tabs__content{text-align: left;}
       .el-tabs__header{margin-right: 100px!important;}
