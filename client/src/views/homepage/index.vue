@@ -45,14 +45,14 @@ export default {
   data () {
     return {
       movieList: [
-        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号玩'},
-        {id: '12345',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号家'},
-        {id: '12346',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头玩家'},
-        {id: '13456',url: require('@/assets/images/test/filmPoster3.jpg'),name: '号玩家'},
-        {id: '12356',url: require('@/assets/images/test/filmPoster4.jpg'),name: '头fsf号玩家'},
-        {id: '134565',url: require('@/assets/images/test/filmPoster0.jpg'),name: '头号gfd玩家'},
-        {id: '1456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '头号a玩家'},
-        {id: '156',url: require('@/assets/images/test/filmPoster2.jpg'),name: '头ff家'},
+        {id: '123456',url: require('@/assets/images/test/filmPoster0.jpg'),name: '大侦探皮卡丘'},
+        {id: '12345',url: require('@/assets/images/test/filmPoster1.jpg'),name: '复仇者联盟4'},
+        {id: '12346',url: require('@/assets/images/test/filmPoster2.jpg'),name: '一条狗的使命'},
+        {id: '13456',url: require('@/assets/images/test/filmPoster3.jpg'),name: '何以为家'},
+        {id: '12356',url: require('@/assets/images/test/filmPoster4.jpg'),name: '一个母亲的复仇'},
+        {id: '134565',url: require('@/assets/images/test/filmPoster0.jpg'),name: '大侦探皮卡丘'},
+        {id: '1456',url: require('@/assets/images/test/filmPoster1.jpg'),name: '复仇者联盟4'},
+        {id: '156',url: require('@/assets/images/test/filmPoster2.jpg'),name: '一条狗的使命'},
       ],
       posters: [
         {index: 0, url: require('@/assets/images/test/pictest0.jpg')},
