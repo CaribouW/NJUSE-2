@@ -4,11 +4,7 @@
       <div class="notice_header">  
           <b>观影须知</b>         
       </div>
-      <div class="notice_body">
-        <div class="children_header">
-            <img src="@/assets/images/preferentialpolicy/39D3279D-FF59-43E1-8203-8B21429B4AE4.png" alt="" style="width:650px;height:300px;">
-        </div>
-      </div>
+      <img src="@/assets/images/preferentialpolicy/39D3279D-FF59-43E1-8203-8B21429B4AE4.png" alt="" style="width:650px;height:300px;">
       <div class="notice_body">
         <div class="law_header">
             <span style="font-size:16px;color:#CFF9FE;">
