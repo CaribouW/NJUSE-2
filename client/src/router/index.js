@@ -21,6 +21,9 @@ import Contact from '@/views/user/helper/contact.vue'
 import History from '@/views/user/history.vue'
 import Search from '@/views/search/index.vue'
 import MovieDetail from '@/views/movie/index.vue'
+import BuyCard from '@/views/VIP/buyCard.vue'
+import VIPInfo from '@/views/VIP/VIPInfo.vue'
+import VIPrights from '@/views/VIP/VIPrights.vue'
 
 Vue.use(Router)
 
@@ -136,6 +139,21 @@ export default new Router({
       path: '/movie/detail',
       name: 'MovieDetail',
       component: MovieDetail
-    }
+    },
+    {
+      path: '/VIP/buyCard',
+      name: 'BuyCard',
+      component: BuyCard
+    },
+    {
+      path: '/VIP/VIPInfo',
+      name: 'VIPInfo',
+      component: VIPInfo
+    },
+    {
+      path: '/VIP/VIPrights',
+      name: 'VIPrights',
+      component: VIPrights
+    },
   ]
 })
