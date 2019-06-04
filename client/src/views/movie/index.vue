@@ -83,8 +83,7 @@
       <el-dialog
         title="提示"
         :visible.sync="dialogVisible"
-        width="60%"
-        :before-close="handleClose">
+        width="60%">
         <div class="movieList">
           <img src="@/assets/images/movie/timg.png" alt="" v-for="i in 5">
         </div>
@@ -100,7 +99,7 @@
             <el-carousel-item v-for="item in moviePurchase.date" :key="item.index">
               <span class="medium">2019-{{ item }}</span>
               <div class="movieTime_ticket">
-                <ticket v-for="i in 8" :key="i"></ticket>
+                <ticket v-for="i in 15" :key="i"></ticket>
               </div>
               
             </el-carousel-item>
@@ -171,8 +170,10 @@ export default {
     }
     &_purchase{
       top: 450px;
-      font-weight: bold;
+      // font-weight: bold;
+      color:#CFF9FE;
     }
+    &_mark:hover,&_purchase:hover{font-weight: bold;}
     &_name,&_typeAndFavour{
       position: absolute;
       left: 200px;
