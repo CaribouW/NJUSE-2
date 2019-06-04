@@ -23,7 +23,7 @@
             威廉·达福、杜夫·龙格尔联合主演。《海王》根据DC漫画改编，讲述了半人半亚特兰蒂
             斯血统的亚瑟·库瑞踏上永生难忘的征途——他不但需要直面自己的特殊身世，更不得不
             面对生而为王的考验，以及和湄拉一同对抗同母异父的兄弟奥姆的故事。</div>
-            <img src="@/assets/images/movie\timg.png" alt="" class="briefIntro_img">
+            <img src="@/assets/images/movie/timg.png" alt="" class="briefIntro_img">
             <div>
               <span class="basicInfo_title">基本信息</span>
               <div class="movie_info_content_basicInfo">
