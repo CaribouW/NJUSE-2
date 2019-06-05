@@ -85,7 +85,8 @@
         :visible.sync="dialogVisible"
         width="60%">
         <div class="movieList">
-          <img src="@/assets/images/movie/timg.png" alt="" v-for="i in 5">
+          <img src="@/assets/images/movie/timg.png" alt="" v-for="items in movieList" 
+          :class="{movie_is_active:items.isActive}" @click="selectMovie(items)">
         </div>
         <div class="movieInfo">
           <span>{{moviePurchase.ChineseName}}</span> <span>豆瓣评分 {{moviePurchase.score}}</span>
@@ -138,10 +139,25 @@ export default {
         distributionCompany: '华纳',director: '温子仁',
         language: '英语', imdb: 'tt1477834', score: 9.1
       },
+      movieList: [
+        {id: '', name: '', isActive: true},
+        {id: '', name: '', isActive: false},
+        {id: '', name: '', isActive: false},
+        {id: '', name: '', isActive: false},
+        {id: '', name: '', isActive: false},
+      ],
       moviePurchase: {
         ChineseName: '海王', score: 9.1, type:'科幻/动作', duration: '143',
         date: ['05-09', '05-10', '05-11', '05-12', '05-13']
       }
+    }
+  },
+  methods: {
+    selectMovie (data) {
+      this.movieList.forEach(function(obj){
+        obj.isActive = false;
+      });
+      data.isActive = !data.isActive;
     }
   }
 }
@@ -344,4 +360,5 @@ export default {
     }
   }
 }
+.movie_is_active{width: 160px!important; height: 230px!important;}
 </style>
