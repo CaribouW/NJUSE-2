@@ -24,6 +24,7 @@ import MovieDetail from '@/views/movie/index.vue'
 import BuyCard from '@/views/VIP/buyCard.vue'
 import VIPInfo from '@/views/VIP/VIPInfo.vue'
 import VIPrights from '@/views/VIP/VIPrights.vue'
+import Admin from '@/views/admin/index.vue'
 
 Vue.use(Router)
 
@@ -72,23 +73,26 @@ export default new Router({
     },
     {
       path: '/admin',
-      name: 'Admin',
-      component: HelloWorld
+      name: 'admin',
+      component: Admin,
+      children: [
+        {
+          path: 'movieShow',
+          name: 'movieShow',
+          component: movieShow
+        },
+      ]
     },
     {
       path: '/admin/movieManage',
       name: 'movieManage',
-      component: movieManage
+      component: movieManage,
+
     },
     {
       path: '/admin/scheduleManage',
       name: 'scheduleManage',
       component: scheduleManage
-    },
-    {
-      path: '/admin/movieShow',
-      name: 'movieShow',
-      component: movieShow
     },
     {
       path: '/admin/statistic',
