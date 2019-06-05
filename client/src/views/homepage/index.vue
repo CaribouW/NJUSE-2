@@ -29,7 +29,6 @@
             <img :src="movie.url" alt="" @click="selectMovie(movie.id)">
             <span>{{movie.name}}</span>
           </div>
-          </div>
         </div>
       </div>
       <div class="homepage_movie_buttom">
