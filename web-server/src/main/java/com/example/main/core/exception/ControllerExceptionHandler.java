@@ -37,5 +37,12 @@ public class ControllerExceptionHandler {
     public Resource<?> handleNullPointer(Exception e) {
         return new Resource<>(e);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public Resource<?> handleInternalError(Exception e) {
+        return new Resource<>(e);
+    }
 }
 

@@ -6,7 +6,12 @@ const state = {
     name: 'yyp a',
     userId: '',
     birth: '1998',
-    roleName: ''
+    roleName: '',
+    vip: {
+      vipCardId: '',
+      vipRank: '',
+
+    }
   }
 };
 

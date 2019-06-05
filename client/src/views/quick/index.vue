@@ -3,7 +3,7 @@
     <div class="quick-container">
       <div class="sub-div">
         <div class="navigater">
-          <span class="text">当前排片&nbsp;:{{user.name}}</span>
+          <span class="text">当前排片&nbsp;:</span>
           <el-date-picker
             v-model="date"
             type="date"
@@ -13,11 +13,6 @@
         </div>
         <div class="table">
           <quick-table :date="this.date"></quick-table>
-          <el-button v-on:click="changeName">change user name</el-button>
-          <el-input v-model="name"></el-input>
-          <el-tag>{{user}}</el-tag>
-          <el-button v-on:click="handleCheck">check ans</el-button>
-          <el-button v-on:click="logout">logout</el-button>
         </div>
       </div>
     </div>
@@ -37,32 +32,7 @@
         this_: this,
       }
     },
-    methods: {
-      ...mapActions(['userLogin', 'userLogout']),
-      changeName: function () {
-        this.$store.commit('updateUser', {
-          name: this.name
-        })
-      },
-      handleCheck: function () {
-        let u = this.user;
-        this.userLogin({
-          account: 'yyp',
-          password: '123',
-        }).then(response => {
-
-        });
-
-      },
-      logout: function () {
-        this.userLogout({
-          userId: this.user.userId
-        }).then(res => {
-          console.log(res);
-        });
-      }
-
-    },
+    methods: {},
     computed: {
       ...mapGetters({
         user: 'getBasicInfo'
@@ -93,7 +63,7 @@
       padding: 4% 70px 0 70px;
 
       .sub-div {
-        /*width: 90%;*/
+        /*width: 150%;*/
         margin: 0 auto 5%;
 
         .navigater {
@@ -112,7 +82,7 @@
         }
 
         .table {
-          width: 85%;
+          width: 90%;
           margin: 14px auto 25px;
         }
       }
