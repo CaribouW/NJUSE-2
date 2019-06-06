@@ -1,6 +1,6 @@
 <template>
   <div class="ticket">
-    <span>{{ticket.startTime}}</span><span class="purchase">购票</span>
+    <span>{{ticket.startTime}}</span><span class="purchase" @click="notifyParent()">购票</span>
     <span>{{ticket.endTime}}散场</span>
     <span>{{ticket.type}}</span><span>{{ticket.price}}元</span>
     <span>{{ticket.moviehall}}</span><span>会员价{{ticket.memberPrice}}元</span>
@@ -12,13 +12,15 @@ export default {
   data () {
     return {
       ticket: {
-        startTime: '20:45',
-        endTime: '23:46',
-        type: '英语/普通3D',
-        price: '54.5',
-        memberPrice: '51.5',  
-        moviehall: '13号厅 按摩椅'
+        startTime: '20:45',endTime: '23:46',type: '英语/普通3D',
+        price: '54.5',memberPrice: '51.5', moviehall: '13号厅 按摩椅'
       }
+    }
+  },
+  methods: {
+    notifyParent: function () {
+      console.log('123')
+      this.$emit('comfirmOrderChildNotify','the msg');
     }
   }
 }
