@@ -39,7 +39,7 @@
       })
     },
     created() {
-      // this.flushHall()
+      this.flushHall()
     },
     methods: {
       ...mapActions({
@@ -78,7 +78,7 @@
     .cards {
       padding: 20px 20px 40px;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
   }

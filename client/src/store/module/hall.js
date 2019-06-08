@@ -60,13 +60,15 @@ const actions = {
   async getHalls({dispatch, commit, state}) {
     const data = getHallList().then(
       res => {
-        const list = res.filter(item => {
+        const list = res.map(item => {
+          const size = item.size;
+          const arr = size.split(',');
           return {
-            id: item.id,
+            id: item.hallID,
             state: item.state, // 0 可用 ; 1 不可用
-            row: '10',  //行数
-            col: '5', //列数
-            type: 'IMAX', //规格
+            row: arr[0],  //行数
+            col: arr[1], //列数
+            type: item.type, //规格
           }
         });
         return commit('flushList', list);

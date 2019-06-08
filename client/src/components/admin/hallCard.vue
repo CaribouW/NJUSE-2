@@ -53,8 +53,10 @@
       }),
       //显示新的修改弹窗
       handleModify: function () {
+        //TODO:新的弹窗
+        // alert('新建一个弹窗')
         this.append({
-          id: 1 + this.hallItem.id,
+          id: this.hallItem.id,
           state: '0', // 0 可用 ; 1 不可用
           row: '13',  //行数
           col: '5', //列数
@@ -63,9 +65,8 @@
       },
       //显示新的删除确认弹框
       handleRemove: function () {
-        this.remove({
-          id: this.hallItem.id
-        })
+        //TODO:新的弹窗
+        alert('新建一个弹窗')
       },
 
     }
@@ -74,12 +75,18 @@
 
 <style lang="scss">
   .card-body {
+    margin: 0.5%;
     width: 259px;
     max-height: 220px;
     /*background: #D8D8D8;*/
     mix-blend-mode: normal;
     text-align: left;
     position: relative;
+    &:hover {
+      margin: 0;
+      opacity: 1.1;
+      background-color: #383e43;
+    }
 
     .header {
       display: flex;
