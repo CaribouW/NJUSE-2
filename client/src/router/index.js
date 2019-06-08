@@ -8,10 +8,10 @@ import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
 import User from '@/views/user/basicInfo/basicInfo.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
-import movieManage from '@/components/admin/movieManage'
-import scheduleManage from '@/components/admin/scheduleManage'
-import movieShow from '@/components/admin/movieShow'
-import statistic from '@/components/admin/statistic'
+import movieManage from '@/views/admin/hall/movieManage'
+import scheduleManage from '@/views/admin/hall/scheduleManage'
+import movieShow from '@/views/admin/hall/movieShow'
+import statistic from '@/views/admin/hall/statistic'
 import Coupon from '@/views/user/coupon.vue'
 import Favor from '@/views/user/favor.vue'
 import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
@@ -81,23 +81,22 @@ export default new Router({
           name: 'movieShow',
           component: movieShow
         },
+        {
+          path: 'movieManage',
+          name: 'movieManage',
+          component: movieManage,
+        },
+        {
+          path: 'scheduleManage',
+          name: 'scheduleManage',
+          component: scheduleManage
+        },
+        {
+          path: 'statistic',
+          name: 'statistic',
+          component: statistic
+        },
       ]
-    },
-    {
-      path: '/admin/movieManage',
-      name: 'movieManage',
-      component: movieManage,
-
-    },
-    {
-      path: '/admin/scheduleManage',
-      name: 'scheduleManage',
-      component: scheduleManage
-    },
-    {
-      path: '/admin/statistic',
-      name: 'statistic',
-      component: statistic
     },
     {
       path: '/user/coupon',

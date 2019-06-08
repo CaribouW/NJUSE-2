@@ -23,11 +23,15 @@
                     <i class="el-icon-document"></i>
                     <span>电影上架</span>
                   </template>
-                  <el-menu-item index="/admin/movieManage">添加</el-menu-item>
                   <el-menu-item>
-                    <router-link :to="{name:'movieShow'}" tag="li" >我的收藏</router-link>
+                    <router-link :to="{name:'movieManage'}" tag="li">添加</router-link>
                   </el-menu-item>
-                  <el-menu-item index="/admin/movieManage">选项3</el-menu-item>
+                  <el-menu-item>
+                    <router-link :to="{name:'movieShow'}" tag="li">我的收藏</router-link>
+                  </el-menu-item>
+                  <el-menu-item>
+                    <router-link :to="{name:'movieShow'}" tag="li">影厅管理</router-link>
+                  </el-menu-item>
                 </el-submenu>
                 <el-menu-item index="/admin/scheduleManage">
                   <i class="el-icon-menu"></i>

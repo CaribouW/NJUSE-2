@@ -1,15 +1,13 @@
 <template>
-    <admin>
-        <div class="statistic">
+        <div class="schedule_manage">
 
         </div>
-    </admin>
 </template>
 
 <script>
-import admin from '../../views/admin/index.vue'
+import admin from '../index.vue'
 export default {
-    name: 'statistic',
+    name: 'scheduleManagement',
     components: {
         admin
     },

@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import admin from '../../views/admin/index.vue'
+  import admin from '../index.vue'
 
   export default {
     name: 'movieShow',
