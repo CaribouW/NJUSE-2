@@ -39,7 +39,7 @@
       })
     },
     created() {
-      this.flushHall()
+      this.flushHall();
     },
     methods: {
       ...mapActions({

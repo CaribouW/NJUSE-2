@@ -48,7 +48,7 @@ const state = {
     state: '0', // 0 可用 ; 1 不可用
     row: '10',  //行数
     col: '5', //列数
-    type: 'IMAX', //规格
+    type: 'IMAXAAA', //规格
   },]
 };
 const getters = {
@@ -65,6 +65,7 @@ const actions = {
           const arr = size.split(',');
           return {
             id: item.hallID,
+            name: item.name,
             state: item.state, // 0 可用 ; 1 不可用
             row: arr[0],  //行数
             col: arr[1], //列数
@@ -79,8 +80,15 @@ const actions = {
   async modifyHall({dispatch, commit, state}, payload) {
     const data = modifyHall(payload)
       .then(res => {
-        return {}
-      })
+        const arr = item.size.split(',');
+        return commit('appendHallList', {
+          id: payload.hallId,
+          state: payload.state, // 0 可用 ; 1 不可用
+          row: arr[0],  //行数
+          col: arr[1], //列数
+          type: payload.category, //规格
+        })
+      });
   }
 };
 

@@ -72,6 +72,7 @@ public class HallServiceImpl implements HallService {
             movieHalls.forEach(item -> {
                 JSONObject object = new JSONObject();
                 object.put("hallID", item.getHallId());
+                object.put("name", item.getHallName());
                 object.put("state", item.getState());
                 object.put("size", item.getSize());
                 object.put("type", item.getCategory());

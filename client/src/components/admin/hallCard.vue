@@ -5,7 +5,7 @@
     <div slot="header" class="header">
 
       <div class="id">
-        <span>{{hallItem.id}}号</span>
+        <span>{{hallItem.name}}厅</span>
       </div>
       <div class="size">
         <span>{{hallItem.row}}*{{hallItem.col}}</span>
@@ -47,6 +47,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        modify: 'modifyHall'
+      }),
       ...mapMutations({
         append: 'appendHallList',
         remove: 'removeHallList'
@@ -54,19 +57,35 @@
       //显示新的修改弹窗
       handleModify: function () {
         //TODO:新的弹窗
-        // alert('新建一个弹窗')
-        this.append({
-          id: this.hallItem.id,
-          state: '0', // 0 可用 ; 1 不可用
-          row: '13',  //行数
-          col: '5', //列数
-          type: 'IMAX', //规格
-        })
+        alert('新建一个弹窗');
+        // this.modify({
+        //   hallId: this.hallItem.id,
+        //   state: '', // 0 可用 ; 1 不可用
+        //   size: '',
+        //   category: '', //规格
+        // });
       },
       //显示新的删除确认弹框
       handleRemove: function () {
-        //TODO:新的弹窗
-        alert('新建一个弹窗')
+        const this_ = this;
+        this.$confirm('此操作将删除该影厅, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          await this.remove({
+            id: this_.hallItem.id
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
 
     }
@@ -82,6 +101,7 @@
     mix-blend-mode: normal;
     text-align: left;
     position: relative;
+
     &:hover {
       margin: 0;
       opacity: 1.1;
@@ -133,6 +153,7 @@
       }
 
       .id {
+        white-space: nowrap;
         flex: 0 0 auto;
         font-size: 20px;
         line-height: 25px;

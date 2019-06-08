@@ -37,8 +37,8 @@ export async function doPut({url, params, body}) {
   })
 }
 
-export async function doDelete({url, params, body}) {
-  return axios.delete(url, body, {
+export async function doDelete({url, params}) {
+  return axios.delete(url, {
     params: params,
     withCredentials: true,
     baseURL: baseIP,
