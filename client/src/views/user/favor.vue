@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="favor">
       <div class="favor_header">  
         <el-row>
@@ -55,7 +54,6 @@
         </div>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

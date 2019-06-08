@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="history">
       <div class="success">
         <div class="success_header">
@@ -114,7 +113,6 @@
         </div>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

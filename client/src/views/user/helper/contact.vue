@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="contact">
       <div class="contact_header">  
           <b>联系我们</b>         
@@ -17,7 +16,6 @@
         </div>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

@@ -1,7 +1,6 @@
 <template>
-  <user>
     <div class="basicinfo">
-      <div class="main_portrait">  
+      <div class="main_portrait">
         <img src="@/assets/images/homepage/personal-image.png" alt="" style="width:140px;height:140px;">
       </div>
       <div class="main_id">
@@ -20,7 +19,6 @@
         <el-button round style="color:#CFF9FE;" @click="goModify()">修改信息</el-button>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

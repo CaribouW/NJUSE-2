@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="notice">
       <div class="notice_header">  
           <b>观影须知</b>         
@@ -20,7 +19,6 @@
         </div>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

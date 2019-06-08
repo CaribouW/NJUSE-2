@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="coupon">
       <div class="vip_coupon">  
         <span>
@@ -56,7 +55,6 @@
         </div>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

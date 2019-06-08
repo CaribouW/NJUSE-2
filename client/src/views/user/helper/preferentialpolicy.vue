@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="preferential">
       <div class="preferential_header">  
           <b>优惠政策</b>         
@@ -49,7 +48,6 @@
         <p>* 以上优惠不享受折上折</p>
       </div>
     </div>
-  </user>
 </template>
 
 <script>

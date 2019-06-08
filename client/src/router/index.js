@@ -6,28 +6,18 @@ import Register from '@/views/Login/register.vue'
 import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
-import User from '@/views/user/basicInfo/basicInfo.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
-import movieManage from '@/views/admin/hall/movieManage'
-import scheduleManage from '@/views/admin/hall/scheduleManage'
-import movieShow from '@/views/admin/hall/movieShow'
-import statistic from '@/views/admin/hall/statistic'
-import hallManage from '@/views/admin/hall/hallManage'
-import Coupon from '@/views/user/coupon.vue'
-import Favor from '@/views/user/favor.vue'
-import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
-import PreferentialPolicy from '@/views/user/helper/preferentialpolicy.vue'
-import Notice from '@/views/user/helper/notice.vue'
-import Contact from '@/views/user/helper/contact.vue'
-import History from '@/views/user/history.vue'
+
 import Search from '@/views/search/index.vue'
 import MovieDetail from '@/views/movie/index.vue'
 import BuyCard from '@/views/VIP/buyCard.vue'
 import VIPInfo from '@/views/VIP/VIPInfo.vue'
 import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
-
+import User from '@/views/user/index.vue'
 Vue.use(Router);
+import {childrenUser} from './user'
+import {childernAmin} from './admin'
 
 export default new Router({
   routes: [
@@ -65,7 +55,8 @@ export default new Router({
     {
       path: '/user',
       name: 'User',
-      component: User
+      component: User,
+      children: childrenUser
     },
     {
       path: '/test',
@@ -76,69 +67,9 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin,
-      children: [
-        {
-          path: 'movieShow',
-          name: 'movieShow',
-          component: movieShow
-        },
-        {
-          path: 'movieManage',
-          name: 'movieManage',
-          component: movieManage,
-        },
-        {
-          path: 'scheduleManage',
-          name: 'scheduleManage',
-          component: scheduleManage
-        },
-        {
-          path: 'statistic',
-          name: 'statistic',
-          component: statistic
-        },
-        {
-          path: 'hallManage',
-          name: 'hallManage',
-          component: hallManage
-        }
-      ]
+      children: childernAmin
     },
-    {
-      path: '/user/coupon',
-      name: 'Coupon',
-      component: Coupon
-    },
-    {
-      path: '/user/favor',
-      name: 'Favor',
-      component: Favor
-    },
-    {
-      path: '/user/modifyinfo',
-      name: 'ModifyInfo',
-      component: ModifyInfo
-    },
-    {
-      path: '/user/helper/preferentialpolicy',
-      name: 'PreferentialPolicy',
-      component: PreferentialPolicy
-    },
-    {
-      path: '/user/helper/notice',
-      name: 'Notice',
-      component: Notice
-    },
-    {
-      path: '/user/helper/contact',
-      name: 'Contact',
-      component: Contact
-    },
-    {
-      path: '/user/history',
-      name: 'History',
-      component: History
-    },
+
     {
       path: '/search',
       name: 'Search',

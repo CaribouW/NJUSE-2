@@ -1,5 +1,4 @@
 <template>
-  <user>
     <div class="modify">
       <div class="modify_portrait">
         <el-upload
@@ -63,7 +62,6 @@
         </span>
       </div>
     </div>
-  </user>
 </template>
 
 <script>
