@@ -155,12 +155,9 @@
 </template>
 
 <script>
-  import admin from '../index.vue'
-
   export default {
     name: 'movieManagement',
     components: {
-      admin
     },
     data() {
       return {

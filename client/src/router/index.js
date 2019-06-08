@@ -12,6 +12,7 @@ import movieManage from '@/views/admin/hall/movieManage'
 import scheduleManage from '@/views/admin/hall/scheduleManage'
 import movieShow from '@/views/admin/hall/movieShow'
 import statistic from '@/views/admin/hall/statistic'
+import hallManage from '@/views/admin/hall/hallManage'
 import Coupon from '@/views/user/coupon.vue'
 import Favor from '@/views/user/favor.vue'
 import ModifyInfo from '@/views/user/basicInfo/modifyinfo.vue'
@@ -26,7 +27,7 @@ import VIPInfo from '@/views/VIP/VIPInfo.vue'
 import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -96,6 +97,11 @@ export default new Router({
           name: 'statistic',
           component: statistic
         },
+        {
+          path: 'hallManage',
+          name: 'hallManage',
+          component: hallManage
+        }
       ]
     },
     {
