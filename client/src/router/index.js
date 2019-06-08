@@ -14,7 +14,10 @@ import BuyCard from '@/views/VIP/buyCard.vue'
 import VIPInfo from '@/views/VIP/VIPInfo.vue'
 import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
-import User from '@/views/user/index.vue'
+import User from '@/views/user/index.vue';
+import subCircle from '../components/circle';
+import Network from '../components/Network'
+
 Vue.use(Router);
 import {childrenUser} from './user'
 import {childernAmin} from './admin'
@@ -61,7 +64,7 @@ export default new Router({
     {
       path: '/test',
       name: 'Test',
-      component: Test
+      component: Network
     },
     {
       path: '/admin',

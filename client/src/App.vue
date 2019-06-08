@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="background">
+      <Network class="net"></Network>
       <div class="main_content">
         <!-- <div class="header" v-if="header_show">
           <div class="header_left">
@@ -53,10 +54,12 @@
   import $ from 'jquery'
   import headnav from '@/components/header.vue'
   import foot from '@/components/footer.vue'
+  import Network from "./components/Network";
 
   export default {
     name: 'App',
     components: {
+      Network,
       headnav, foot
     },
     data() {
@@ -104,9 +107,11 @@
   /* 基本css格式，清除浏览器默认配置 */
   * { //color:#EAEAEA;
   }
-
   body, html {
     height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
   body {
@@ -187,24 +192,35 @@
     font-size: 18px;
     overflow: auto;
   }
-  #app::-webkit-scrollbar {/*滚动条整体样式*/
-    width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
+
+  #app::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
     // height: 5px;
   }
-  #app::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+  #app::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 5px #CFF9FE;;
     background: #535353;
   }
+
   .background {
     background-color: black;
     min-height: 100vh;
+    .net{
+      position: absolute;
+      left: 0;
+      z-index: 0;
+    }
     .main_content {
       margin: 0 auto;
       background-color: #201f1d;
       min-height: inherit;
       width: 85%;
       min-width: 1300px;
+      position: relative;
+      z-index: 1;
+      opacity: 0.75;
     }
   }
 

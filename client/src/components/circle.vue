@@ -1,0 +1,322 @@
+<template>
+  <div class="circle-main">
+    <div class="radmenu"><a href="#" class="show">START</a>
+      <ul>
+        <li>
+          <ul>
+            <li></li>
+            <li></li>
+            <li><a href="#">Sub Menu 3</a></li>
+            <li></li>
+            <li><a href="#">Sub Menu 5</a></li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li><a href="#">Sub Menu 1</a></li>
+            <li><a href="#">Sub Menu 2</a></li>
+            <li><a href="#">Sub Menu 3</a></li>
+            <li><a href="#">Sub Menu 4</a></li>
+            <li><a href="#">Sub Menu 5</a></li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li><a href="#">Sub Menu 1</a></li>
+            <li><a href="#">Sub Menu 2</a></li>
+            <li><a href="#">Sub Menu 3</a></li>
+            <li><a href="#">Sub Menu 4</a></li>
+            <li><a href="#">Sub Menu 5</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Menu 4</a>
+        </li>
+        <li>
+          <a href="#">Menu 5</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "subCircle",
+    mounted() {
+      var buttons = document.querySelectorAll(".radmenu a");
+
+      for (var i = 0, l = buttons.length; i < l; i++) {
+        var button = buttons[i];
+        button.onclick = setSelected;
+      }
+
+      function setSelected(e) {
+        if (this.classList.contains("selected")) {
+          this.classList.remove("selected");
+          if (!this.parentNode.classList.contains("radmenu")) {
+            this.parentNode.parentNode.parentNode.querySelector("a").classList.add("selected")
+          } else {
+            this.classList.add("show");
+          }
+        } else {
+          this.classList.add("selected");
+          if (!this.parentNode.classList.contains("radmenu")) {
+            this.parentNode.parentNode.parentNode.querySelector("a").classList.remove("selected")
+          } else {
+            this.classList.remove("show");
+          }
+        }
+        return false;
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .circle-main {
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+    }
+
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+      display: block;
+    }
+
+    body {
+      line-height: 1;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+    }
+
+    blockquote,
+    q {
+      quotes: none;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+      content: "";
+      content: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+  }
+
+  .radmenu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*width: 100%;*/
+    /*height: 100%;*/
+  }
+
+  .radmenu > a {
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+  }
+
+  .radmenu > a.show {
+    display: flex !important;
+  }
+
+  .radmenu li {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    transition: all 1s ease;
+  }
+
+  .radmenu a {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: rgba(101, 95, 102, 0.9);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 150px;
+    display: none;
+    text-decoration: none;
+    color: #333;
+    transition: all 1s ease;
+    box-shadow: 0 0 15px #222;
+    font-family: "segoe ui";
+    font-weight: 200;
+    font-size: 16px;
+    background-image: url("../assets/images/homepage/fullsizerender(16).png");
+  }
+  .radmenu .show{
+    width: 220px;
+    height: 220px;
+  }
+  .radmenu .selected {
+    background: rgba(51, 51, 51, 0.9);
+    display: flex;
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+    color: #f1f1f1;
+    box-shadow: 0 0 10px #f1f1f1;
+    width: 220px;
+    height: 220px;
+  }
+
+  .radmenu .selected + ul > li:nth-child(1) {
+    -webkit-transform: rotate(72deg) translateX(100px);
+    transform: rotate(72deg) translateX(100px);
+  }
+
+  .radmenu .selected + ul > li:nth-child(1) > a {
+    -webkit-transform: rotate(-72deg);
+    transform: rotate(-72deg);
+  }
+
+  .radmenu .selected + ul > li:nth-child(2) {
+    -webkit-transform: rotate(144deg) translateX(100px);
+    transform: rotate(144deg) translateX(100px);
+  }
+
+  .radmenu .selected + ul > li:nth-child(2) > a {
+    -webkit-transform: rotate(-144deg);
+    transform: rotate(-144deg);
+  }
+
+  .radmenu .selected + ul > li:nth-child(3) {
+    -webkit-transform: rotate(216deg) translateX(100px);
+    transform: rotate(216deg) translateX(100px);
+  }
+
+  .radmenu .selected + ul > li:nth-child(3) > a {
+    -webkit-transform: rotate(-216deg);
+    transform: rotate(-216deg);
+  }
+
+  .radmenu .selected + ul > li:nth-child(4) {
+    -webkit-transform: rotate(288deg) translateX(110px);
+    transform: rotate(288deg) translateX(110px);
+  }
+
+  .radmenu .selected + ul > li:nth-child(4) > a {
+    -webkit-transform: rotate(-288deg);
+    transform: rotate(-288deg);
+  }
+
+  .radmenu .selected + ul > li:nth-child(5) {
+    -webkit-transform: rotate(360deg) translateX(180px);
+    transform: rotate(360deg) translateX(180px);
+  }
+
+  .radmenu .selected + ul > li:nth-child(5) > a {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+
+  .radmenu .selected + ul > li > a {
+    display: flex;
+  }
+
+</style>
