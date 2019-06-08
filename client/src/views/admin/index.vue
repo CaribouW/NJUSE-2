@@ -27,7 +27,7 @@
                     <router-link :to="{name:'movieManage'}" tag="li">添加</router-link>
                   </el-menu-item>
                   <el-menu-item>
-                    <router-link :to="{name:'movieShow'}" tag="li">我的收藏</router-link>
+                    <router-link :to="{name:'movieShow'}" tag="li">上架管理</router-link>
                   </el-menu-item>
                   <el-menu-item>
                     <router-link :to="{name:'hallManage'}" tag="li">影厅管理</router-link>

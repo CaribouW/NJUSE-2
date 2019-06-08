@@ -1,7 +1,12 @@
 <template>
   <div class="hall-main">
     <div class="header">
-      <div class="header-text">当前可用影厅</div>
+      <div class="header-text">
+        <span>当前可用影厅</span>
+      </div>
+      <div class="choose">
+
+      </div>
       <el-divider direction="horizontal"></el-divider>
     </div>
     <div class="cards">
@@ -41,6 +46,7 @@
   .hall-main {
     color: #FFFFFF;
     padding: 30px;
+
     .header {
       display: flex;
       flex-direction: column;
@@ -52,12 +58,15 @@
 
       .header-text {
         text-align: left;
-        height: 28px;
-        padding-bottom: 3%;
-        font-size: 22px;
-        line-height: 28px;
+        padding-bottom: 2%;
+        & > span {
+          height: 28px;
+          font-size: 22px;
+          line-height: 28px;
+        }
       }
     }
+
     .cards {
       padding: 20px 20px 40px;
       display: flex;
