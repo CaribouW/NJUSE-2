@@ -4,10 +4,10 @@
       <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
       <div class="movie_poster_name">Aquaman</div>
       <div class="movie_poster_typeAndFavour">动作、科幻 <span>1.8万人想看</span></div>
-      <div class="movie_poster_mark">
-        标记为喜爱
+      <div class="movie_poster_mark" @click="favour=!favour">
+        <span v-if="favour">标记为喜爱</span><span v-else class="favour">已喜爱</span>
       </div>
-      <div class="movie_poster_purchase" @click="dialogVisible = true">
+      <div class="movie_poster_purchase" @click="purchaseDialogVisible = true">
         立即购票
       </div>
     </div>
@@ -81,13 +81,13 @@
     </div>
     <div class="movie_purchase">
       <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible"
+        :visible.sync="purchaseDialogVisible"
+        top="5vh"
         width="60%">
-        <div class="movieList">
+        <!-- <div class="movieList">
           <img src="@/assets/images/movie/timg.png" alt="" v-for="items in movieList" 
           :class="{movie_is_active:items.isActive}" @click="selectMovie(items)">
-        </div>
+        </div> -->
         <div class="movieInfo">
           <span>{{moviePurchase.ChineseName}}</span> <span>豆瓣评分 {{moviePurchase.score}}</span>
           <span>{{moviePurchase.type}}</span><span>{{moviePurchase.duration}}分钟</span>
@@ -100,7 +100,7 @@
             <el-carousel-item v-for="item in moviePurchase.date" :key="item.index">
               <span class="medium">2019-{{ item }}</span>
               <div class="movieTime_ticket">
-                <ticket v-for="i in 15" :key="i"></ticket>
+                <ticket v-for="i in 15" :key="i" @comfirmOrderChildNotify="comfirmOrder"></ticket>
               </div>
               
             </el-carousel-item>
@@ -109,11 +109,125 @@
         <div slot="title" class="header-title">
             <img src="@/assets/images/movie/title.png" alt="">
         </div>
-        
-        <!-- <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        </span> -->
+      </el-dialog>
+    </div>
+    <div class="movie_confirmOrder">
+      <el-dialog
+        :visible.sync="confirmOrderDialogVisible"
+        :before-close="cancelOrder"
+        top="0vh"
+        width="60%">
+        <div class="confirmOrder_ticket">
+          <div class="confirmOrder_ticket_left">
+            <span>海王</span><span>2张</span><br/>
+            <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
+            <span>3号激光厅</span><span>8排6座</span>
+          </div>
+          <div class="confirmOrder_ticket_center">
+            <img src="@/assets/images/movie/timg.png" alt="">
+          </div>
+          <div class="confirmOrder_ticket_right">{{PrefixInteger(time.minute, 2)}} : {{PrefixInteger(time.second, 2)}}</div>
+        </div>
+        <div class="confirmOrder_coupon">
+          <el-collapse>
+            <el-collapse-item title="电影优惠券" name="1">
+              <el-radio v-model="coupon" label="1">使用普通优惠券</el-radio>
+              <span>hghh</span>
+              <el-radio v-model="coupon" label="2">使用会员优惠券</el-radio>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+        <div class="confirmOrder_price">
+          <span>票价总计</span><span>98元</span>
+        </div>
+        <div class="confirmOrder_know">
+          <h3>购票须知</h3>
+          <li> 1.方特主题乐园门票一经预定成功后购票订单一经确认即时成交，有关退改规定，请详见门票《预订须知》对应的退票
+            和改期规则。请务必确认信息无误再进行购买。</li>
+          <li>2.方特主题乐园的所有门票均为指定日票，游客购买门票需指定入园日期，日期选择以购票页面可选日期为准。购票前
+              请根据提示选择入园日期，填写正确的联系方式、身份证号码等信息，购票成功将收到确认信息。</li>
+          <li>3.同一订单下的所有游客需同时入园，购票时登记的有效证件持有人本人必须在场，同行游客无需出示证件。</li>
+          <li>4.购买成功的门票仅限选择的入园日期当日有效，仅限使用一次，出园后再次入园需重新购买。同一订单为同一个取票
+            凭证，如不同时间入园，请提供不同身份证分批下单。景区现场当天最迟取票激入园截止时间为乐园闭园前两小时。</li>
+        </div>
+        <div class="confirmOrder_pay">
+          <span>不支持退票/改签</span><span>应付：<span>98元</span></span>
+          <div class="confirmOrder_pay_buttom" @click="pay()">立即付款</div>
+        </div>
+        <div slot="title" class="header-title">
+            确认订单
+        </div>
+      </el-dialog>
+    </div>
+    <div class="movie_pay">
+      <el-dialog
+        :visible.sync="payDialogVisible"
+        top="20vh"
+        width="40%">
+        <div class="movie_pay_price">¥98元</div>
+        <el-radio-group v-model="payRadio">
+          <el-radio label="1">会员卡支付</el-radio>
+          <el-radio label="2">银行卡支付</el-radio>
+        </el-radio-group>
+        <div class="movie_pay_memberCard" v-if="payRadio=='1'">
+          <div class="movie_pay_memberCard_account">
+            <span>会员卡账号</span><span>123456790129388</span>
+          </div>
+          <div class="movie_pay_memberCard_pay" @click="payByMember">立即付款</div>
+        </div>
+        <div class="movie_pay_bankCard" v-else>
+          <div>
+            <span>银行卡号：</span> 
+            <el-input v-model="bank.account" placeholder="请输入账号"></el-input><br/>
+          </div>
+          <div>
+            <span>密码：</span> 
+            <el-input v-model="bank.password" placeholder="请输入密码"></el-input>
+          </div>
+          <div class="movie_pay_bankCard_pay" @click="payByBank">立即付款</div>
+        </div>
+        <div slot="title" class="header-title">
+            确认付款
+        </div>
+      </el-dialog>
+    </div>
+    <div class="movie_paySuccess">
+      <el-dialog
+        :visible.sync="paySuccessDialogVisible"
+        top="2vh"
+        width="60%">
+        <!-- <div class="Separator"></div> -->
+        <div class="movie_paySuccess_status">
+          <span>付款成功</span>
+          <span>已完成付款，请在电影开始前15分钟到达，进行取票</span>
+          <div @click="goOrderHistory">查看历史订单</div><div @click="goHomepage">返回首页</div>
+        </div>
+        <div class="movie_paySuccess_ticket">
+          <div class="movie_paySuccess_ticket_left">
+            <span>海王</span><span>2张</span><br/>
+            <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
+            <span>3号激光厅</span><span>8排6座</span>
+          </div>
+          <div class="movie_paySuccess_ticket_right">
+            <img src="@/assets/images/movie/timg.png" alt="">
+          </div>
+        </div>
+        <div class="movie_paySuccess_cinema">
+          <div class="movie_paySuccess_cinema_left"><div>NULL&NONE南京仙林影城</div> <div>栖霞区学津路1号金鹰湖滨广场B区4层</div></div>
+          <div class="movie_paySuccess_cinema_right">
+            <img src="@/assets/images/movie/dianhua.png" alt="">
+            <div>18852096585</div>
+          </div>
+        </div>
+        <div class="movie_paySuccess_orderDetail">
+          <li>实付金额: <span>98元</span> </li>
+          <li>订单号：2777777777777777777</li>
+          <li>购买时间：2019-05-07   18：18：46</li>
+          <li>电影票由凉凉电影院提供</li>
+        </div>
+        <div slot="title" class="header-title">
+            电影票详情
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -129,9 +243,28 @@ export default {
   },
   data () {
     return {
-      dialogVisible: false,
-      name: 'fff',
-      age: 20,
+      // 银行卡账号密码
+      bank: {
+        account: '',
+        password: ''
+      },
+      // 选择支付方式
+      payRadio: '1',
+      // 选择优惠券
+      coupon: '1',
+      // 倒计时控制
+      time: {
+        total: 900,
+        minute: 15,
+        second: 0,
+      },
+      // 是否标记喜爱
+      favour: false,
+      // 弹出对话框控制
+      purchaseDialogVisible: false,
+      confirmOrderDialogVisible: false,
+      payDialogVisible: false,
+      paySuccessDialogVisible: false,
       movieInfo: {
         ChineseName: '海王',type:'科幻/动作',
         EnglishName: 'Aquaman',duration: '143',
@@ -139,25 +272,72 @@ export default {
         distributionCompany: '华纳',director: '温子仁',
         language: '英语', imdb: 'tt1477834', score: 9.1
       },
-      movieList: [
-        {id: '', name: '', isActive: true},
-        {id: '', name: '', isActive: false},
-        {id: '', name: '', isActive: false},
-        {id: '', name: '', isActive: false},
-        {id: '', name: '', isActive: false},
-      ],
       moviePurchase: {
         ChineseName: '海王', score: 9.1, type:'科幻/动作', duration: '143',
         date: ['05-09', '05-10', '05-11', '05-12', '05-13']
-      }
+      },
+      // 计时器
+      oTimer: null
     }
   },
   methods: {
-    selectMovie (data) {
-      this.movieList.forEach(function(obj){
-        obj.isActive = false;
-      });
-      data.isActive = !data.isActive;
+    // 返回首页
+    goOrderHistory () {
+      this.$router.push('/history')
+    },
+    goHomepage () {
+      this.$router.push('/index')
+    },
+    // 显示倒计时时自动补零函数
+    PrefixInteger(num, n) {
+        return (Array(n).join(0) + num).slice(-n);
+    },
+    // 倒计时函数
+    startCountDown () {
+      this.oTimer = setInterval(() => {
+        this.time.total--
+        this.time.second=parseInt(this.time.total%60)
+        this.time.minute=parseInt(this.time.total/60)
+        if (this.time.total == 0) {
+          this.stopCountDown()
+        }
+      },1000)
+    },
+    stopCountDown () {
+      window.clearInterval(this.oTimer)
+    },
+    // 确认订单函数
+    comfirmOrder () {
+      this.purchaseDialogVisible = false
+      this.confirmOrderDialogVisible = true
+      this.time.total = 900
+      this.startCountDown()
+      
+    },
+    // 取消订单函数
+    cancelOrder (done) {
+      // 初始化倒计时
+      this.stopCountDown()
+      this.time.total= 900
+      this.time.second=parseInt(this.time.total%60)
+      this.time.minute=parseInt(this.time.total/60)
+      done()
+    },
+    // 确认订单后付款
+    pay () {
+      this.payDialogVisible = true
+    },
+    // 银行卡付款
+    payByBank () {
+      this.payDialogVisible = false
+      this.confirmOrderDialogVisible = false
+      this.paySuccessDialogVisible = true
+    },
+    // 会员卡付款
+    payByMember () {
+      this.payDialogVisible = false
+      this.confirmOrderDialogVisible = false
+      this.paySuccessDialogVisible = true
     }
   }
 }
@@ -189,6 +369,7 @@ export default {
       // font-weight: bold;
       color:#CFF9FE;
     }
+    .favour{color: #CFF9FE;}
     &_mark:hover,&_purchase:hover{font-weight: bold;}
     &_name,&_typeAndFavour{
       position: absolute;
@@ -286,22 +467,15 @@ export default {
       }
     }
   }
+  .el-dialog{
+    background-color: #21201E;
+    border-radius: 15px;
+    border: 1.5px solid #D0F3F8;
+    min-width: 900px;
+    &__body{padding: 0;}
+  }
+  .header-title{font-size: 26px; color: #CFF9FE;}
   &_purchase{
-    .el-dialog{
-      background-color: #21201E;
-      border-radius: 15px;
-      border: 1.5px solid #D0F3F8;
-      &__body{padding: 0;}
-    }
-    .movieList{
-      padding: 20px 0px;
-      background-color: #3C3C3A; 
-      >img{
-        width: 138px;
-        height: 207px;
-        margin: 0 10px;
-      }
-    }
     .movieInfo{
       margin: 10px 0;
       >span{
@@ -359,6 +533,225 @@ export default {
       }
     }
   }
+  &_confirmOrder{
+    .confirmOrder_ticket{
+      width: 800px;
+      border-radius: 15px;
+      border: 1.5px solid #D0F3F8;
+      height: 168px;
+      margin-left: 50px;
+      margin-bottom: 20px;
+      padding: 10px 40px;
+      box-sizing: border-box;
+      text-align: left;
+      display: flex;
+      font-size: 18px;
+      &_center{
+        flex: 0 1 auto;
+        >img{height: 113px;width: 75px;margin-top: 25px;margin-right: 20px;}
+      }
+      &_right{
+        flex: 0 1 auto;
+        width: 110px;
+        height: 34px;
+        line-height: 34px;
+        background-color: #343331;
+        text-align: center;
+        border-radius: 25px;
+      }
+      &_left{
+        flex: 1 1 auto;
+        >span{display: inline-block;}
+        >span:first-of-type{color: #CFF9FE; font-size: 24px;width: 60px;border-right: 1px solid #CFF9FE;}
+        >span:nth-of-type(2){padding-left: 15px;line-height: 50px;height: 50px;}
+        >span:nth-of-type(n+3){line-height: 30px;height: 30px;}
+        >span:nth-last-of-type(2){width: 120px;}
+      }
+    }
+    .confirmOrder_coupon{
+      background-color: #343331;
+      text-align-last: left;
+      padding: 0px 30px;
+      >h3{
+        height: 50px;
+        line-height: 50px;
+      }
+      .el-radio{
+        display: block;
+      }
+      .el-collapse-item__wrap,.el-collapse-item__header{
+        background-color: #343331; border: none;
+      }
+      .el-collapse{border: none}
+    }
+    .confirmOrder_price{
+      height: 50px;
+      line-height: 50px;
+      text-align: left;
+      border-top: 1px solid #343331;
+      border-bottom: 1px solid #343331;
+      margin: 20px 30px;
+      >span{display: inline-block;width: 150px;}
+      >span:last-of-type{color:#CFF9FE;}
+    }
+    .confirmOrder_know{
+      text-align-last: left;
+      margin: 20px 30px;
+      list-style-type:none;
+      >h3{height: 35px;}
+      >li{font-size: 13px;padding: 0 10px;}
+    }
+    .confirmOrder_pay{
+      background-color: #343331;
+      border-bottom-right-radius:15px;
+      border-bottom-left-radius:15px;
+      padding: 10px 20px;
+      >span{display: inline-block;}
+      >span:first-of-type{width: 250px;}
+      >span:nth-of-type(2){width: 250px;>span{color:#CFF9FE; font-size: 20px;}}
+      // border: 1.5px solid #D0F3F8;
+      >div{
+        width: 250px;
+        height: 54px;
+        border-radius: 15px;
+        border: 1.5px solid #D0F3F8;
+        color: #CFF9FE;
+        font-size: 24px;
+        line-height: 54px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 20px auto;
+        margin-bottom: 0;
+      }
+    }
+  }
+  &_pay{
+    .el-dialog{min-width: 500px;}
+    .el-dialog__body{padding: 0 20px;}
+    &_price{
+      border-top: 1px solid #979797;
+      padding: 20px 0;
+      color: #CFF9FE;
+      font-size: 24px;
+    }
+    &_memberCard{
+      &_account{
+        display: flex;
+        border-bottom: 1px solid #979797;
+        padding: 10px 10px;
+        margin-bottom: 20px;
+        >span{
+          display: block;
+          text-align: left;
+          flex: 1 1 auto;
+          font-size: 18px;
+        }
+        >span:last-of-type{flex: 0 1 auto;  }
+      }
+      &_pay{
+        width: 250px;
+        height: 54px;
+        border-radius: 15px;
+        border: 1.5px solid #D0F3F8;
+        color: #CFF9FE;
+        font-size: 24px;
+        line-height: 54px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 20px auto;
+      }
+    }
+    &_bankCard{
+      text-align: left;
+      .el-input{width: 300px;}
+      >div:not(:last-of-type){margin: 10px 0;}
+      >div>span{display: inline-block;width: 100px;text-align: right;}
+      &_pay{
+        width: 250px;
+        height: 54px;
+        border-radius: 15px;
+        border: 1.5px solid #D0F3F8;
+        color: #CFF9FE;
+        font-size: 24px;
+        line-height: 54px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 20px auto;
+        text-align: center;
+      }
+    }
+  }
+  &_paySuccess{
+    .Separator{
+      // height: 10px;
+      border-top: 1px solid;
+      margin: 15px 40px;
+    }
+    &_status{
+      background-color: #343331;
+      >span{display: block;}
+      >span:first-of-type{font-size: 24px;line-height: 50px;}
+      >span:last-of-type{line-height: 30px;}
+      >div{
+        display: inline-block;
+        width: 200px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 15px;
+        border: 1.5px solid #D0F3F8;
+        cursor: pointer;
+        margin: 20px 20px;
+        font-size: 18px;
+      }
+      >div:hover{font-weight: bold;}
+    }
+    &_ticket{
+      width: 800px;
+      border-radius: 15px;
+      border: 1.5px solid #D0F3F8;
+      height: 168px;
+      margin-left: 50px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      padding: 10px 40px;
+      box-sizing: border-box;
+      text-align: left;
+      display: flex;
+      font-size: 18px;
+      &_right{
+        flex: 0 1 auto;
+        >img{height: 113px;width: 75px;margin-top: 25px;margin-right: 20px;}
+      }
+      &_left{
+        flex: 1 1 auto;
+        >span{display: inline-block;}
+        >span:first-of-type{color: #CFF9FE; font-size: 24px;width: 60px;border-right: 1px solid #CFF9FE;}
+        >span:nth-of-type(2){padding-left: 15px;line-height: 50px;height: 50px;}
+        >span:nth-of-type(n+3){line-height: 30px;height: 30px;}
+        >span:nth-last-of-type(2){width: 120px;}
+      }
+    }
+    &_cinema{
+      display: flex;
+      text-align-last: left;
+      margin: 15px 60px;
+      border-top: 1px solid;
+      border-bottom: 1px solid;
+      padding: 20px 30px;
+      font-size: 16px;
+      &_left{flex: 1 1 auto;>div:first-of-type{font-size: 24px;line-height: 40px;}}
+      &_right{flex: 0 1 auto;>img{display: block;margin: 0 auto;}}
+    }
+    &_orderDetail{
+      text-align: left;
+      margin: 15px 60px;
+      padding: 0px 30px;
+      >li{
+        list-style-type: none;
+        line-height: 25px;
+      }
+      >li:first-of-type{font-size: 24px;line-height: 40px;>span{color: #CFF9FE;}}
+    }
+  }
 }
-.movie_is_active{width: 160px!important; height: 230px!important;}
 </style>
