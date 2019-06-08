@@ -12,41 +12,50 @@
                 @close="handleClose"
                 background-color="#131c1c"
                 text-color="#fff"
-                active-text-color="#ffd04b">
-                <el-menu-item index="1" @click="goBasicInfo">
+                active-text-color="#ffd04b"
+                unique-opened="true"
+                router="true"
+              >
+                <el-menu-item index="/user">
                   <i class="el-icon-location">
                   </i>
                   <span>基本信息</span>
                 </el-menu-item>
-                <el-submenu index="2">
+                <el-submenu>
                   <template slot="title" style="padding-left:5px;">
                     <i class="el-icon-location"></i>
-                    <span @click="goCoupon()">相关优惠</span>
+                    <span>相关优惠</span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="1-1">会员优惠券</el-menu-item>
-                    <el-menu-item index="1-2">普通优惠券</el-menu-item>
+                    <el-menu-item index="/user/coupon">会员优惠券</el-menu-item>
+                    <el-menu-item index="/user/coupon">普通优惠券</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
-                <el-menu-item index="3" @click="goHistory()">
+                <el-menu-item index="/user/history">
                   <i class="el-icon-document"></i>
                   <span slot="title">历史订单</span>
                 </el-menu-item>
-                <el-menu-item index="4" @click="goFavor()">
+                <el-menu-item index="/user/favor">
                   <i class="el-icon-setting"></i>
                   <span slot="title">标记喜爱</span>
                 </el-menu-item>
                 <el-submenu index="5">
                   <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span @click="goPolicy()">帮助中心 </span>
+                    <span>帮助中心 </span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="1-1" @click="goPolicy()">优惠政策</el-menu-item>
-                    <el-menu-item index="1-2" @click="goNotice()">观影须知</el-menu-item>
+                    <el-menu-item index="/user/helper/preferentialpolicy"
+                    >
+                      优惠政策
+                    </el-menu-item>
+                    <el-menu-item index="/user/helper/notice"
+                    >
+                      观影须知
+                    </el-menu-item>
                     <el-menu-item index="1-3">常见问题</el-menu-item>
-                    <el-menu-item index="1-4" @click="goContact()">联系我们</el-menu-item>
-                    <el-menu-item index="1-5">投诉建议</el-menu-item>
+                    <el-menu-item index="/user/helper/contact">联系我们</el-menu-item>
+                    <el-menu-item index="/user/helper/contact">投诉建议</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
               </el-menu>
@@ -74,27 +83,6 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
-      },
-      goBasicInfo() {
-        this.$router.push("/user")
-      },
-      goCoupon() {
-        this.$router.push("/user/coupon")
-      },
-      goFavor() {
-        this.$router.push("/user/favor")
-      },
-      goPolicy() {
-        this.$router.push("/user/helper/preferentialpolicy")
-      },
-      goNotice() {
-        this.$router.push("/user/helper/notice")
-      },
-      goContact() {
-        this.$router.push("/user/helper/contact")
-      },
-      goHistory() {
-        this.$router.push("/user/history")
       },
     }
   }
