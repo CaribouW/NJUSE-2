@@ -1,7 +1,5 @@
 import axios from 'axios'
-import {dealResponse} from './baseService.js'
-
-const baseIP = 'http://localhost:18080';
+import {dealResponse,baseIP} from './baseService.js'
 
 /**
  * 获取用户信息

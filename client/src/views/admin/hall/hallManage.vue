@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   import HallCard from "../../../components/admin/hallCard";
 
   export default {
@@ -35,10 +35,17 @@
     },
     computed: {
       ...mapGetters({
-        halls: 'getHallList'
+        halls: 'hallList'
       })
     },
-    methods: {},
+    created() {
+      // this.flushHall()
+    },
+    methods: {
+      ...mapActions({
+        flushHall: 'getHalls'
+      })
+    },
   }
 </script>
 
@@ -59,6 +66,7 @@
       .header-text {
         text-align: left;
         padding-bottom: 2%;
+
         & > span {
           height: 28px;
           font-size: 22px;

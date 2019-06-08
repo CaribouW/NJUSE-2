@@ -1,3 +1,5 @@
+import {getHallList, modifyHall} from "../../service/HallService";
+
 const state = {
   hallList: [{
     id: '1',
@@ -5,25 +7,25 @@ const state = {
     row: '10',  //行数
     col: '5', //列数
     type: 'IMAX', //规格
-  },{
+  }, {
     id: '2',
     state: 1, // 0 可用 ; 1 不可用
     row: '10',  //行数
     col: '5', //列数
     type: 'IMAX', //规格
-  },{
+  }, {
     id: '3',
     state: 1, // 0 可用 ; 1 不可用
     row: '10',  //行数
     col: '5', //列数
     type: '3D', //规格
-  },{
+  }, {
     id: '4',
     state: 1, // 0 可用 ; 1 不可用
     row: '10',  //行数
     col: '5', //列数
     type: 'IMAX', //规格
-  },{
+  }, {
     id: '5',
     state: '0', // 0 可用 ; 1 不可用
     row: '10',  //行数
@@ -47,16 +49,53 @@ const state = {
     row: '10',  //行数
     col: '5', //列数
     type: 'IMAX', //规格
-  }, ]
+  },]
 };
 const getters = {
   //获取所有的影厅
-  getHallList: state => state.hallList
+  hallList: state => state.hallList
 };
 
-const actions = {};
+const actions = {
+  async getHalls({dispatch, commit, state}) {
+    const data = getHallList().then(
+      res => {
+        const list = res.filter(item => {
+          return {
+            id: item.id,
+            state: item.state, // 0 可用 ; 1 不可用
+            row: '10',  //行数
+            col: '5', //列数
+            type: 'IMAX', //规格
+          }
+        });
+        return commit('flushList', list);
+      }
+    )
+  },
 
-const mutations = {};
+  async modifyHall({dispatch, commit, state}, payload) {
+    const data = modifyHall(payload)
+      .then(res => {
+        return {}
+      })
+  }
+};
+
+const mutations = {
+  flushList: (state, payload) => {
+    state.hallList = payload
+  },
+
+  appendHallList: (state, payload) => {
+    state.hallList.push(payload)
+  },
+  removeHallList: (state, {id}) => {
+    state.hallList = state.hallList.filter(item => {
+      return item.id !== id
+    });
+  }
+};
 export default {
   state,
   getters,

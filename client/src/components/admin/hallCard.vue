@@ -25,12 +25,14 @@
     </div>
     <div class="card-content">
       <el-button @click="handleModify">修改</el-button>
-      <el-button @click="handleModify">删除</el-button>
+      <el-button @click="handleRemove">删除</el-button>
     </div>
   </el-card>
 </template>
 
 <script>
+  import {mapActions, mapMutations} from 'vuex'
+
   export default {
     props: ['hallItem'],
     name: "hallCard",
@@ -45,10 +47,27 @@
       }
     },
     methods: {
+      ...mapMutations({
+        append: 'appendHallList',
+        remove: 'removeHallList'
+      }),
       //显示新的修改弹窗
       handleModify: function () {
+        this.append({
+          id: 1 + this.hallItem.id,
+          state: '0', // 0 可用 ; 1 不可用
+          row: '13',  //行数
+          col: '5', //列数
+          type: 'IMAX', //规格
+        })
+      },
+      //显示新的删除确认弹框
+      handleRemove: function () {
+        this.remove({
+          id: this.hallItem.id
+        })
+      },
 
-      }
     }
   }
 </script>

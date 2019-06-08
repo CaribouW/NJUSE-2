@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseIP = 'http://localhost:18080';
+export const baseIP = 'http://localhost:18080';
 
 export async function dealResponse(response) {
   const body = response.data;

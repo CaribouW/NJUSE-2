@@ -22,9 +22,11 @@ const getters = {
 const actions = {
   async getUserInfo({dispatch, commit, state}, userId) {
     await dispatch('userLogin', userId);
-    const data = getUserInfo()
+    const data = getUserInfo(state)
       .then(res => {
-        state.basicInfo = res;
+        commit('updateUser',{
+          res
+        });
         return state.basicInfo
       });
   },
