@@ -188,7 +188,7 @@
 
               ctx.beginPath();
 
-              ctx.lineWidth = ratio / 2;
+              ctx.lineWidth = ratio * 0.64;
 
               ctx.strokeStyle = 'rgba(255,255,255,' + (ratio + 0.2) + ')';
 
