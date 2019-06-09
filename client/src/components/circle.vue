@@ -3,37 +3,16 @@
     <div class="radmenu"><a href="#" class="show">START</a>
       <ul>
         <li>
-          <ul>
-            <li></li>
-            <li></li>
-            <li><a href="#">Sub Menu 3</a></li>
-            <li></li>
-            <li><a href="#">Sub Menu 5</a></li>
-          </ul>
         </li>
         <li>
-          <ul>
-            <li><a href="#">Sub Menu 1</a></li>
-            <li><a href="#">Sub Menu 2</a></li>
-            <li><a href="#">Sub Menu 3</a></li>
-            <li><a href="#">Sub Menu 4</a></li>
-            <li><a href="#">Sub Menu 5</a></li>
-          </ul>
+          <a href="#">即将上映</a>
         </li>
         <li>
-          <ul>
-            <li><a href="#">Sub Menu 1</a></li>
-            <li><a href="#">Sub Menu 2</a></li>
-            <li><a href="#">Sub Menu 3</a></li>
-            <li><a href="#">Sub Menu 4</a></li>
-            <li><a href="#">Sub Menu 5</a></li>
-          </ul>
+          <a href="#">正在热映</a>
         </li>
         <li>
-          <a href="#">Menu 4</a>
         </li>
         <li>
-          <a href="#">Menu 5</a>
         </li>
       </ul>
     </div>
@@ -212,6 +191,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: solid transparent;
     /*width: 100%;*/
     /*height: 100%;*/
   }
@@ -235,35 +215,43 @@
     position: absolute;
     width: 140px;
     height: 140px;
-    background: rgba(101, 95, 102, 0.9);
+    background: rgba(207, 249, 254, 0.03);
+    border: solid rgba(207, 249, 254, 0.48);
     text-align: center;
     align-items: center;
     justify-content: center;
     border-radius: 150px;
     display: none;
     text-decoration: none;
-    color: #333;
+    color: rgba(207, 249, 254, 0.47);
     transition: all 1s ease;
-    box-shadow: 0 0 15px #222;
-    font-family: "segoe ui";
+    font-family: "segoe ui", serif;
     font-weight: 200;
-    font-size: 16px;
-    background-image: url("../assets/images/homepage/fullsizerender(16).png");
+    box-shadow: 0 0 10px #f1f1f1;
   }
-  .radmenu .show{
-    width: 220px;
-    height: 220px;
+
+  .radmenu .show {
+    width: 250px;
+    height: 250px;
+    border-radius: 250px;
+    font-size: 28px;
   }
+
+  .radmenu :hover {
+    color: rgba(207, 249, 254, 0.96);
+  }
+
   .radmenu .selected {
-    background: rgba(51, 51, 51, 0.9);
+    background: rgba(51, 51, 51, 0.07);
     display: flex;
     top: calc(50% - 60px);
     left: calc(50% - 60px);
-    color: #f1f1f1;
+    color: rgba(207, 249, 254, 0.85);
     box-shadow: 0 0 10px #f1f1f1;
     width: 220px;
     height: 220px;
   }
+
 
   .radmenu .selected + ul > li:nth-child(1) {
     -webkit-transform: rotate(72deg) translateX(100px);
@@ -307,7 +295,7 @@
 
   .radmenu .selected + ul > li:nth-child(5) {
     -webkit-transform: rotate(360deg) translateX(180px);
-    transform: rotate(360deg) translateX(180px);
+    transform: rotate(360deg) translateX(200px);
   }
 
   .radmenu .selected + ul > li:nth-child(5) > a {

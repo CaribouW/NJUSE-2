@@ -214,13 +214,13 @@
     }
     .main_content {
       margin: 0 auto;
-      background-color: #201f1d;
+      background-color: rgba(32, 31, 29, 0.5);
       min-height: inherit;
       width: 85%;
       min-width: 1300px;
       position: relative;
       z-index: 1;
-      opacity: 0.75;
+      /*opacity: 0.75;*/
     }
   }
 
