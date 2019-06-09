@@ -138,8 +138,8 @@
           flex: 1 1 auto;
           margin-top: 50px;
 
-          .subCircle{
-            margin-top: 30%;
+          .subCircle {
+            margin-top: 43%;
             margin-right: 10%;
           }
 
