@@ -1,19 +1,36 @@
 import Mock from 'mockjs';
 
 // 登录接口
-// Mock.mock('http://localhost:3000/user/Login', {
-//     //模拟返回数据自行定义
-//
-//   'id': 666,
-//   'role': 1
-//
-// });
+Mock.mock('http://localhost:3000/user/Login', 'post',(options) =>{
+  if (options.body === '{"account":"admin","psssword":"123456"}') {
+    return {
+      data: {
+        id: '1',
+        role: '1'
+      },
+      status: 200
+    }
+  } else if (options.body === '{"account":"user","psssword":"123456"}'){
+    return {
+      data: {
+        id: '2',
+        role: '2'
+      },
+      status: 200
+    } 
+  } else {
+    return {
+      data: {
+        status: 205
+      }
+    }
+  }
+});
 
 // 有需要在下面增加就行了
 Mock.mock('http://localhost:3000/user/Logout', {
     //模拟返回数据自行定义
-
-
+  status: 200
 });
 
 

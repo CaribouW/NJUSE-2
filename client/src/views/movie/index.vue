@@ -131,9 +131,9 @@
         <div class="confirmOrder_coupon">
           <el-collapse>
             <el-collapse-item title="电影优惠券" name="1">
-              <el-radio v-model="coupon" label="1">使用普通优惠券</el-radio>
-              <span>hghh</span>
-              <el-radio v-model="coupon" label="2">使用会员优惠券</el-radio>
+              <el-radio v-model="coupon" label="1">不使用优惠券</el-radio><br/>
+              <el-radio v-model="coupon" label="2">使用普通优惠券</el-radio><br/>
+              <el-radio v-model="coupon" label="3">使用会员优惠券</el-radio>
             </el-collapse-item>
           </el-collapse>
         </div>
