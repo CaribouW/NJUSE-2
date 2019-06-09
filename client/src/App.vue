@@ -82,21 +82,21 @@
     // 保证header在登录注册时不会显示
     created: function () {
       this.hideHeader()
-      console.log(localStorage.getItem('roleId'))
-      if (localStorage.getItem('roleId') !== '0') {
-        this.logined = true
-      } else {
-        this.logined = false
-      }
+      // console.log(localStorage.getItem('roleId'))
+      // if (localStorage.getItem('roleId') !== '0') {
+      //   this.logined = true
+      // } else {
+      //   this.logined = false
+      // }
     },
     watch: {
       $route(to, from) {
         this.hideHeader()
-        if (localStorage.getItem('roleId') !== '0') {
-          this.logined = true
-        } else {
-          this.logined = false
-        }
+        // if (localStorage.getItem('roleId') !== '0') {
+        //   this.logined = true
+        // } else {
+        //   this.logined = false
+        // }
       }
     }
   }

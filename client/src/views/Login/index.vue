@@ -31,28 +31,41 @@ export default {
   methods: {
     login() {
       // this.$message.error('别试了，接口还没写呢！');
-      // console.log('fsf')
-      // 测试axios + mock
       var _this = this
       
-      this.$axios.post(_this.GLOBAL.server + '/user/login',{
-        'account': _this.account,
-        'password': _this.password
+      this.$axios.post('http://localhost:3000/user/Login',{
+        account:  _this.account,
+        psssword: _this.password
       }).then(res => {
-        console.log(res)
         if (res.data.status === 200) {
           this.$message.success('登陆成功')
-          localStorage.setItem('account', this.account)
-          localStorage.setItem('roleName', res.data.roleName)
-          localStorage.setItem('id', res.data.id)
+          sessionStorage.setItem('role', res.data.data.role)
+          // localStorage.setItem('roleName', res.data.roleName)
+          sessionStorage.setItem('id', res.data.data.id)
           this.$router.push('/')
         } else {
           this.$message.error("出错了，请稍后再试")
         }
-        
-      }).catch(err => {
-        console.log(err);
+      }).catch(err =>{
+        console.log(err)
       })
+      // this.$axios.post(_this.GLOBAL.server + '/user/login',{
+      //   'account': _this.account,
+      //   'password': _this.password
+      // }).then(res => {
+        // if (res.data.status === 200) {
+        //   this.$message.success('登陆成功')
+        //   localStorage.setItem('account', this.account)
+        //   localStorage.setItem('roleName', res.data.roleName)
+        //   localStorage.setItem('id', res.data.id)
+        //   this.$router.push('/')
+        // } else {
+        //   this.$message.error("出错了，请稍后再试")
+        // }
+        
+      // }).catch(err => {
+      //   console.log(err);
+      // })
     },
     goToRegister() {
       this.$router.push('/register')
