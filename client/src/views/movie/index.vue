@@ -131,8 +131,15 @@
               三号厅 银幕
             </div>
             <div v-for="(cols,colIndex) in seat">
-              <img :src="[each==1 ? seatImg[1] : seatImg[0]]" alt="" v-for="(each, rolIndex) in cols" :key="" 
-              :class="{canSelect: each !== 0}" @click="each!==0 && selectSeat(colIndex, rolIndex, $event)">
+              <div v-for="(each, rolIndex) in cols" :key="">
+                <img src="@/assets/images/movie/TIM图片20190609150257.png" alt="" v-if="each==0">
+                <img src="@/assets/images/movie/TIM图片20190609150410.png" alt="" v-if="each==1" 
+                class="canSelect" @click="selectSeat(colIndex, rolIndex, $event)">
+                <img src="@/assets/images/movie/TIM图片20190610142614.png" alt="" v-if="each==2" 
+                class="canSelect" @click="selectSeat(colIndex, rolIndex, $event)">
+              </div>
+              <!-- <img :src="[each==1 ? seatImg[1] : seatImg[0]]" alt="" v-for="(each, rolIndex) in cols" :key="" 
+              :class="{canSelect: each !== 0}" @click="each!==0 && selectSeat(colIndex, rolIndex, $event)"> -->
             </div>
           </div>
         </div>
@@ -300,7 +307,8 @@ export default {
       
       seatImg: [
         require('@/assets/images/movie/TIM图片20190609150257.png'),
-        require('@/assets/images/movie/TIM图片20190609150410.png')
+        require('@/assets/images/movie/TIM图片20190609150410.png'),
+        require('@/assets/images/movie/TIM图片20190610142614.png')
       ],
       // 银行卡账号密码
       bank: {
@@ -388,7 +396,7 @@ export default {
       var el = event.currentTarget
       if (this.seat[col][rol] ===  1) {
         this.$set(this.seat[col], rol, 2)
-        el.src = this.seatImg[0]
+        el.src = this.seatImg[2]
       } else {
         // 取消选座
         this.$set(this.seat[col], rol, 1)
@@ -670,6 +678,9 @@ export default {
           background-size: contain;
           margin-bottom: 10px;
         }
+        >div>div{
+          display: inline-block;
+        }
         img{
           margin: 2px 8px;
         }
@@ -711,7 +722,7 @@ export default {
       width: 800px;
       border-radius: 15px;
       border: 1.5px solid #D0F3F8;
-      height: 168px;
+      // height: 168px;
       margin-left: 50px;
       margin-bottom: 20px;
       padding: 10px 40px;
