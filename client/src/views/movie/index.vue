@@ -127,6 +127,9 @@
             <img src="@/assets/images/movie/TIM图片20190609150410.png" alt=""><span>可选</span>
           </div>
           <div class="seat_content">
+            <div class="seat_content_screen">
+              三号厅 银幕
+            </div>
             <div v-for="(cols,colIndex) in seat">
               <img :src="[each==1 ? seatImg[1] : seatImg[0]]" alt="" v-for="(each, rolIndex) in cols" :key="" 
               :class="{canSelect: each !== 0}" @click="each!==0 && selectSeat(colIndex, rolIndex, $event)">
@@ -136,11 +139,11 @@
         <div class="selectedTicket">
           <div v-for="item in selectedSeat">
             <span>{{item[0]+1}}排{{item[1]+1}}座</span>
-            <span>49元</span>
+            <span>{{price}}元</span>
           </div>
         </div>
-        <div class="seatConfirmbuttom" @click="comfirmOrder">
-          {{selectedSeat.length * 49}}元 确认选座
+        <div class="seatConfirmbuttom" @click="comfirmOrder" v-if="selectedSeat.length>0">
+          {{totalPrice}}元 确认选座
         </div>
         <div slot="title" class="header-title">
             <img src="@/assets/images/movie/title.png" alt="">
@@ -175,7 +178,7 @@
           </el-collapse>
         </div>
         <div class="confirmOrder_price">
-          <span>票价总计</span><span>98元</span>
+          <span>票价总计</span><span>{{totalPrice}}元</span>
         </div>
         <div class="confirmOrder_know">
           <h3>购票须知</h3>
@@ -188,7 +191,7 @@
             凭证，如不同时间入园，请提供不同身份证分批下单。景区现场当天最迟取票激入园截止时间为乐园闭园前两小时。</li>
         </div>
         <div class="confirmOrder_pay">
-          <span>不支持退票/改签</span><span>应付：<span>98元</span></span>
+          <span>不支持退票/改签</span><span>应付：<span>{{totalPrice}}元</span></span>
           <div class="confirmOrder_pay_buttom" @click="pay()">立即付款</div>
         </div>
         <div slot="title" class="header-title">
@@ -202,7 +205,7 @@
          :modal-append-to-body='false'
         top="20vh"
         width="40%">
-        <div class="movie_pay_price">¥98元</div>
+        <div class="movie_pay_price">¥{{totalPrice}}元</div>
         <el-radio-group v-model="payRadio">
           <el-radio label="1">会员卡支付</el-radio>
           <el-radio label="2">银行卡支付</el-radio>
@@ -243,9 +246,9 @@
         </div>
         <div class="movie_paySuccess_ticket">
           <div class="movie_paySuccess_ticket_left">
-            <span>海王</span><span>2张</span><br/>
+            <span>海王</span><span>{{selectedSeat.length}}张</span><br/>
             <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
-            <span>3号激光厅</span><span>8排6座</span>
+            <span>3号激光厅</span><span v-for="item in selectedSeat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="movie_paySuccess_ticket_right">
             <img src="@/assets/images/movie/timg.png" alt="">
@@ -259,7 +262,7 @@
           </div>
         </div>
         <div class="movie_paySuccess_orderDetail">
-          <li>实付金额: <span>98元</span> </li>
+          <li>实付金额: <span>{{totalPrice}}元</span> </li>
           <li>订单号：2777777777777777777</li>
           <li>购买时间：2019-05-07   18：18：46</li>
           <li>电影票由凉凉电影院提供</li>
@@ -282,17 +285,18 @@ export default {
   },
   data () {
     return {
+      price: 49,
       // 座位
-      seat: [[0, 1, 1, 1, 0, 0, 1, 0, 0, 1],
-      [0, 1, 1, 1, 0, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
-      [0, 1, 1, 0, 1, 0, 0, 1, 0, 1]], 
+      seat: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+      [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 1, 1, 1, 1]], 
       
       seatImg: [
         require('@/assets/images/movie/TIM图片20190609150257.png'),
@@ -348,6 +352,9 @@ export default {
         }
       }
       return arr
+    },
+    totalPrice: function () {
+      return this.selectedSeat.length * this.price
     }
   },
   methods: {
@@ -640,6 +647,7 @@ export default {
       }
     }
     .seat{
+      
       img{
         width: 30px;
         height: 30px;
@@ -651,8 +659,19 @@ export default {
         >span{display: inline-block;margin: 0 30px 0 10px; }
       }
       &_content{
+        background-color: #302F2D;
+        margin-top: 20px;
+        padding: 20px 0;
+        &_screen{
+          background: url('../../assets/images/movie/Path3.png') no-repeat center center;
+          height: 60px;
+          line-height: 50px;
+          font-size: 18px;
+          background-size: contain;
+          margin-bottom: 10px;
+        }
         img{
-          margin: 2px 5px;
+          margin: 2px 8px;
         }
         .canSelect{
           cursor: pointer;
