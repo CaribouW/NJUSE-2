@@ -6,7 +6,7 @@
           <el-row class="tac">
             <el-col :span="24">
               <el-menu
-                default-active="2"
+                default-active="/user"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose"
@@ -17,13 +17,13 @@
                 router="true"
               >
                 <el-menu-item index="/user">
-                  <i class="el-icon-location">
+                  <i class="user_menu">
                   </i>
                   <span>基本信息</span>
                 </el-menu-item>
                 <el-submenu>
                   <template slot="title" style="padding-left:5px;">
-                    <i class="el-icon-location"></i>
+                    <i class="user_coupon"></i>
                     <span>相关优惠</span>
                   </template>
                   <el-menu-item-group>
@@ -32,30 +32,26 @@
                   </el-menu-item-group>
                 </el-submenu>
                 <el-menu-item index="/user/history">
-                  <i class="el-icon-document"></i>
+                  <i class="user_history"></i>
                   <span slot="title">历史订单</span>
                 </el-menu-item>
                 <el-menu-item index="/user/favor">
-                  <i class="el-icon-setting"></i>
+                  <i class="user_favor"></i>
                   <span slot="title">标记喜爱</span>
                 </el-menu-item>
                 <el-submenu index="5">
                   <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <i class="user_helper"></i>
                     <span>帮助中心 </span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="/user/helper/preferentialpolicy"
-                    >
+                    <el-menu-item index="/user/helper/preferentialpolicy">
                       优惠政策
                     </el-menu-item>
-                    <el-menu-item index="/user/helper/notice"
-                    >
+                    <el-menu-item index="/user/helper/notice">
                       观影须知
                     </el-menu-item>
-                    <el-menu-item index="1-3">常见问题</el-menu-item>
                     <el-menu-item index="/user/helper/contact">联系我们</el-menu-item>
-                    <el-menu-item index="/user/helper/contact">投诉建议</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
               </el-menu>
