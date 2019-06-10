@@ -214,7 +214,7 @@
     }
     .main_content {
       margin: 0 auto;
-      background-color: rgba(32, 31, 29, 0.5);
+      background-color: rgba(32, 31, 29, 0.6);
       min-height: inherit;
       width: 85%;
       min-width: 1300px;
