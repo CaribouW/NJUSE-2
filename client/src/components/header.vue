@@ -2,10 +2,15 @@
   <div class="header">
     <div class="header_left">
       <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
-      <ul id="test">
-        <li v-for="items in navList" :class="{selected:items.isActive}" @click="activeFun(items)">
-          {{items.text}}
-        </li>
+      <ul class="homepageNav" v-if="isAdmin">
+          <li v-for="items in adminNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+                  {{items.text}}
+          </li>
+      </ul>
+      <ul class="homepageNav" v-else>
+          <li v-for="items in userNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+                  {{items.text}}
+          </li>
       </ul>
     </div>
     <div class="header_right">
@@ -44,117 +49,147 @@
 
 
 <script>
-  import $ from 'jquery'
-  import mock from '@/mock/mock.js'
-
-  export default {
-    data() {
-      return {
-        id: '',
-        VIP: false,
-        keyword: '',
-        // 登陆or未登录
-        logined: true,
-        showDropdown: false,
-        navList: [
-          {text: '首页', isActive: true, index: 'index'},
-          {text: '影库', isActive: false, index: 'movielist'},
-          {text: '快速购票', isActive: false, index: 'quick'},
-        ],
-        userCenterList: [
-          {text: '个人中心', index: 'user'},
-          {text: '消息', index: 'message'},
-          {text: '退出登陆', index: 'logout'},
-        ]
+import $ from 'jquery'
+import mock from '@/mock/mock.js'
+export default {
+  data () {
+    return {
+      isAdmin: false,
+      id: '',
+      VIP: false,
+      keyword: '',
+      // 登陆or未登录
+      logined: true,
+      showDropdown: false,
+      adminNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '管理员入口', isActive: false, index: 'admin'},
+      ],
+      userNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '快速购票', isActive: false, index: 'quick'},
+      ],
+      userCenterList: [
+        {text: '个人中心',index: 'user'},
+        {text: '消息', index: 'message'},
+        {text: '退出登陆', index: 'logout'},
+      ]
+    }
+  },
+  methods: {
+    goVIP(id) {
+      if (this.VIP) {
+        this.$router.push({
+          path: '/VIP/VIPInfo',
+          query: {
+            id: '1'
+            // id: id
+          }
+        })
+      } else {
+        this.$router.push({
+          path: '/VIP/buyCard',
+          query: {
+            id: '1'
+            // id: id
+          }
+        })
       }
     },
-    methods: {
-      goVIP(id) {
-        if (this.VIP) {
-          this.$router.push({
-            path: '/VIP/VIPInfo',
-            query: {
-              id: '1'
-              // id: id
-            }
-          })
-        } else {
-          this.$router.push({
-            path: '/VIP/buyCard',
-            query: {
-              id: '1'
-              // id: id
-            }
-          })
-        }
-      },
-      goLogin() {
-        this.$router.push("/login")
-      },
-      goRegister() {
-        this.$router.push("/register")
-      },
-      goPersonalCenter_basicInfo() {
-        this.$router.push("/basicInfo")
-      },
-      goHomepage() {
-        $("#test li:first").click()
-      },
-      // 导航栏切换
-      activeFun: function (data) {
-        this.$router.push('/' + data.index)
-        this.navList.forEach(function (obj) {
-          obj.isActive = false;
+    goLogin() {
+      this.$router.push("/login")
+    },
+    goRegister() {
+      this.$router.push("/register")
+    },
+    goPersonalCenter_basicInfo(){
+      this.$router.push("/basicInfo")
+    },
+    goHomepage() {
+      $(".homepageNav li:first").click()
+    },
+    // 导航栏切换
+    activeFun: function(data){
+      this.$router.push('/' +data.index)
+      if (this.isAdmin) {
+        this.adminNavList.forEach(function(obj){
+            obj.isActive = false;
         });
         data.isActive = !data.isActive;
-      },
-      clickDropdown: function (data) {
-        this.showDropdown = !this.showDropdown
-        if (data.index === 'logout') {
-          this.logout()
+      } else {
+        this.userNavList.forEach(function(obj){
+            obj.isActive = false;
+        });
+        data.isActive = !data.isActive;
+      }
+        
+    },
+    clickDropdown: function (data) {
+      this.showDropdown = !this.showDropdown
+      if (data.index === 'logout') {
+        this.logout()
+      } else {
+        this.navList.forEach(function(obj){
+            obj.isActive = false;
+        });
+        this.$router.push('/' + data.index)
+      }
+    },
+    // 登出
+    logout () {
+      var _this = this
+      this.$axios.post('http://localhost:3000/user/Logout').then(res => {
+        if (res.data.status === 200) {
+          this.$message.success('已退出登录')
+          sessionStorage.removeItem('id')
+          sessionStorage.removeItem('role')
+          this.logined = !this.logined
         } else {
           this.navList.forEach(function (obj) {
             obj.isActive = false;
           });
           this.$router.push('/' + data.index)
         }
-      },
-      // 登出
-      logout() {
-        var _this = this
-        console.log(localStorage.getItem('account'))
-        this.$axios.post(_this.GLOBAL.server + '/user/login', {
-          account: localStorage.getItem('id')
-        }).then(res => {
-          // this.$router.push('login')
-          if (res.data.status === 200) {
-            this.$message.success('已退出登录')
-            localStorage.removeItem('roleName')
-            localStorage.removeItem('account')
-            localStorage.removeItem('id')
-            this.logined = !this.logined
-          } else {
-            this.$message.error('出错了，请稍后再试')
-          }
-        }).catch(err => {
-          this.$message.error('出错啦，请稍后再试')
-        })
-        this.$router.push('/index')
-      },
-      search() {
-        this.$router.push('/search')
-      }
+      }).catch(err => {
+        this.$message.error('出错啦，请稍后再试')
+      })
+      // this.$axios.post(_this.GLOBAL.server + '/user/login',{
+      //   account: localStorage.getItem('id')
+      // }).then(res => {
+      //   // this.$router.push('login')
+      //   if (res.data.status === 200) {
+      //     this.$message.success('已退出登录')
+      //     localStorage.removeItem('roleName')
+      //     localStorage.removeItem('account')
+      //     localStorage.removeItem('id')
+      //     this.logined = !this.logined
+      //   } else {
+      //     this.$message.error('出错了，请稍后再试')
+      //   }
+      // }).catch(err => {
+      //   this.$message.error('出错啦，请稍后再试')
+      // })
+      this.$router.push('/index')
     },
-    // 保证header在登录注册时不会显示
-    created: function () {
-      // console.log(localStorage.getItem('roleId'))
-      if (localStorage.getItem('roleId') !== '0') {
-        this.logined = true
-      } else {
-        this.logined = false
-      }
+    search () {
+      this.$router.push('/search')
+    }
+  },
+  // 保证header在登录注册时不会显示
+  created: function () {
+    if (sessionStorage.getItem('role') === '1') {
+      this.logined = true
+      this.isAdmin = true
+    } else if (sessionStorage.getItem('role') === '2') {
+      this.logined = true
+      this.isAdmin = false
+    } else {
+      this.logined = false
     }
   }
+}
 </script>
 
 

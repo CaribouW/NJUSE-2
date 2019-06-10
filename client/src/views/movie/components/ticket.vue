@@ -20,7 +20,7 @@
     methods: {
       notifyParent: function () {
         console.log('123');
-        this.$emit('comfirmOrderChildNotify', 'the msg');
+        this.$emit('selectSeatChildNotify', 'the msg');
       }
     }
   }

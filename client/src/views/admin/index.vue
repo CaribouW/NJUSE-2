@@ -68,7 +68,7 @@
 
 <style>
   ._main_content {
-    background-color: #131c1c;
+    background-color: rgba(19, 28, 28, 0.36);
     width: 92%;
     margin-left: auto;
     margin-right: auto;

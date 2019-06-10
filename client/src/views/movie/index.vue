@@ -82,6 +82,7 @@
     <div class="movie_purchase">
       <el-dialog
         :visible.sync="purchaseDialogVisible"
+        :modal-append-to-body='false'
         top="5vh"
         width="60%">
         <!-- <div class="movieList">
@@ -100,7 +101,7 @@
             <el-carousel-item v-for="item in moviePurchase.date" :key="item.index">
               <span class="medium">2019-{{ item }}</span>
               <div class="movieTime_ticket">
-                <ticket v-for="i in 15" :key="i" @comfirmOrderChildNotify="comfirmOrder"></ticket>
+                <ticket v-for="i in 15" :key="i" @selectSeatChildNotify="confirmSeat"></ticket>
               </div>
               
             </el-carousel-item>
@@ -111,17 +112,53 @@
         </div>
       </el-dialog>
     </div>
+    <div class="movie_selectSeat">
+      <el-dialog
+        :visible.sync="selectSeatDialogVisible"
+        :modal-append-to-body='false'
+        top="5vh"
+        width="60%">
+        <div class="movie">
+          <span>海王</span><span>05-07</span><span>10:10-13:11</span><span>普通3D</span>
+        </div>
+        <div class="seat">
+          <div class="seat_head">
+            <img src="@/assets/images/movie/TIM图片20190609150257.png" alt=""><span>已选</span>
+            <img src="@/assets/images/movie/TIM图片20190609150410.png" alt=""><span>可选</span>
+          </div>
+          <div class="seat_content">
+            <div v-for="(cols,colIndex) in seat">
+              <img :src="[each==1 ? seatImg[1] : seatImg[0]]" alt="" v-for="(each, rolIndex) in cols" :key="" 
+              :class="{canSelect: each !== 0}" @click="each!==0 && selectSeat(colIndex, rolIndex, $event)">
+            </div>
+          </div>
+        </div>
+        <div class="selectedTicket">
+          <div v-for="item in selectedSeat">
+            <span>{{item[0]+1}}排{{item[1]+1}}座</span>
+            <span>49元</span>
+          </div>
+        </div>
+        <div class="seatConfirmbuttom" @click="comfirmOrder">
+          {{selectedSeat.length * 49}}元 确认选座
+        </div>
+        <div slot="title" class="header-title">
+            <img src="@/assets/images/movie/title.png" alt="">
+        </div>
+      </el-dialog>
+    </div>
     <div class="movie_confirmOrder">
       <el-dialog
         :visible.sync="confirmOrderDialogVisible"
         :before-close="cancelOrder"
+         :modal-append-to-body='false'
         top="0vh"
         width="60%">
         <div class="confirmOrder_ticket">
           <div class="confirmOrder_ticket_left">
-            <span>海王</span><span>2张</span><br/>
+            <span>海王</span><span>{{selectedSeat.length}}张</span><br/>
             <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
-            <span>3号激光厅</span><span>8排6座</span>
+            <span>3号激光厅</span><span v-for="item in selectedSeat" class="seat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="confirmOrder_ticket_center">
             <img src="@/assets/images/movie/timg.png" alt="">
@@ -131,9 +168,9 @@
         <div class="confirmOrder_coupon">
           <el-collapse>
             <el-collapse-item title="电影优惠券" name="1">
-              <el-radio v-model="coupon" label="1">使用普通优惠券</el-radio>
-              <span>hghh</span>
-              <el-radio v-model="coupon" label="2">使用会员优惠券</el-radio>
+              <el-radio v-model="coupon" label="1">不使用优惠券</el-radio><br/>
+              <el-radio v-model="coupon" label="2">使用普通优惠券</el-radio><br/>
+              <el-radio v-model="coupon" label="3">使用会员优惠券</el-radio>
             </el-collapse-item>
           </el-collapse>
         </div>
@@ -162,6 +199,7 @@
     <div class="movie_pay">
       <el-dialog
         :visible.sync="payDialogVisible"
+         :modal-append-to-body='false'
         top="20vh"
         width="40%">
         <div class="movie_pay_price">¥98元</div>
@@ -194,6 +232,7 @@
     <div class="movie_paySuccess">
       <el-dialog
         :visible.sync="paySuccessDialogVisible"
+         :modal-append-to-body='false'
         top="2vh"
         width="60%">
         <!-- <div class="Separator"></div> -->
@@ -243,6 +282,22 @@ export default {
   },
   data () {
     return {
+      // 座位
+      seat: [[0, 1, 1, 1, 0, 0, 1, 0, 0, 1],
+      [0, 1, 1, 1, 0, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+      [0, 1, 1, 0, 1, 0, 0, 1, 0, 1]], 
+      
+      seatImg: [
+        require('@/assets/images/movie/TIM图片20190609150257.png'),
+        require('@/assets/images/movie/TIM图片20190609150410.png')
+      ],
       // 银行卡账号密码
       bank: {
         account: '',
@@ -262,6 +317,7 @@ export default {
       favour: false,
       // 弹出对话框控制
       purchaseDialogVisible: false,
+      selectSeatDialogVisible: false,
       confirmOrderDialogVisible: false,
       payDialogVisible: false,
       paySuccessDialogVisible: false,
@@ -278,6 +334,20 @@ export default {
       },
       // 计时器
       oTimer: null
+    }
+  },
+  computed: {
+    selectedSeat: function() {
+      let arr = []
+      let _this = this
+      for(let i = 0; i < _this.seat.length; i++){
+        for(let j = 0; j < _this.seat[0].length; j++) {
+          if (_this.seat[i][j] == 2) {
+            arr.push(new Array(i,j))
+          }
+        }
+      }
+      return arr
     }
   },
   methods: {
@@ -306,9 +376,25 @@ export default {
     stopCountDown () {
       window.clearInterval(this.oTimer)
     },
+    // 选座函数
+    selectSeat(col, rol, event) {
+      var el = event.currentTarget
+      if (this.seat[col][rol] ===  1) {
+        this.$set(this.seat[col], rol, 2)
+        el.src = this.seatImg[0]
+      } else {
+        // 取消选座
+        this.$set(this.seat[col], rol, 1)
+        el.src = this.seatImg[1]
+      }
+    },
+    confirmSeat () {
+      this.purchaseDialogVisible = false
+      this.selectSeatDialogVisible = true
+    },
     // 确认订单函数
     comfirmOrder () {
-      this.purchaseDialogVisible = false
+      this.selectSeatDialogVisible = false
       this.confirmOrderDialogVisible = true
       this.time.total = 900
       this.startCountDown()
@@ -338,7 +424,7 @@ export default {
       this.payDialogVisible = false
       this.confirmOrderDialogVisible = false
       this.paySuccessDialogVisible = true
-    }
+    },
   }
 }
 </script>
@@ -533,6 +619,74 @@ export default {
       }
     }
   }
+  &_selectSeat{
+    .el-dialog__body{
+        padding: 0 30px;
+      }
+    .movie{
+      border-top: 1px solid #979797;
+      border-bottom: 1px solid #979797;
+      height: 60px;
+      text-align: left;
+      margin-bottom: 10px;
+      >span{
+        display: inline-block;
+        width: 100px;
+        line-height: 60px;
+      }
+      >span:first-of-type{
+        color:#CFF9FE;
+        font-size: 20px;
+      }
+    }
+    .seat{
+      img{
+        width: 30px;
+        height: 30px;
+      }
+      &_head{
+        >img,>span{
+          vertical-align: middle;
+        }
+        >span{display: inline-block;margin: 0 30px 0 10px; }
+      }
+      &_content{
+        img{
+          margin: 2px 5px;
+        }
+        .canSelect{
+          cursor: pointer;
+        }
+      }
+    }
+    .selectedTicket{
+      margin: 30px 0;
+      text-align: left;
+      >div{
+        text-align: center;
+        width: 100px;
+        margin-right: 30px;
+        height: 50px;
+        border: 1px solid #CFF9FE;
+        display: inline-block;
+        margin-bottom: 20px;
+        >span{display: block;}
+      }
+    }
+    .seatConfirmbuttom{
+      width: 250px;
+      height: 54px;
+      border-radius: 15px;
+      border: 1.5px solid #D0F3F8;
+      color: #CFF9FE;
+      font-size: 24px;
+      line-height: 54px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 20px auto;
+      margin-top: 0;
+    }
+  }
   &_confirmOrder{
     .confirmOrder_ticket{
       width: 800px;
@@ -565,7 +719,9 @@ export default {
         >span:first-of-type{color: #CFF9FE; font-size: 24px;width: 60px;border-right: 1px solid #CFF9FE;}
         >span:nth-of-type(2){padding-left: 15px;line-height: 50px;height: 50px;}
         >span:nth-of-type(n+3){line-height: 30px;height: 30px;}
-        >span:nth-last-of-type(2){width: 120px;}
+        .seat{
+          margin-left: 20px;
+        }
       }
     }
     .confirmOrder_coupon{
