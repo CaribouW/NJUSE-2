@@ -75,7 +75,9 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="票房">票房</el-tab-pane>
+          <el-tab-pane label="票房">票房
+            <ve-line :data="chartData" :settings="chartSettings"></ve-line>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -125,6 +127,7 @@
           <div class="seat_head">
             <img src="@/assets/images/movie/TIM图片20190609150257.png" alt=""><span>已选</span>
             <img src="@/assets/images/movie/TIM图片20190609150410.png" alt=""><span>可选</span>
+            <img src="@/assets/images/movie/TIM图片20190610142614.png" alt=""><span>当前选择</span>
           </div>
           <div class="seat_content">
             <div class="seat_content_screen">
@@ -292,6 +295,18 @@ export default {
   },
   data () {
     return {
+      chartSettings: {},
+      chartData: {
+        columns: ['日期', '余额', '比率'],
+        rows: [
+          { '日期': '1月1日', '余额': 123, '比率': 0.3 },
+          { '日期': '1月2日', '余额': 1223, '比率': 0.6 },
+          { '日期': '1月3日', '余额': 2123, '比率': 0.9 },
+          { '日期': '1月4日', '余额': 4123, '比率': 0.12 },
+          { '日期': '1月5日', '余额': 3123, '比率': 0.15 },
+          { '日期': '1月6日', '余额': 7123, '比率': 0.20 }
+        ]
+      },
       price: 49,
       // 座位
       seat: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

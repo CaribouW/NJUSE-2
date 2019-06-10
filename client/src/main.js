@@ -20,6 +20,9 @@ Vue.prototype.$axios = axios;
 
 import Global from '../config/global.js'
 
+import VCharts from 'v-charts'
+Vue.use(VCharts)
+
 Vue.prototype.GLOBAL = Global
 
 Vue.config.productionTip = false
@@ -32,5 +35,6 @@ new Vue({
   router,
   store,
   components: {App},
-  template: '<App/>'
+  template: '<App/>',
+  render: h => h(App)
 })
