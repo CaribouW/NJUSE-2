@@ -148,7 +148,7 @@
 
       </div>
       <div class="_box_card" id="_bt_submit">
-        <button id="submit"><span>确认上架</span></button>
+        <el-button round style="color:#CFF9FE;" @click="goSubmit()">确认上架</el-button>
       </div>
     </div>
   </div>
@@ -213,6 +213,9 @@
       },
       handleChange(value) {
         console.log(value);
+      },
+      goSubmit(){
+        alert("暂未与后端接通")
       }
     }
   }
@@ -292,30 +295,25 @@
           background-color: transparent;
         }
       }
-
-      // 处理确认提交的按钮
-      #submit {
-        display: block;
-        background-color: transparent;
-        border-radius: 4px;
-        border: none;
-        color: #FFFFFF;
-        text-align: center;
-        font-size: 23px;
-        font-weight: 400;
-        width: 170px;
-        transition: all 0.5s;
-        cursor: pointer;
-        margin: 0px auto;
-        border: solid #cff9fe;
-      }
     }
 
     #_bt_submit {
       margin-top: 20px;
       padding-top: 20px;
-      background-color: #131c1c;
+      background-color: #212323;
+      .el-button{
+        width: 220px;
+        border-radius: 25px;
+        padding: 8px 65px;
+        background-color: rgba($color: #131C1C, $alpha: 0.5);
+        font-size: 20px;
+        color: #CFF9FE;
+        border-color: #CFF9FE;
+        margin-left: 36%;
+        
+      }
     }
+    
   }
 </style>
 
