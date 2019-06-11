@@ -25,7 +25,7 @@ const actions = {
     return getUserInfo({
       uid: userId
     }).then(res => {
-      console.log(res)
+      return res
     })
   },
   async userLogin({commit, state}, payload) {

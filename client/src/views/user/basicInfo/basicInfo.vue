@@ -5,7 +5,7 @@
     </div>
     <div class="main_id">
       <b>啊我前端好菜 </b><br/>
-      ID:{{id}}
+      ID:{{userInfo.id}}
     </div>
     <div class="main_other">
         <span>
@@ -31,7 +31,7 @@
     },
     data() {
       return {
-        id: '',
+        userInfo:{},
         tabPosition: 'left'
       }
     },
@@ -40,13 +40,14 @@
      * 页面加载之前获取数据
      */
     created: function () {
-
+ 
     },
     mounted: function () {
       var that = this;
       console.log(sessionStorage.getItem('userId'))
       this.$store.dispatch('getUserInfo', sessionStorage.getItem('userId')).then(res => {
         console.log(res)
+        this.userInfo=res
       });
     },
     methods: {
