@@ -9,9 +9,6 @@ import Quick from '@/views/quick/index.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
 import Search from '@/views/search/index.vue'
 import MovieDetail from '@/views/movie/index.vue'
-import BuyCard from '@/views/VIP/buyCard.vue'
-import VIPInfo from '@/views/VIP/VIPInfo.vue'
-import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
 import User from '@/views/user/index.vue';
 import Manager from '@/views/manager/index.vue'
@@ -23,7 +20,8 @@ import {childrenUser} from './user'
 import {childernAmin} from './admin'
 import {childernManager} from "./manager";
 
-export default new Router({
+
+export default new Router({ 
   routes: [
     {
       path: '/',
@@ -88,21 +86,6 @@ export default new Router({
       path: '/movie/detail',
       name: 'MovieDetail',
       component: MovieDetail
-    },
-    {
-      path: '/VIP/buyCard',
-      name: 'BuyCard',
-      component: BuyCard
-    },
-    {
-      path: '/VIP/VIPInfo',
-      name: 'VIPInfo',
-      component: VIPInfo
-    },
-    {
-      path: '/VIP/VIPrights',
-      name: 'VIPrights',
-      component: VIPrights
     },
   ]
 })
