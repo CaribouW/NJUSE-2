@@ -10,9 +10,6 @@ import Test from '@/views/test/test.vue'               //自己玩儿的测试�
 
 import Search from '@/views/search/index.vue'
 import MovieDetail from '@/views/movie/index.vue'
-import BuyCard from '@/views/VIP/buyCard.vue'
-import VIPInfo from '@/views/VIP/VIPInfo.vue'
-import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
 import User from '@/views/user/index.vue';
 import subCircle from '../components/circle';
@@ -21,8 +18,10 @@ import Network from '../components/Network'
 Vue.use(Router);
 import {childrenUser} from './user'
 import {childernAmin} from './admin'
+import {childernVIP} from './VIP'
 
-export default new Router({
+
+export default new Router({ 
   routes: [
     {
       path: '/',
@@ -82,21 +81,6 @@ export default new Router({
       path: '/movie/detail',
       name: 'MovieDetail',
       component: MovieDetail
-    },
-    {
-      path: '/VIP/buyCard',
-      name: 'BuyCard',
-      component: BuyCard
-    },
-    {
-      path: '/VIP/VIPInfo',
-      name: 'VIPInfo',
-      component: VIPInfo
-    },
-    {
-      path: '/VIP/VIPrights',
-      name: 'VIPrights',
-      component: VIPrights
     },
   ]
 })
