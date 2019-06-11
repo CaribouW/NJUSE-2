@@ -5,13 +5,14 @@ import {dealResponse,baseIP} from './baseService.js'
  * 获取用户信息
  * */
 export function getUserInfo({uid}) {
-  return axios.get('', {
+  return axios.get('/user/basicInfo', {
     params: {
-      userId: uid
+      id: uid
     },
     withCredentials: true,
     baseURL: baseIP
   }).then(res => {
+    console.log(res)
     return dealResponse(res);
   });
 }

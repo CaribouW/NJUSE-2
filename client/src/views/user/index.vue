@@ -13,8 +13,7 @@
                 background-color="#131c1c"
                 text-color="#fff"
                 active-text-color="#ffd04b"
-                unique-opened="true"
-                router="true"
+                :router="true"
               >
                 <el-menu-item index="/user">
                   <i class="user_menu">

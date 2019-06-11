@@ -5,7 +5,7 @@
       </div>
       <div class="main_id">
         <b>啊我前端好菜 </b><br/>
-        ID:12345678
+        ID:{{id}}
       </div>
       <div class="main_other">
         <span>
@@ -30,9 +30,23 @@ export default {
   },
   data () {
     return {
+      id:'',
       tabPosition: 'left'
     }
+  }, 
+
+  /**
+   * 页面加载之前获取数据
+   */
+  created:function(){
+    var that=this
+    console.log(sessionStorage.getItem('userId'))
+    this.$store.dispatch('getUserInfo',sessionStorage.getItem('userId')).then(res=>{
+      console.log(res)
+    }) 
+    
   },
+
   methods: {
     goModify() {
       this.$router.push("/user/modifyinfo")

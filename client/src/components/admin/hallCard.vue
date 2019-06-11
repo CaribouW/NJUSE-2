@@ -30,7 +30,7 @@
   </el-card>
 </template>
 
-<script>
+<script> 
   import {mapActions, mapMutations} from 'vuex'
 
   export default {

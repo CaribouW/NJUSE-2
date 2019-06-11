@@ -12,7 +12,7 @@ const state = {
       vipRank: '',
 
     }
-  }
+  } 
 };
 
 const getters = {
@@ -20,15 +20,12 @@ const getters = {
 };
 
 const actions = {
-  async getUserInfo({dispatch, commit, state}, userId) {
-    await dispatch('userLogin', userId);
-    const data = getUserInfo(state)
-      .then(res => {
-        commit('updateUser',{
-          res
-        });
-        return state.basicInfo
-      });
+  async getUserInfo(userId) {
+    return getUserInfo({
+      uid:userId
+    }).then(res=>{
+      console.log(res)
+    })
   },
   async userLogin({commit, state}, payload) {
     return userLogin({
