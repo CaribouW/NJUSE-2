@@ -3,6 +3,7 @@
     <div class="header">
       <div class="header-text">
         <span>退票策略</span>
+        <el-button  icon="el-icon-plus">添加新的退票策略</el-button>
       </div>
       <div class="choose">
 
@@ -49,15 +50,20 @@
       }
 
       .header-text {
+        display: flex;
         text-align: left;
         padding-bottom: 2%;
 
         & > span {
+          flex: 1 0 auto;
           height: 28px;
           font-size: 22px;
           line-height: 28px;
         }
       }
+    }
+    .cards {
+      padding: 20px 20px 40px;
     }
   }
 </style>

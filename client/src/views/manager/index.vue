@@ -34,7 +34,7 @@
             </el-col>
           </div>
         </el-aside>
-        <el-main>
+        <el-main class="router-content">
           <router-view/>
         </el-main>
       </el-container>
@@ -75,6 +75,9 @@
 
     .el-main {
       padding: 0;
+    }
+    .router-content{
+      min-height: 600px;
     }
   }
 </style>

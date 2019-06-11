@@ -3,6 +3,7 @@
     <div class="header">
       <div class="header-text">
         <span>当前可用影厅</span>
+        <el-button  icon="el-icon-plus">添加新的影厅</el-button>
       </div>
       <div class="choose">
 
@@ -64,10 +65,12 @@
       }
 
       .header-text {
+        display: flex;
         text-align: left;
         padding-bottom: 2%;
 
         & > span {
+          flex: 1 0 auto;
           height: 28px;
           font-size: 22px;
           line-height: 28px;
