@@ -40,7 +40,6 @@
 
 <script>
   import admin from '../index.vue'
-  import 'echarts/theme/dark.js'
 
   export default {
     name: 'statistic',
