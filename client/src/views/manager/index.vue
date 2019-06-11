@@ -18,25 +18,17 @@
                 text-color="#fff"
                 active-text-color="#cff9fe"
                 router>
-                <el-submenu index=''>
-                  <template slot="title">
-                    <i class="el-icon-document"></i>
-                    <span>电影上架</span>
-                  </template>
-                  <el-menu-item>
-                    <router-link :to="{name:'movieManage'}" tag="li">添加</router-link>
-                  </el-menu-item>
-                  <el-menu-item>
-                    <router-link :to="{name:'movieShow'}" tag="li">上架管理</router-link>
-                  </el-menu-item>
-                </el-submenu>
-                <el-menu-item index="/admin/scheduleManage">
+                <el-menu-item index="/manager/hallManage">
                   <i class="el-icon-menu"></i>
-                  <span slot="title">排片管理</span>
+                  <span slot="title">影厅信息管理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/statistic">
+                <el-menu-item index="/manager/refundManage">
+                  <i class="el-icon-menu"></i>
+                  <span slot="title">退票策略管理</span>
+                </el-menu-item>
+                <el-menu-item index="/manager/movieRoleManage">
                   <i class="el-icon-setting"></i>
-                  <span slot="title">信息统计</span>
+                  <span slot="title">影院角色管理</span>
                 </el-menu-item>
               </el-menu>
             </el-col>

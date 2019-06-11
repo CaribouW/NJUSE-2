@@ -7,12 +7,13 @@ import coupon from "./module/coupon";
 import hall from "./module/hall";
 import schedule from "./module/schedule";
 import order from './module/order'
+import refundStrategy from './module/refundStrategy'
 // 配置vuex
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     todos, user, movie, coupon,
-    hall, order, schedule,
+    hall, order, schedule, refundStrategy
   }
 })

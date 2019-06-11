@@ -13,7 +13,7 @@
           </li>
       </ul>
       <ul class="homepageNav" v-else>
-          <li v-for="items in managerNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+          <li v-for="items in adminNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
                   {{items.text}}
           </li>
       </ul>
@@ -123,8 +123,14 @@ export default {
     // 导航栏切换
     activeFun: function(data){
       this.$router.push('/' +data.index)
-      if (this.isAdmin) {
+      if (this.roleName === 'admin') {
+        console.log(this.roleName)
         this.adminNavList.forEach(function(obj){
+            obj.isActive = false;
+        });
+        data.isActive = !data.isActive;
+      } else if (this.roleName === 'manager'){
+        this.managerNavList.forEach(function(obj){
             obj.isActive = false;
         });
         data.isActive = !data.isActive;
@@ -134,7 +140,6 @@ export default {
         });
         data.isActive = !data.isActive;
       }
-        
     },
     clickDropdown: function (data) {
       this.showDropdown = !this.showDropdown
@@ -212,6 +217,7 @@ export default {
       this.logined = false
       this.roleName = 'gust'
     }
+    console.log(this.roleName)
   }
 }
 </script>
