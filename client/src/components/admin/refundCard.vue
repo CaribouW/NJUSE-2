@@ -25,16 +25,19 @@
 <style lang="scss">
   .refund-card-body {
     background: rgba(56, 62, 67, 0.75);
-    box-shadow: rgba(56,62,67,0.87);
     margin-bottom: 3%;
+
     .content {
       display: flex;
-
+      align-items: flex-end;
       .txt {
         flex: 1 0 auto;
         display: flex;
         flex-direction: column;
         text-align: left;
+      }
+
+      .btns {
       }
     }
   }

@@ -12,7 +12,7 @@ const state = {
       vipRank: '',
 
     }
-  } 
+  }
 };
 
 const getters = {
@@ -20,10 +20,11 @@ const getters = {
 };
 
 const actions = {
-  async getUserInfo(userId) {
+  async getUserInfo({commit, state}, userId) {
+    console.log(userId)
     return getUserInfo({
-      uid:userId
-    }).then(res=>{
+      uid: userId
+    }).then(res => {
       console.log(res)
     })
   },
