@@ -16,7 +16,7 @@ const state = {
 
 const getters = {
   //获取时间
-  refundStrategyList: state => state.refundStrategyList
+  refunds: state => state.refundStrategyList
 };
 const actions = {};
 const mutations = {};

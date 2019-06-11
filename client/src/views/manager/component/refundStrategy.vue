@@ -9,12 +9,28 @@
       </div>
       <el-divider direction="horizontal"></el-divider>
     </div>
+    <div class="cards">
+      <refund-card class="card-item"
+                   v-for="item in refunds"
+                   :key="item.id"
+                   v-bind:item="item"
+      ></refund-card>
+    </div>
   </div>
 </template>
 
 <script>
+  import RefundCard from "../../../components/admin/refundCard";
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
+
   export default {
-    name: "refundStrategy"
+    name: "refundStrategy",
+    components: {RefundCard},
+    computed: {
+      ...mapGetters({
+        refunds: 'refunds'
+      })
+    }
   }
 </script>
 
@@ -22,6 +38,7 @@
   .refund-strategy-main {
     color: #FFFFFF;
     padding: 30px;
+
     .header {
       display: flex;
       flex-direction: column;
