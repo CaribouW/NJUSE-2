@@ -2,13 +2,18 @@
   <div class="header">
     <div class="header_left">
       <img src="@/assets/images/header/矩形.png" alt="" @click="goHomepage()">
-      <ul class="homepageNav" v-if="isAdmin">
-          <li v-for="items in adminNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+      <ul class="homepageNav" v-if="roleName==='gust' || roleName==='audience'">
+          <li v-for="items in userNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+                  {{items.text}}
+          </li>
+      </ul>
+      <ul class="homepageNav" v-else-if="roleName==='manager'">
+          <li v-for="items in managerNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
                   {{items.text}}
           </li>
       </ul>
       <ul class="homepageNav" v-else>
-          <li v-for="items in userNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
+          <li v-for="items in managerNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
                   {{items.text}}
           </li>
       </ul>
@@ -54,13 +59,18 @@ import mock from '@/mock/mock.js'
 export default {
   data () {
     return {
-      isAdmin: false,
+      roleName: 'gust',
       id: '',
       VIP: false,
       keyword: '',
       // 登陆or未登录
       logined: true,
       showDropdown: false,
+      managerNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '经理入口', isActive: false, index: 'manager'},
+      ],
       adminNavList: [
         {text: '首页', isActive: true, index: 'index'},
         {text: '影库', isActive: false, index: 'movielist'},
@@ -140,21 +150,31 @@ export default {
     // 登出
     logout () {
       var _this = this
-      this.$axios.post('http://localhost:3000/user/Logout').then(res => {
-        if (res.data.status === 200) {
-          this.$message.success('已退出登录')
-          sessionStorage.removeItem('id')
-          sessionStorage.removeItem('role')
-          this.logined = !this.logined
-        } else {
-          this.navList.forEach(function (obj) {
-            obj.isActive = false;
-          });
-          this.$router.push('/' + data.index)
-        }
-      }).catch(err => {
-        this.$message.error('出错啦，请稍后再试')
+
+      _this.$store.dispatch('userLogout' ,{
+        userId: sessionStorage.getItem('userId'),
+      }).then(res => {
+        this.$message.success('已退出登录')
+        sessionStorage.removeItem('roleName')
+        sessionStorage.removeItem('account')
+        sessionStorage.removeItem('userId')
+        this.logined = !this.logined
       })
+      // this.$axios.post('http://localhost:3000/user/Logout').then(res => {
+      //   if (res.data.status === 200) {
+      //     this.$message.success('已退出登录')
+      //     sessionStorage.removeItem('id')
+      //     sessionStorage.removeItem('role')
+      //     this.logined = !this.logined
+      //   } else {
+      //     this.navList.forEach(function (obj) {
+      //       obj.isActive = false;
+      //     });
+      //     this.$router.push('/' + data.index)
+      //   }
+      // }).catch(err => {
+      //   this.$message.error('出错啦，请稍后再试')
+      // })
       // this.$axios.post(_this.GLOBAL.server + '/user/login',{
       //   account: localStorage.getItem('id')
       // }).then(res => {
@@ -179,14 +199,18 @@ export default {
   },
   // 保证header在登录注册时不会显示
   created: function () {
-    if (sessionStorage.getItem('role') === '1') {
+    if (sessionStorage.getItem('roleName') === 'audience') {
       this.logined = true
-      this.isAdmin = true
-    } else if (sessionStorage.getItem('role') === '2') {
+      this.roleName = 'audience'
+    } else if (sessionStorage.getItem('roleName') === 'admin') {
       this.logined = true
-      this.isAdmin = false
+      this.roleName = 'admin'
+    } else if (sessionStorage.getItem('roleName') === 'engineer') {
+      this.logined = true
+      this.roleName = 'engineer'
     } else {
       this.logined = false
+      this.roleName = 'gust'
     }
   }
 }

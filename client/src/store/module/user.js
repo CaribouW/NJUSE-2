@@ -35,8 +35,8 @@ const actions = {
       account: payload.account,
       password: payload.password
     }).then(response => {
+      console.log(response)
       if (typeof response === "number") {
-        console.log('error occur');
         return response;
       } else {
         //更新model
@@ -45,6 +45,7 @@ const actions = {
           account: response.account,
           roleName: response.roleName,
         });
+
         return state
       }
     });
@@ -79,7 +80,11 @@ const actions = {
 };
 const mutations = {
   updateUser: (state, payload) => {
-    state.basicInfo = payload;
+    state.basicInfo = payload
+    console.log(payload)
+    sessionStorage.setItem('userId', payload.userId)
+    sessionStorage.setItem('account', payload.account)
+    sessionStorage.setItem('roleName', payload.roleName)
   },
 };
 export default {

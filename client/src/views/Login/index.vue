@@ -33,22 +33,38 @@ export default {
       // this.$message.error('别试了，接口还没写呢！');
       var _this = this
       
-      this.$axios.post('http://localhost:3000/user/Login',{
-        account:  _this.account,
-        psssword: _this.password
+      _this.$store.dispatch('userLogin' ,{
+        account: _this.account,
+        password: _this.password
       }).then(res => {
-        if (res.data.status === 200) {
-          this.$message.success('登陆成功')
-          sessionStorage.setItem('role', res.data.data.role)
-          // localStorage.setItem('roleName', res.data.roleName)
-          sessionStorage.setItem('id', res.data.data.id)
-          this.$router.push('/')
-        } else {
+        if (typeof res === 'number') {
           this.$message.error("出错了，请稍后再试")
+        } else {
+          this.$message.success('登陆成功')
+          console.log(sessionStorage.getItem('roleName'))
+          console.log(sessionStorage.getItem('userId'))
+          this.$router.push('/')
         }
-      }).catch(err =>{
-        console.log(err)
       })
+
+      // this.$axios.post('http://localhost:3000/user/Login',{
+      //   account:  _this.account,
+      //   psssword: _this.password
+      // }).then(res => {
+      //   if (res.data.status === 200) {
+      //     this.$message.success('登陆成功')
+          // sessionStorage.setItem('role', res.data.data.role)
+          // localStorage.setItem('roleName', res.data.roleName)
+          // sessionStorage.setItem('id', res.data.data.id)
+      //     this.$router.push('/')
+      //   } else {
+      //     this.$message.error("出错了，请稍后再试")
+      //   }
+      // }).catch(err =>{
+      //   console.log(err)
+      // })
+
+
       // this.$axios.post(_this.GLOBAL.server + '/user/login',{
       //   'account': _this.account,
       //   'password': _this.password

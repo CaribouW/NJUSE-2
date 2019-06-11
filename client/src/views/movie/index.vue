@@ -295,7 +295,6 @@ export default {
   },
   data () {
     return {
-      chartSettings: {},
       chartData: {
         columns: ['日期', '余额', '比率'],
         rows: [

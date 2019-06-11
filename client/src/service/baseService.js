@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const baseIP = 'http://localhost:18080';
+export const baseIP = 'http://106.14.140.93:8080/se-server/';
 
 export async function dealResponse(response) {
   const body = response.data;

@@ -23,11 +23,5 @@ export function getCouponList({userId}) {
     }
   }).then(res => {
     return dealResponse(res)
-  }).then(res => {
-    if (isNumeric(res)) {
-      return res
-    } else {
-
-    }
   })
 }
