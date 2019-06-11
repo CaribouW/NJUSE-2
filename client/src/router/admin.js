@@ -25,10 +25,5 @@ const childernAmin = [
     name: 'statistic',
     component: statistic
   },
-  {
-    path: 'hallManage',
-    name: 'hallManage',
-    component: hallManage
-  }
 ];
 export {childernAmin}

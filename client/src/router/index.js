@@ -7,7 +7,6 @@ import Homepage from '@/views/homepage/index.vue'
 import MovieList from '@/views/movieList/index.vue'
 import Quick from '@/views/quick/index.vue'
 import Test from '@/views/test/test.vue'               //自己玩儿的测试页面，之后删除
-
 import Search from '@/views/search/index.vue'
 import MovieDetail from '@/views/movie/index.vue'
 import BuyCard from '@/views/VIP/buyCard.vue'
@@ -15,12 +14,14 @@ import VIPInfo from '@/views/VIP/VIPInfo.vue'
 import VIPrights from '@/views/VIP/VIPrights.vue'
 import Admin from '@/views/admin/index.vue'
 import User from '@/views/user/index.vue';
+import Manager from '@/views/manager/index.vue'
 import subCircle from '../components/circle';
 import Network from '../components/Network'
 
 Vue.use(Router);
 import {childrenUser} from './user'
 import {childernAmin} from './admin'
+import {childernManager} from "./manager";
 
 export default new Router({
   routes: [
@@ -72,7 +73,12 @@ export default new Router({
       component: Admin,
       children: childernAmin
     },
-
+    {
+      path: '/manager',
+      name: 'manager',
+      component: Manager,
+      children: childernManager
+    },
     {
       path: '/search',
       name: 'Search',

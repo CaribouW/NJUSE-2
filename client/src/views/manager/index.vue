@@ -1,5 +1,5 @@
 <template>
-  <div class="_main">
+  <div class="manager-main">
     <div class="_head_divider">
       <el-divider></el-divider>
     </div>
@@ -52,42 +52,37 @@
 
 <script>
   export default {
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
-    }
+    name: "index"
   }
 </script>
 
-<style>
-  ._main_content {
-    background-color: rgba(19, 28, 28, 0.36);
-    width: 92%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px
-  }
+<style lang="scss">
+  .manager-main {
+    ._main_content {
+      background-color: rgba(19, 28, 28, 0.36);
+      width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10px
+    }
 
-  ._head_divider {
-    width: 93%;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    ._head_divider {
+      width: 93%;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-  ._leftBar img {
-    width: 100px;
-    height: 100px;
-  }
+    ._leftBar img {
+      width: 100px;
+      height: 100px;
+    }
 
-  .el-submenu__title, .el-menu-item {
-    font-size: 18px;
-  }
+    .el-submenu__title, .el-menu-item {
+      font-size: 18px;
+    }
 
-  .el-main {
-    padding: 0;
+    .el-main {
+      padding: 0;
+    }
   }
 </style>
