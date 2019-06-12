@@ -13,21 +13,22 @@
         MOVIE
       </div>
       <div class="movielist_movie_list">
-        <div class="movielist_movie_list_each" v-for='i in 6'>
-          <img src="@/assets/images/movielist/161905.30186585_1000 copy.png" alt="">
+        <div class="movielist_movie_list_each" v-for='movie in showedMovie' @click="showMovieDetail(movie.movieId)">
+          <img :src="movie.poster" alt="">
           <div>
-            <span>头号玩家</span><span>9.1分</span><br>
-          </div>
-          <span>简介</span>
+            <span>{{movie.name}}</span><span>{{movie.score}}</span><br>
+          </div>  
+          <span>杨云鹏真帅</span>
         </div>
       </div>
     </div>
     <div class="movielist_page">
       <el-pagination
-        small="true"
+        :small="true"
         layout="prev, pager, next"
-        :page-size="10"
-        :total="5000"
+        :page-size="15"
+        :current-page.sync="currentPage"
+        :total="movie.length"
       >
       </el-pagination>
     </div>
@@ -38,14 +39,37 @@
   export default {
     data() {
       return {
+        currentPage: 1,
         siftlist: [
           {label: '综合排序', select: ['综合排序', '票房榜', '新上线'], sort: ''},
           {label: '全部地区', select: ['全部地区', '内地', '香港地区', '美国', '欧洲', '日韩', '泰国', '印度', '其他'], location: ''},
           {label: '全部类型', select: ['全部类型', '喜剧', '爱情', '动作', '犯罪', '惊悚', '悬疑', '动画', '奇幻', '魔幻'], selected: ''},
           {label: '全部规格', select: ['全部规格', '3D', 'IMAX', '杜比音效', '曲面巨幕', '4K', '亲自影厅'], selected: ''},
           {label: '全部状态', select: ['全部状态', '正在热映', '即将上映'], selected: ''}
-        ]
+        ],
+        movie: [],
       }
+    },
+    computed: {
+      showedMovie: function () {
+        return this.movie.slice(this.currentPage*15, (this.currentPage+1)*15)
+      }
+    },
+    methods: {
+      showMovieDetail (id) {
+        this.$router.push({
+          path: '/movie/detail',
+          query: {
+            movieId: id
+          }
+        })
+      }
+    },
+    created () {
+      var _this = this
+      _this.$store.dispatch('getAllMovie').then(res => {
+        _this.movie = res
+      })
     }
   }
 </script>
@@ -96,9 +120,9 @@
 
         &_each {
           display: inline-block;
-          padding: 20px 20px;
+          margin: 20px 20px;
           color: white;
-
+          cursor: pointer;
           > img {
             width: 180px;
             height: 250px;

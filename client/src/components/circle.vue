@@ -5,10 +5,10 @@
         <li>
         </li>
         <li>
-          <a href="#">即将上映</a>
+          <a href="#" id="comingSoon">即将上映</a>
         </li>
         <li>
-          <a href="#">正在热映</a>
+          <a href="#" id="onshow">正在热映</a>
         </li>
         <li>
         </li>
@@ -22,15 +22,23 @@
 <script>
   export default {
     name: "subCircle",
+    methods: {
+      notifyParent (e) {
+        this.$emit('getMovieNotify', e.srcElement.innerText)
+      }
+    },
     mounted() {
       var buttons = document.querySelectorAll(".radmenu a");
-
+      var _this = this
       for (var i = 0, l = buttons.length; i < l; i++) {
         var button = buttons[i];
         button.onclick = setSelected;
+        // button.onclick = notifyParent
       }
 
       function setSelected(e) {
+        console.log(e)
+        _this.notifyParent(e)
         if (this.classList.contains("selected")) {
           this.classList.remove("selected");
           if (!this.parentNode.classList.contains("radmenu")) {

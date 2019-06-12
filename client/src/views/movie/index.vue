@@ -2,8 +2,8 @@
   <div class="movie">
     <div class="movie_poster">
       <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
-      <div class="movie_poster_name">Aquaman</div>
-      <div class="movie_poster_typeAndFavour">动作、科幻 <span>1.8万人想看</span></div>
+      <div class="movie_poster_name">{{movieInfo.name}}</div>
+      <div class="movie_poster_typeAndFavour">{{movieInfo.basicInfo.type}}<span>0人想看</span></div>
       <div class="movie_poster_mark" @click="favour=!favour">
         <span v-if="favour">标记为喜爱</span><span v-else class="favour">已喜爱</span>
       </div>
@@ -25,23 +25,23 @@
             威廉·达福、杜夫·龙格尔联合主演。《海王》根据DC漫画改编，讲述了半人半亚特兰蒂
             斯血统的亚瑟·库瑞踏上永生难忘的征途——他不但需要直面自己的特殊身世，更不得不
             面对生而为王的考验，以及和湄拉一同对抗同母异父的兄弟奥姆的故事。</div>
-            <img src="@/assets/images/movie/timg.png" alt="" class="briefIntro_img">
+            <img :src="movieInfo.pic" alt="" class="briefIntro_img">
             <div>
               <span class="basicInfo_title">基本信息</span>
               <div class="movie_info_content_basicInfo">
-                <div>中文名</div><div>{{movieInfo.ChineseName}}</div><div>类型</div><div>{{movieInfo.type}}</div>
+                <div>中文名</div><div>{{movieInfo.basicInfo.ChineseName}}</div><div>类型</div><div>{{movieInfo.basicInfo.type}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
-                <div>英文名</div><div>{{movieInfo.EnglishName}}</div><div>片长</div><div>{{movieInfo.duration}}分钟</div>
+                <div>英文名</div><div>{{movieInfo.basicInfo.EnglishName}}</div><div>片长</div><div>{{movieInfo.basicInfo.duration}}分钟</div>
               </div>
               <div class="movie_info_content_basicInfo">
-                <div>出品公司</div><div>{{movieInfo.productionCompany}}</div><div>上映时间</div><div>{{movieInfo.showTime}}</div>
+                <div>出品公司</div><div>{{movieInfo.basicInfo.productionCompany}}</div><div>上映时间</div><div>{{movieInfo.basicInfo.showTime}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
-                <div>发行公司</div><div>{{movieInfo.distributionCompany}}</div><div>导演</div><div>{{movieInfo.director}}</div>
+                <div>发行公司</div><div>{{movieInfo.basicInfo.distributionCompany}}</div><div>导演</div><div>{{movieInfo.basicInfo.director}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
-                <div>语言</div><div>{{movieInfo.language}}</div><div>imdb编码</div><div>{{movieInfo.imdb}}</div>
+                <div>语言</div><div>{{movieInfo.basicInfo.language}}</div><div>imdb编码</div><div>{{movieInfo.basicInfo.imdb}}</div>
               </div>
             </div>
           </el-tab-pane>
@@ -49,14 +49,14 @@
             <div>导演</div>
             <div class="movie_info_content_director">
               <div class="movie_info_content_director_each" v-for="i in 2">
-                <img src="@/assets/images/movie/c75c10385343fbf2b5a5dd10be7eca8065388f73 copy 4.png" alt="">
+                <img :src="movieInfo.pic" alt="">
                 <div>杰森·莫玛</div><div>饰</div><div>亚瑟·库瑞</div>
               </div>
             </div>
             <div>演员</div>
             <div class="movie_info_content_actor">
               <div class="movie_info_content_director_each" v-for="i in 10">
-                <img src="@/assets/images/movie/c75c10385343fbf2b5a5dd10be7eca8065388f73 copy 4.png" alt="">
+                <img :src="movieInfo.pic" alt="">
                 <div>杰森·莫玛</div><div>饰</div><div>亚瑟·库瑞</div>
               </div>
             </div>
@@ -65,18 +65,18 @@
             <div>剧照</div>
             <div class="movie_info_content_director">
               <div class="movie_info_content_director_each" v-for="i in 2">
-                <img src="@/assets/images/movie/c75c10385343fbf2b5a5dd10be7eca8065388f73 copy 4.png" alt="">
+                <img :src="movieInfo.pic" alt="">
               </div>
             </div>
             <div>视频</div>
             <div class="movie_info_content_actor">
               <div class="movie_info_content_director_each" v-for="i in 10">
-                <img src="@/assets/images/movie/c75c10385343fbf2b5a5dd10be7eca8065388f73 copy 4.png" alt="">
+                <img :src="movieInfo.pic" alt="">
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="票房">票房
-            <ve-line :data="chartData" :settings="chartSettings"></ve-line>
+            <ve-line :data="chartData"></ve-line>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -92,8 +92,8 @@
           :class="{movie_is_active:items.isActive}" @click="selectMovie(items)">
         </div> -->
         <div class="movieInfo">
-          <span>{{moviePurchase.ChineseName}}</span> <span>豆瓣评分 {{moviePurchase.score}}</span>
-          <span>{{moviePurchase.type}}</span><span>{{moviePurchase.duration}}分钟</span>
+          <span>{{movieInfo.name}}</span> <span>豆瓣评分 {{movieInfo.score}}</span>
+          <span>{{movieInfo.basicInfo.type}}</span><span>{{movieInfo.basicInfo.duration}}分钟</span>
         </div>
         <div class="movieDate">
           <span v-for="each in moviePurchase.date">{{each}}</span>
@@ -105,7 +105,6 @@
               <div class="movieTime_ticket">
                 <ticket v-for="i in 15" :key="i" @selectSeatChildNotify="confirmSeat"></ticket>
               </div>
-              
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -121,7 +120,7 @@
         top="5vh"
         width="60%">
         <div class="movie">
-          <span>海王</span><span>05-07</span><span>10:10-13:11</span><span>普通3D</span>
+          <span>{{movieInfo.name}}</span><span>05-07</span><span>10:10-13:11</span><span>普通3D</span>
         </div>
         <div class="seat">
           <div class="seat_head">
@@ -169,12 +168,12 @@
         width="60%">
         <div class="confirmOrder_ticket">
           <div class="confirmOrder_ticket_left">
-            <span>海王</span><span>{{selectedSeat.length}}张</span><br/>
+            <span>{{movieInfo.name}}</span><span>{{selectedSeat.length}}张</span><br/>
             <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
             <span>3号激光厅</span><span v-for="item in selectedSeat" class="seat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="confirmOrder_ticket_center">
-            <img src="@/assets/images/movie/timg.png" alt="">
+            <img :src="movieInfo.pic" alt="">
           </div>
           <div class="confirmOrder_ticket_right">{{PrefixInteger(time.minute, 2)}} : {{PrefixInteger(time.second, 2)}}</div>
         </div>
@@ -347,17 +346,18 @@ export default {
       confirmOrderDialogVisible: false,
       payDialogVisible: false,
       paySuccessDialogVisible: false,
-      movieInfo: {
-        ChineseName: '海王',type:'科幻/动作',
-        EnglishName: 'Aquaman',duration: '143',
-        productionCompany: '华纳',showTime: '2018-12-7',
-        distributionCompany: '华纳',director: '温子仁',
-        language: '英语', imdb: 'tt1477834', score: 9.1
-      },
+      // movieInfo: {
+      //   ChineseName: '海王',type:'科幻/动作',
+      //   EnglishName: 'Aquaman',duration: '143',
+      //   productionCompany: '华纳',showTime: '2018-12-7',
+      //   distributionCompany: '华纳',director: '温子仁',
+      //   language: '英语', imdb: 'tt1477834', score: 9.1
+      // },
       moviePurchase: {
         ChineseName: '海王', score: 9.1, type:'科幻/动作', duration: '143',
         date: ['05-09', '05-10', '05-11', '05-12', '05-13']
       },
+      movieInfo: {},
       // 计时器
       oTimer: null
     }
@@ -454,6 +454,15 @@ export default {
       this.confirmOrderDialogVisible = false
       this.paySuccessDialogVisible = true
     },
+  },
+  mounted () {
+    this.$store.dispatch('getMovieBasicInfo', {
+      userId: sessionStorage.getItem('userId'),
+      movieId: this.$route.query.movieId
+    }).then(res => {
+      this.movieInfo = res
+      console.log(res)
+    })
   }
 }
 </script>
@@ -566,6 +575,7 @@ export default {
             margin-right: 20px;
             margin-bottom: 20px;
             >div{text-align: center;}
+            >img{width: 138px;height: 187px;}
           }
         }
       }
@@ -577,6 +587,7 @@ export default {
             display: inline-block;
             margin-right: 20px;
             margin-bottom: 20px;
+            >img{width: 138px;height: 187px;}
           }
         }
       }
@@ -760,7 +771,7 @@ export default {
       &_left{
         flex: 1 1 auto;
         >span{display: inline-block;}
-        >span:first-of-type{color: #CFF9FE; font-size: 24px;width: 60px;border-right: 1px solid #CFF9FE;}
+        >span:first-of-type{color: #CFF9FE; font-size: 24px;margin-right: 20px; padding-right: 20px; border-right: 1px solid #CFF9FE;}
         >span:nth-of-type(2){padding-left: 15px;line-height: 50px;height: 50px;}
         >span:nth-of-type(n+3){line-height: 30px;height: 30px;}
         .seat{

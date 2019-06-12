@@ -6,8 +6,8 @@
         <img src="@/assets/images/Login/fullsizerender(11).png" alt="">
       </div>
       <div class="login_body_content_right">
-          <input type="text" placeholder="请输入账号" v-model="account"><br>
-          <input type="password" placeholder="请输入密码" v-model="password"><br>
+          <input type="text" placeholder="请输入账号" v-model="account" @keyup.enter="login()"><br>
+          <input type="password" placeholder="请输入密码" v-model="password" @keyup.enter="login()"><br>
           <div>
             <input type="checkbox"><span>一周之内自动登录</span>
           </div>

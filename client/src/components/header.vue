@@ -46,7 +46,6 @@
         <li v-for="items in userCenterList" :key="items.route" @click="clickDropdown(items)">{{items.text}}
           <el-badge class="mark" type='primary' :value="12" v-if="items.index==='message'"/>
         </li>
-
       </ul>
     </div>
   </div>
