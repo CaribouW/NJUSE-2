@@ -3,12 +3,21 @@ import {doGet, doDelete, doPost, doPut, dealResponse} from "./baseService";
 
 // 获取电影详情
 export function getMovieBasicInfo({userId, movieId}) {
-  return doPut({
+  return doGet({
     url: '/movie/detail/basicInfo',
-    body: {
+    params: {
       userId: userId,
       movieId: movieId
     }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}
+
+// 获取影库电影所有信息
+export function getAllMovie() {
+  return doGet({
+    url: '/movie/list',
   }).then(res => {
     return dealResponse(res)
   })

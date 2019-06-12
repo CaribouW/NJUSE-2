@@ -33,17 +33,20 @@ export async function modifyHall(payload) {
   return doPut({
     url: "/hall/strategy",
     body: {
-      hallId: payload.id,
+      size: payload.row + ',' + payload.col,
+      category: payload.category,
+      hallId: payload.hallId,
       state: payload.state,
       name: payload.name,
-      size: payload.row + ',' + payload.col,
-      category: payload.category
     }
   }).then(res => {
     return dealResponse(res)
   })
 }
 
+/**
+ * 删除电影院
+ * */
 export async function deleteHall({id}) {
   return doDelete({
     url: "/hall/strategy",

@@ -7,6 +7,7 @@ import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.Coupon;
+import com.example.main.model.RefundStrategy;
 import com.example.main.model.VIPStrategy;
 import com.example.main.repository.CouponRepository;
 import com.example.main.repository.RefundStrategyRepository;
@@ -134,9 +135,9 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public JSON getRefundStrategy(JSONObject req) {
+    public JSON getRefundStrategy() {
         try {
-            return Response.success(null);
+            return Response.success(refundStrategyRepository.findAll());
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
@@ -144,7 +145,17 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public JSON updateRefundStrategy(JSONObject req) {
-        return null;
+        try {
+            RefundStrategy record = new RefundStrategy();
+            record.setId(req.getString("id"));
+            record.setLimitTime(req.getFloat("time"));
+            record.setRate(req.getFloat("rate"));
+            refundStrategyRepository.save(record);
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+
     }
 
 

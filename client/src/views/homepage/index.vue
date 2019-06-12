@@ -14,7 +14,7 @@
       </div>
       <div class="homepage_movie_middle">
         <div class="homepage_movie_middle_left">
-          <subCircle class="subCircle"></subCircle>
+          <subCircle class="subCircle" @getMovieNotify="getMovie"></subCircle>
 <!--          <ul>-->
 <!--            <li v-for="item in type" :key="item.index" :class="{selectedType:item.isSelected}" @click="getMovie(item)">-->
 <!--              {{item.text}}-->
@@ -28,8 +28,8 @@
             <div><img src="@/assets/images/homepage/fullsizerender(6).png" alt="">{{selected}}</div>
             <i class="el-icon-d-arrow-right" @click="changePage()"></i>
           </div>
-          <div class="homepage_movie_middle_right_movie" v-for="movie in movieList" :key="movie.id">
-            <img :src="movie.url" alt="" @click="selectMovie(movie.id)">
+          <div class="homepage_movie_middle_right_movie" v-for="movie in showedMovie" :key="movie.movieId">
+            <img :src="movie.poster" alt="" @click="selectMovie(movie.movieId)">
             <span>{{movie.name}}</span>
           </div>
         </div>
@@ -48,30 +48,41 @@
     components: {subCircle},
     data() {
       return {
-        movieList: [
-          {id: '123456', url: require('@/assets/images/test/filmPoster0.jpg'), name: '大侦探皮卡丘'},
-          {id: '12345', url: require('@/assets/images/test/filmPoster1.jpg'), name: '复仇者联盟4'},
-          {id: '12346', url: require('@/assets/images/test/filmPoster2.jpg'), name: '一条狗的使命'},
-          {id: '13456', url: require('@/assets/images/test/filmPoster3.jpg'), name: '何以为家'},
-          {id: '12356', url: require('@/assets/images/test/filmPoster4.jpg'), name: '一个母亲的复仇'},
-          {id: '134565', url: require('@/assets/images/test/filmPoster0.jpg'), name: '大侦探皮卡丘'},
-          {id: '1456', url: require('@/assets/images/test/filmPoster1.jpg'), name: '复仇者联盟4'},
-          {id: '156', url: require('@/assets/images/test/filmPoster2.jpg'), name: '一条狗的使命'},
-        ],
+        movieList: [],
+        random: Math.floor(Math.random()*92),
         posters: [
           {index: 0, url: require('@/assets/images/test/pictest0.jpg')},
           {index: 1, url: require('@/assets/images/test/pictest1.jpg')},
           {index: 2, url: require('@/assets/images/test/pictest2.jpg')},
           {index: 3, url: require('@/assets/images/test/pictest3.jpg')}
         ],
-        type: [
-          {index: 1, text: '正在热映', isSelected: true},
-          {index: 2, text: '即将上映', isSelected: false}
-        ],
         selected: '正在热映'
       }
     },
+    computed: {
+      showedMovie: function () {
+        return this.movieList.slice(this.random, this.random+8)
+      }
+    },
     methods: {
+      // 正在热映和即将上映
+      getMovie(tag) {
+        switch (tag) {
+          case '正在热映':
+            this.selected = '正在热映'
+            this.random = Math.floor(Math.random()*92);
+            break;
+          case '即将上映':
+            this.selected = '即将上映'
+            this.random = Math.floor(Math.random()*92);
+            break;
+          default:
+            break;
+        }
+      },
+      getRandomMovie() {
+
+      },
       goMovieList() {
         this.$router.push('/movielist')
         $("#test li:eq(1)").click()
@@ -84,18 +95,15 @@
         this.$router.push({
           path: '/movie/detail',
           query: {
-            id: '1'
-            // id: id
+            movieId: id
           }
         })
       },
-      getMovie: function (data) {
-        this.selected = data.text
-        this.type.forEach(function (obj) {
-          obj.isSelected = false;
-        });
-        data.isSelected = !data.isSelected;
-      }
+    },
+    mounted () {
+      this.$store.dispatch('getAllMovie').then(res => {
+        this.movieList = res
+      })
     }
   }
 </script>
@@ -206,6 +214,8 @@
 
             > img {
               display: block;
+              width: 138px;
+              height: 187px;
               cursor: pointer;
               margin-bottom: 10px;
             }
