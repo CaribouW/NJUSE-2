@@ -1,5 +1,4 @@
 <template>
-    <vip_aside>
         <div class="VIPrights">
             <div class="rights_header">  
                 <b>会员权益</b>         
@@ -38,7 +37,6 @@
                 </div>
             </div>
         </div>
-    </vip_aside>
 </template>
 
 <script>

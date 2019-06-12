@@ -104,17 +104,36 @@
                 共2张   合计：¥96.00
                 </div>
                 <div class="buttons" style="padding-top:5px;">
-                  <el-button round @click="goInfo()">  退票</el-button>
-                  <el-button round @click="goInfo()">改票</el-button>
+                  <el-button round @click="handleRefund">退票</el-button>
+                  <el-dialog
+                    :visible.sync="refundVisible"
+                    :modal-append-to-body='false'
+                    title="影厅信息"
+                    top="20vh"
+                    width="40%"
+                    class="refund-dialog"
+                  >
+                    <div class="refund_main">
+                      <el-form>
+                        <el-form-item label="">
+                          <span>当前已购票 {{mintues}} 分钟,退还比例为 {{percent}}% ,共计 {{total}} 元。是否确认退票？</span>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="onSubmit">退票</el-button>
+                          <el-button @click="onCancel">取消</el-button>
+                        </el-form-item>
+                      </el-form>
+                    </div>
+                  </el-dialog>
                 </div>
               </div>
             </el-col>
           </el-row>
-        </div>
+        </div> 
       </div>
     </div>
 </template>
-
+ 
 <script>
 import user from "./index.vue"
 export default {
@@ -125,12 +144,40 @@ export default {
   data () {
     return {
       tabPosition: 'left',
+      refundVisible: false,
       // activeNames: ['1'],//标记是否打开页面时默认展开
+      mintues:'100',
+      percent:'80',
+      total:'98',
+      orderId:'',
     }
   },
+
+  /**
+   * 页面加载之前获取数据
+   */
+  created: function () {
+    var that = this;
+      console.log(sessionStorage.getItem('userId'))
+      this.$store.dispatch('getHistory', sessionStorage.getItem('userId')).then(res => {
+        console.log(res)
+      });
+  },
+
   methods: {
     handleChange(val) {
         console.log(val);
+      },
+    //显示新的修改弹窗
+      handleRefund: function () {
+        this.refundVisible = true;
+      },
+      onSubmit: function () {
+        var that = this;
+      console.log(sessionStorage.getItem('userId'))
+      this.$store.dispatch('refund', sessionStorage.getItem('userId'),orderId).then(res => {
+        console.log(res)
+      });
       }
   }
 }
@@ -232,6 +279,9 @@ export default {
     text-align: right;
     margin-right:10%; 
     font-size: 14px;
+  }
+  .el-dialog{
+    text-align: left;
   }
 }
 </style>

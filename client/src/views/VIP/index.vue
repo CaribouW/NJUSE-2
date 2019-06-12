@@ -25,7 +25,7 @@
           </el-row>
         </el-aside>
         <el-main>
-          <slot></slot>
+          <router-view/>
         </el-main>
       </el-container>
   </div>

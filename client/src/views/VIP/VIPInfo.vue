@@ -1,5 +1,4 @@
 <template>
-    <vip_aside>
         <div class="VIPInfo">
             <div class="info_header">  
                 <b>会员信息</b>         
@@ -12,7 +11,6 @@
                 </div>
             </div>
         </div>
-    </vip_aside>
 </template>
 
 <script>

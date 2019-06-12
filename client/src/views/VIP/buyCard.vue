@@ -1,5 +1,4 @@
 <template>
-    <vip_aside>
         <div class="buyCard">
             <div class="card_header">  
                 <b>会员注册</b>         
@@ -17,7 +16,6 @@
                 </div>
             </div>
         </div>
-    </vip_aside>
 </template>
 
 <script>

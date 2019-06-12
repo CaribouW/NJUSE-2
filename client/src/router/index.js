@@ -14,11 +14,13 @@ import User from '@/views/user/index.vue';
 import Manager from '@/views/manager/index.vue'
 import subCircle from '../components/circle';
 import Network from '../components/Network'
+import VIP from '@/views/VIP/index.vue';
 
 Vue.use(Router);
 import {childrenUser} from './user'
 import {childernAmin} from './admin'
 import {childernManager} from "./manager";
+import {childrenVIP} from "./VIP";
 
 
 export default new Router({ 
@@ -86,6 +88,13 @@ export default new Router({
       path: '/movie/detail',
       name: 'MovieDetail',
       component: MovieDetail
+    },
+    {
+      path: '/VIP',
+      name: 'VIP',
+      component: VIP,
+      children: childrenVIP
+
     },
   ]
 })

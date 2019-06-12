@@ -55,7 +55,7 @@
             <el-button round class="send">发送优惠券</el-button>
         </div>
         <el-divider direction="horizontal"></el-divider>
-        <el-button round class="modify">确定修改</el-button>
+        <el-button round class="modify" @click="goModify()">确定修改</el-button>
     </div>
 </template>
 
@@ -100,6 +100,21 @@ export default {
             coupon: '',
             vips:[],
         }
+    },
+    methods: {
+    //   goModify() {
+    //     var that = this
+
+    //     that.$store.dispatch('userLogout' ,{
+    //     userId: sessionStorage.getItem('userId'),
+    //   }).then(res => {
+    //     this.$message.success('已退出登录')
+    //     sessionStorage.removeItem('roleName')
+    //     sessionStorage.removeItem('account')
+    //     sessionStorage.removeItem('userId')
+    //     this.logined = !this.logined
+    //   })
+    //   },
     }
 
 }

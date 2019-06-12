@@ -11,7 +11,7 @@
       <el-divider direction="horizontal"></el-divider>
     </div>
     <div class="cards">
-      <role-card class="card-item"
+      <role-card class="card-item" 
                  v-for="item in roles"
                  :key="item.id"
                  v-bind:item="item"

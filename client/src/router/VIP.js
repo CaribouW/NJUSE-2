@@ -4,17 +4,17 @@ import VIPrights from '@/views/VIP/VIPrights.vue'
 
 const childrenVIP = [
     {
-        path: '/VIP/buyCard',
+        path: 'buyCard',
         name: 'BuyCard',
         component: BuyCard
       },
       {
-        path: '/VIP/VIPInfo',
+        path: 'VIPInfo',
         name: 'VIPInfo',
         component: VIPInfo
       },
       {
-        path: '/VIP/VIPrights',
+        path: 'VIPrights',
         name: 'VIPrights',
         component: VIPrights
       },
