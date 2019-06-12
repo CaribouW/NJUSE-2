@@ -91,13 +91,18 @@
         // 翻页
       },
       selectMovie(id) {
-        // this.$store.dispatch('getUserInfo')
-        this.$router.push({
-          path: '/movie/detail',
-          query: {
-            movieId: id
-          }
-        })
+        if (sessionStorage.getItem('userId')) {
+          this.$router.push({
+            path: '/movie/detail',
+            query: {
+              movieId: id
+            }
+          })
+        } else {
+          this.$message.error('请先登录')
+          this.$router.push('/login')
+        }
+        
       },
     },
     mounted () {
