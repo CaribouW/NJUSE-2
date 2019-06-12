@@ -43,9 +43,9 @@ public interface StrategyService {
     //----------------------------------------------------------------------
 
     /**
-     * 获取退票策略
+     * 获取退票策略列表
      */
-    JSON getRefundStrategy(JSONObject req);
+    JSON getRefundStrategy();
 
     /**
      * 修改退票策略
