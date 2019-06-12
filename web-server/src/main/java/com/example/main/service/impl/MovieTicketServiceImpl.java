@@ -46,9 +46,6 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     @Autowired
     private IDUtils idUtils;
 
-    @Autowired
-    private DateUtils dateUtils;
-
     @Override
     public JSON getAllHisByUid(String uid) {
         try {
