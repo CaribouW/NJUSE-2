@@ -7,7 +7,7 @@
                   {{items.text}}
           </li>
       </ul>
-      <ul class="homepageNav" v-else-if="roleName==='manager'">
+      <ul class="homepageNav" v-else-if="roleName==='engineer'">
           <li v-for="items in managerNavList" :class="{selected:items.isActive}" @click="activeFun(items)">
                   {{items.text}}
           </li>

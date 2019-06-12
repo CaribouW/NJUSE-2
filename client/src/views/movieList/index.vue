@@ -52,7 +52,7 @@
     },
     computed: {
       showedMovie: function () {
-        return this.movie.slice(this.currentPage*15, (this.currentPage+1)*15)
+        return this.movie.slice((this.currentPage-1)*15, this.currentPage*15)
       }
     },
     methods: {
@@ -117,7 +117,7 @@
       &_list {
         text-align: center;
         padding: 0 auto;
-
+        width: 1300px;
         &_each {
           display: inline-block;
           margin: 20px 20px;
@@ -130,6 +130,8 @@
           }
 
           > div {
+            box-sizing: border-box;
+            padding: 0 5px;
             display: flex;
             background-color: #343331;
 
