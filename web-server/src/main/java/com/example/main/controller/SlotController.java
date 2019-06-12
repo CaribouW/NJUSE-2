@@ -17,6 +17,7 @@ public class SlotController {
     private MovieService movieService;
     @Autowired
     private HallService hallService;
+
     /**
      * 管理员得到所有排片信息
      */
@@ -29,15 +30,15 @@ public class SlotController {
      * 修改排片信息
      */
     @PutMapping("/schedule")
-    public JSON updateSlot(@RequestBody JSONObject req){
+    public JSON updateSlot(@RequestBody JSONObject req) {
         return hallService.updateSlot(req);
     }
 
     /**
      * 添加排片信息
-     * */
+     */
     @PostMapping("/schedule")
-    public JSON newSlot(@RequestBody JSONObject req){
+    public JSON newSlot(@RequestBody JSONObject req) {
         return hallService.newSlot(req);
     }
 }
