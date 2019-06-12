@@ -16,9 +16,9 @@
         <div class="movielist_movie_list_each" v-for='movie in showedMovie' @click="showMovieDetail(movie.movieId)">
           <img :src="movie.poster" alt="">
           <div>
-            <span>{{movie.name}}</span><span>{{movie.score}}</span><br>
+            <span :title="movie.name">{{movie.name}}</span><span>{{movie.score}}分</span><br>
           </div>  
-          <span>杨云鹏真帅</span>
+          <span>简介：无</span>
         </div>
       </div>
     </div>
@@ -118,6 +118,7 @@
         text-align: center;
         padding: 0 auto;
         width: 1300px;
+        margin: 0 auto;
         &_each {
           display: inline-block;
           margin: 20px 20px;
@@ -138,17 +139,25 @@
             > span {
               text-align: left;
               flex: 1 1 auto;
-
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
+              max-width: 130px;
             }
 
             > span:last-of-type {
               text-align: right;
+              color: #CFF9FE;
             }
           }
 
           > span {
             display: block;
+            font-size: 14px;
             background-color: #343331;
+            text-align-last: left;
+            padding: 0 5px;
+            box-sizing: border-box;
           }
         }
       }

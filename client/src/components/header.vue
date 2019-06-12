@@ -128,7 +128,7 @@ export default {
             obj.isActive = false;
         });
         data.isActive = !data.isActive;
-      } else if (this.roleName === 'manager'){
+      } else if (this.roleName === 'engineer'){
         this.managerNavList.forEach(function(obj){
             obj.isActive = false;
         });
@@ -145,16 +145,15 @@ export default {
       if (data.index === 'logout') {
         this.logout()
       } else {
-        this.navList.forEach(function(obj){
-            obj.isActive = false;
-        });
+        // this.userCenterList.forEach(function(obj){
+        //     obj.isActive = false;
+        // });
         this.$router.push('/' + data.index)
       }
     },
     // 登出
     logout () {
       var _this = this
-
       _this.$store.dispatch('userLogout' ,{
         userId: sessionStorage.getItem('userId'),
       }).then(res => {
