@@ -1,3 +1,5 @@
+import {doGet, doDelete, doPost, dealResponse, doPut} from "../../service/baseService";
+
 const state = {
   refundStrategyList: [{
     id: '1',    //id
@@ -18,8 +20,22 @@ const getters = {
   //获取时间
   refunds: state => state.refundStrategyList
 };
-const actions = {};
-const mutations = {};
+const actions = {
+  async getRefundList({commit, state}) {
+    return doGet({
+      url: '/refund/strategy',
+    }).then(res => {
+      return dealResponse(res)
+    }).then(list => {
+      commit('flushList', list)
+    })
+  }
+};
+const mutations = {
+  flushList: (state, payload) => {
+    state.refundStrategyList = payload
+  },
+};
 
 export default {
   state,

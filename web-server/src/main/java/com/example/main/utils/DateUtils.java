@@ -63,4 +63,9 @@ public class DateUtils {
         return date;
     }
 
+    public double subtractDate(Date from, Date to) {
+        long fromL = from.getTime();   // getTime()返回到毫秒
+        long toL = to.getTime();
+        return (double) ((toL - fromL) / (1000 * 60));
+    }
 }
