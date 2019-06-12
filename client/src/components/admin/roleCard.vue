@@ -7,14 +7,19 @@
         <span class="time">管理员姓名：
           <a style="font-size: 24px">{{item.name}}</a>
         </span>
+        <span class="rate">管理员权限：
+          <a style="font-size:15px">{{func}}</a>
+        </span>
         <span class="rate">管理员ID：
           <a style="font-size:15px">{{item.id}}</a>
         </span>
 
       </div>
       <div class="btns">
-        <el-button @click="handleModify">修改</el-button>
-        <el-button @click="handleRemove">删除</el-button>
+        <el-button @click="handleModify" v-if="!changeAble">修改权限</el-button>
+        <div v-else>
+          <el-button @click="handleStore">保存修改</el-button>
+        </div>
       </div>
     </div>
   </el-card>
@@ -27,6 +32,23 @@
     data() {
       return {
         changeAble: false,
+        func: '管理员'
+      }
+    },
+    methods: {
+      handleModify: function () {
+        this.changeAble = true;
+        this.$message({
+          type: 'info',
+          message: '进行管理员角色修改!'
+        });
+      },
+      handleStore: function () {
+        this.changeAble = false;
+        this.$message({
+          type: 'success',
+          message: '修改成功!'
+        });
       }
     }
   }
@@ -47,6 +69,9 @@
         flex-direction: column;
         text-align: left;
 
+        > span {
+          padding-bottom: 1%;
+        }
 
         :first-child {
           font-size: 20px;
