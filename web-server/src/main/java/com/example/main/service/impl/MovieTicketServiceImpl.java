@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.DateStrPattern;
+import com.example.main.core.enums.OrderStateType;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.*;
@@ -11,9 +12,11 @@ import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +40,9 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     private VIPCardRepository vipCardRepository;
     @Autowired
     private DateUtils dateUtils;
+    @Autowired
+    private RefundStrategyRepository refundStrategyRepository;
+
     @Autowired
     private IDUtils idUtils;
 
@@ -93,13 +99,22 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             VIPCard vipCard = vipCardRepository.findByUserId(userId);
             //get order by order id
             Order order = orderRepository.findOrderByOrderId(orderId);
-            if (0 != order.getState()) {//无法退票
+            Date startTime = timeSlotRepository.findTimeSlotByTicketId(movieTicketRepository.findMovieTicketsByOrderId(orderId).get(0)
+                    .getTicketId()).getStartTime();
+            if (OrderStateType.PAID.getValue()
+                    != order.getState() ||
+                    startTime.before(new Date())
+            ) {//除了正常以外的 , 无法退票 ; 或者当前时间在电影开始之后
                 return Response.fail(ResponseType.REFUND_DENY);
             }
+            double val = computeRefundAmount(order.getExpense(),
+                    dateUtils.subtractDate(order.getConfirmDate(), new Date())
+            );
             //update remain value
-            vipCard.setRemainValue(vipCard.getRemainValue() + order.getExpense());
+            vipCard.setRemainValue(vipCard.getRemainValue() + val);
             //update the state
-            order.setState(1);
+            order.setState(OrderStateType.
+                    ALREADY_REFUND.getValue());
 
             orderRepository.save(order);
             vipCardRepository.save(vipCard);
@@ -117,11 +132,15 @@ public class MovieTicketServiceImpl implements MovieTicketService {
         try {
             //get order by order id
             Order order = orderRepository.findOrderByOrderId(orderId);
-            if (0 != order.getState()) {//无法退票
+            if (OrderStateType.PAID.getValue()
+                    != order.getState()) {//无法退票
                 return Response.fail(ResponseType.REFUND_DENY);
             }
             //update the state
-            order.setState(1);
+            order.setState(
+                    OrderStateType.
+                            ALREADY_REFUND.getValue()
+            );
             orderRepository.save(order);
             return Response.success(null);
         } catch (NullPointerException e) {
@@ -137,15 +156,18 @@ public class MovieTicketServiceImpl implements MovieTicketService {
         try {
             String uid = req.getString("userId");
             String shceduleId = req.getString("scheduleId");
-            Date date = dateUtils.strToDate("confirmTime", DateStrPattern.SECONDS.getPat());
+            Date date = dateUtils.strToDate("confirmTime",
+                    DateStrPattern.SECONDS.getPat());
             JSONArray jsonArray = req.getJSONArray("seats");
             List<String> seats = jsonArray.stream()
                     .map(Object::toString)
                     .collect(Collectors.toList());
             Order order = new Order();
+            order.setOrderId(idUtils.getUUID32());
             order.setUserId(uid);
             order.setConfirmDate(date);
-            order.setOrderId(idUtils.getUUID32());
+            //设置未支付
+            order.setState(OrderStateType.NOT_PAY.getValue());
             orderRepository.save(order);
             //更新所有的电影票
             seats.forEach(item -> {
@@ -165,6 +187,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
         }
     }
 
+    //消费, 扣除余额
     @Override
     public JSON orderConsume(JSONObject req) {
         try {
@@ -174,13 +197,15 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             Order order = orderRepository.findOrderByOrderId(oid);
             VIPCard card = vipCardRepository.findByUserId(uid);
 
-            if (2 != order.getState() || card.getRemainValue() < consumption) { //支付失败
+            if (OrderStateType.NOT_PAY.getValue()
+                    != order.getState() ||
+                    card.getRemainValue() < consumption) { //支付失败
                 return Response.fail(ResponseType.CONSUME_FAIL);
             }
 
             card.setRemainValue(card.getRemainValue() - consumption);
             vipCardRepository.save(card); //save the card
-            order.setState(0);            //set paid
+            order.setState(OrderStateType.PAID.getValue());            //set paid
             orderRepository.save(order);
             JSONObject ans = new JSONObject();
             ans.put("cardBalance", order.getExpense());
@@ -190,5 +215,15 @@ public class MovieTicketServiceImpl implements MovieTicketService {
         }
     }
 
-
+    private double computeRefundAmount(double price, double time) {
+        List<RefundStrategy> refundStrategies =
+                refundStrategyRepository.findAll();
+        refundStrategies.sort((o1, o2) -> (int) (o1.getLimitTime() - o2.getLimitTime()));
+        for (RefundStrategy item : refundStrategies) {
+            if (time <= item.getLimitTime()) {
+                return price * item.getRate();
+            }
+        }
+        return 0;
+    }
 }

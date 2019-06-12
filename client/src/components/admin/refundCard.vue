@@ -41,13 +41,22 @@
         rate: 0,
         time: 0,
         changeAble: false,
-        changeInput: false
+        changeInput: false,
+        tmpStore: {
+          rate: '',
+          time: '',
+        }
       }
     },
     methods: {
       //进入修改模式
       handleModify: function () {
-        this.changeAble = true
+        this.changeAble = true;
+        //缓存
+        this.tmpStore = {
+          rate: this.rate,
+          time: this.time
+        }
       },
 
       //显示新的删除确认弹框
@@ -79,24 +88,20 @@
       },
 
       handleCancle: function () {
+        this.time = this.tmpStore.time;
+        this.rate = this.tmpStore.rate;
         this.$message({
           type: 'success',
           message: '取消修改!'
         });
         this.changeAble = false
       },
-      formatTooltip(val) {
-        return val / 100;
-      }
     },
     mounted() {
       this.rate = this.$props.item.rate * 100;
       this.time = this.$props.item.time;
     },
     computed: {
-      formatRate: function () {
-        return this.$data.rate / 100
-      }
     }
   }
 </script>

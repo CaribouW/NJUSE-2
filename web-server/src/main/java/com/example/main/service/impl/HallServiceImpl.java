@@ -46,17 +46,17 @@ public class HallServiceImpl implements HallService {
             //按照时间由小到大
             list.sort(Comparator.comparing(TimeSlot::getStartTime));
             JSONArray array = new JSONArray();
-            list.forEach(item -> {
-                JSONObject object = new JSONObject();
-                object.put("slotID", item.getSlotId());
-                object.put("startTime", dateUtils.dateToStr(item.getStartTime()));
-                object.put("endTime", dateUtils.dateToStr(item.getEndTime()));
-                object.put("price", item.getTicketPrize());
-                array.add(object);
-            });
+//            list.forEach(item -> {
+//                JSONObject object = new JSONObject();
+//                object.put("slotID", item.getSlotId());
+//                object.put("startTime", dateUtils.dateToStr(item.getStartTime()));
+//                object.put("endTime", dateUtils.dateToStr(item.getEndTime()));
+//                object.put("price", item.getTicketPrize());
+//                array.add(object);
+//            });
             JSONObject ans = new JSONObject();
             //put arr
-            ans.put("slot", array);
+            ans.put("slot", list);
             return Response.success(ans);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);

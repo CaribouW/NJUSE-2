@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-text">
         <span>影院角色管理</span>
-        <el-button icon="el-icon-plus">添加新的角色</el-button>
+        <el-button icon="el-icon-plus" @click="handleNewRole">添加新的管理员</el-button>
       </div>
       <div class="choose">
 
@@ -48,6 +48,9 @@
         }).then(res => {
           this_.roles = res;
         });
+      },
+      handleNewRole:function () {
+        
       }
     },
     mounted() {
