@@ -32,13 +32,7 @@ export async function newHall(payload) {
 export async function modifyHall(payload) {
   return doPut({
     url: "/hall/strategy",
-    body: {
-      size: payload.row + ',' + payload.col,
-      category: payload.category,
-      hallId: payload.hallId,
-      state: payload.state,
-      name: payload.name,
-    }
+    body: payload
   }).then(res => {
     return dealResponse(res)
   })

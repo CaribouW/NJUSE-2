@@ -2,8 +2,7 @@
   <div class="hall-main">
     <div class="header">
       <div class="header-text">
-        <span>当前可用影厅</span>
-        <el-button icon="el-icon-plus" @click="handleNewHall">添加新的影厅</el-button>
+        <span>当前所有影厅</span>
       </div>
       <div class="choose">
 

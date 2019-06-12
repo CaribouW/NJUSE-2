@@ -75,7 +75,7 @@ public class HallServiceImpl implements HallService {
                 object.put("name", item.getHallName());
                 object.put("state", item.getState());
                 object.put("size", item.getSize());
-                object.put("type", item.getCategory());
+                object.put("category", item.getCategory());
                 array.add(object);
             });
             return Response.success(array);
@@ -88,7 +88,7 @@ public class HallServiceImpl implements HallService {
     public JSON updateHall(JSONObject req) {
         try {
             MovieHall movieHall = movieHallRepository.findByHallId(req.getString("hallId"));
-            movieHall.setState(req.getInteger("state"));
+            movieHall.setState(req.getBoolean("state"));
             movieHall.setHallName(req.getString("name"));
             movieHall.setSize(req.getString("size"));
             movieHall.setCategory(req.getString("category"));

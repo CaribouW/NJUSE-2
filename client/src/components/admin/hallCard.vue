@@ -5,17 +5,18 @@
     <div slot="header" class="header">
 
       <div class="id">
-        <span>{{hallItem.name}}厅</span>
+        <span>{{hall.name}}厅</span>
       </div>
       <div class="size">
-        <span>{{hallItem.row}}*{{hallItem.col}}</span>
+        <span>{{hall.row}}*{{hall.col}}</span>
       </div>
       <div class="type">
-        <span>{{hallItem.type}}</span>
+        <span>{{hall.category}}</span>
       </div>
       <el-badge value="不可用"
                 class="state"
-                v-if="available">
+                v-if="!hall.state"
+      >
       </el-badge>
       <el-badge value="可用"
                 class="state-avaliable"
@@ -25,7 +26,7 @@
     </div>
     <div class="card-content">
       <el-button @click="handleModify">修改</el-button>
-      <el-button @click="handleRemove">删除</el-button>
+<!--      <el-button @click="handleRemove" style="visibility: hidden">删除</el-button>-->
     </div>
 
     <el-dialog
@@ -37,20 +38,20 @@
       class="modify-dialog"
     >
       <div class="main">
-        <el-form ref="form" :model="hall" label-width="80px">
+        <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="影厅名称">
-            <el-input v-model="hall.name"></el-input>
+            <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="影厅大小" class="size">
             <span>行数:</span>
-            <el-input v-model="hall.row" placeholder="请选择座位行数">
+            <el-input v-model="form.row" placeholder="请选择座位行数">
             </el-input>
             &nbsp;<span>列数:</span>
-            <el-input v-model="hall.col" placeholder="请选择座位列数">
+            <el-input v-model="form.col" placeholder="请选择座位列数">
             </el-input>
           </el-form-item>
           <el-form-item label="影厅类型">
-            <el-radio-group v-model="hall.type">
+            <el-radio-group v-model="form.category">
               <el-radio label="IMAX" value="IMAX"></el-radio>
               <el-radio label="3D" value="3D"></el-radio>
               <el-radio label="2D" value="2D"></el-radio>
@@ -58,8 +59,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="当前可用">
-            <el-switch v-model="hall.avail"></el-switch>
-            <span v-if="hall.avail">可用</span>
+            <el-switch v-model="form.state"></el-switch>
+            <span v-if="form.state">可用</span>
             <span v-else>不可用</span>
           </el-form-item>
 
@@ -82,34 +83,49 @@
     data() {
       return {
         modifyVisible: false,
-        hall: {
+        form: {
           name: '',
           row: 0,
           col: 1,
-          avail: false,
+          state: false,
+          category: ''
+        },
+        hall: {
+          id: '',
+          name: '',
+          row: '',
+          col: '',
+          state: false,
           category: ''
         }
       }
     },
     created() {
       let item = this.hallItem;
+      //初始化影厅
       this.hall = {
         id: item.id,
         name: item.name,
         row: item.row,
         col: item.col,
-        avail: item.state === 0,
+        state: item.state,
         category: item.category
       };
+      this.form = {
+        id: item.id,
+        name: item.name,
+        row: item.row,
+        col: item.col,
+        state: item.state,
+        category: item.category
+      }
     },
     computed: {
-      available() {
-        return this.hallItem.state === 1
-      }
     },
     methods: {
       ...mapActions({
-        modify: 'modifyHall'
+        modify: 'modifyHall',
+        addHall: 'addHall'
       }),
       ...mapMutations({
         append: 'appendHallList',
@@ -128,7 +144,7 @@
           type: 'warning'
         }).then(async () => {
           await this.remove({
-            id: this_.hallItem.id
+            id: this_.hall.id
           });
           this.$message({
             type: 'success',
@@ -142,27 +158,34 @@
         });
       },
       onSubmit: function () {
-        const data = this.hall;
-        this.modify({
+        const data = this.form;
+        const this_ = this;
+        let f = null;
+        if (data.id !== undefined) {
+          f = this_.modify
+        } else {
+          f = this_.addHall
+        }
+        f({
           hallId: data.id,
-          state: data.avail === true ? 0 : 1,
+          state: data.state,
           row: data.row,
           col: data.col,
           category: data.category,
           name: data.name
         }).then(res => {
-          console.log(res)
+          this_.hall = res;
+          this_.$message({
+            type: 'success',
+            message: '修改成功'
+          });
+          this_.modifyVisible = false
         });
-        this.$message({
-          type: 'success',
-          message: '修改成功'
-        });
-        this.modifyVisible = false
       },
       onCancel: function () {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消修改'
         });
         this.modifyVisible = false
       }
@@ -175,7 +198,6 @@
     margin: 0.5%;
     width: 259px;
     max-height: 220px;
-    /*background: #D8D8D8;*/
     mix-blend-mode: normal;
     text-align: left;
     position: relative;
@@ -254,6 +276,9 @@
     .card-content {
       display: flex;
       justify-content: space-evenly;
+      .el-button {
+        flex: 1 0 auto;
+      }
     }
 
     .modify-dialog {

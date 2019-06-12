@@ -11,7 +11,7 @@ public class MovieHall implements Serializable {
     private String hallName;    //影厅名
     private String size;        //尺寸
     private String category;    //类型
-    private int state;          //是否可用
+    private boolean state;          //是否可用
 
     @Id
     @Column(name = "hall_id",length = 32)
@@ -75,11 +75,11 @@ public class MovieHall implements Serializable {
 
     @Basic
     @Column(name = "state")
-    public int getState() {
+    public boolean getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(boolean state) {
         this.state = state;
     }
 }
