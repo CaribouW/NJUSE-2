@@ -81,7 +81,7 @@
     },
     // 保证header在登录注册时不会显示
     created: function () {
-      this.hideHeader()
+      this.hideHeader() 
       // console.log(localStorage.getItem('roleId'))
       // if (localStorage.getItem('roleId') !== '0') {
       //   this.logined = true

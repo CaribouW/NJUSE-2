@@ -29,6 +29,10 @@
                   <i class="el-icon-setting"></i>
                   <span slot="title">影院角色管理</span>
                 </el-menu-item>
+                <el-menu-item index="/manager/vipManage">
+                  <i class="el-icon-setting"></i>
+                  <span slot="title">会员相关</span>
+                </el-menu-item>
               </el-menu>
             </el-col>
           </div>

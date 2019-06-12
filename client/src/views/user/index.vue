@@ -16,8 +16,7 @@
                 :router="true"
               >
                 <el-menu-item index="/user">
-                  <i class="user_menu">
-                  </i>
+                  <i class="user_menu"></i>
                   <span>基本信息</span>
                 </el-menu-item>
                 <el-submenu>
