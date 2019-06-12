@@ -48,8 +48,7 @@ public class MovieController {
 
     @GetMapping("/movie/list")
     public JSON getMovieKey() {
-        return null
-                ;
+        return movieService.getAllMovies();
     }
 
     /**

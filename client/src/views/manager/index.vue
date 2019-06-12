@@ -13,7 +13,6 @@
               <el-menu
                 class="el-menu-vertical"
                 @open.stop="handleOpen"
-                @close.stop="handleClose"
                 background-color="#131c1c"
                 text-color="#fff"
                 active-text-color="#cff9fe"

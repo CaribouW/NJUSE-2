@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -131,6 +132,16 @@ public class MovieServiceImpl implements MovieService {
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
 
+        }
+    }
+
+    @Override
+    public JSON getAllMovies() {
+        try {
+            List<MovieInfo> movieInfos = movieInfoRepository.findAll();
+            return Response.success(movieInfos);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
 

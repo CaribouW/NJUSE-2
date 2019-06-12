@@ -22,4 +22,6 @@ public interface MovieService {
      * 获取演职员表
      * */
     JSON getStaff(String mid);
+
+    JSON getAllMovies();
 }
