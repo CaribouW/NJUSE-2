@@ -5,6 +5,7 @@ export const baseIP = 'http://localhost:18080'
 
 export async function dealResponse(response) {
   const body = response.data;
+  console.log(body);
   if (body.status === 200)
     return body.data;
   else

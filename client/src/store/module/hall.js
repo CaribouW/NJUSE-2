@@ -32,13 +32,11 @@ const actions = {
   async modifyHall({dispatch, commit, state}, payload) {
     const data = modifyHall(payload)
       .then(res => {
-        console.log(res);
-        const arr = res.size.split(',');
         return commit('appendHallList', {
           id: payload.hallId,
           state: payload.state, // 0 可用 ; 1 不可用
-          row: arr[0],  //行数
-          col: arr[1], //列数
+          row: payload.row,  //行数
+          col: payload.col, //列数
           type: payload.category, //规格
         })
       });
@@ -57,7 +55,7 @@ const mutations = {
     state.hallList = state.hallList.filter(item => {
       return item.id !== id
     });
-  }
+  },
 };
 export default {
   state,
