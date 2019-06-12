@@ -94,6 +94,8 @@ public class HallServiceImpl implements HallService {
             movieHall.setCategory(req.getString("category"));
             movieHallRepository.save(movieHall);
             return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }

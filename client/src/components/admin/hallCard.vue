@@ -27,19 +27,80 @@
       <el-button @click="handleModify">修改</el-button>
       <el-button @click="handleRemove">删除</el-button>
     </div>
+
+    <el-dialog
+      :visible.sync="modifyVisible"
+      :modal-append-to-body='false'
+      title="影厅信息"
+      top="20vh"
+      width="40%"
+      class="modify-dialog"
+    >
+      <div class="main">
+        <el-form ref="form" :model="hall" label-width="80px">
+          <el-form-item label="影厅名称">
+            <el-input v-model="hall.name"></el-input>
+          </el-form-item>
+          <el-form-item label="影厅大小" class="size">
+            <span>行数:</span>
+            <el-input v-model="hall.row" placeholder="请选择座位行数">
+            </el-input>
+            &nbsp;<span>列数:</span>
+            <el-input v-model="hall.col" placeholder="请选择座位列数">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="影厅类型">
+            <el-radio-group v-model="hall.type">
+              <el-radio label="IMAX" value="IMAX"></el-radio>
+              <el-radio label="3D" value="3D"></el-radio>
+              <el-radio label="2D" value="2D"></el-radio>
+              <el-radio label="亲子厅" value="CP"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="当前可用">
+            <el-switch v-model="hall.avail"></el-switch>
+            <span v-if="hall.avail">可用</span>
+            <span v-else>不可用</span>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">保存修改</el-button>
+            <el-button @click="onCancel">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
-<script> 
+<script>
   import {mapActions, mapMutations} from 'vuex'
 
   export default {
     props: ['hallItem'],
     name: "hallCard",
     data() {
-      return {}
+      return {
+        modifyVisible: false,
+        hall: {
+          name: '',
+          row: 0,
+          col: 1,
+          avail: false,
+          category: ''
+        }
+      }
     },
     created() {
+      let item = this.hallItem;
+      this.hall = {
+        id: item.id,
+        name: item.name,
+        row: item.row,
+        col: item.col,
+        avail: item.state === 0,
+        category: item.category
+      };
     },
     computed: {
       available() {
@@ -56,14 +117,7 @@
       }),
       //显示新的修改弹窗
       handleModify: function () {
-        //TODO:新的弹窗
-        alert('新建一个弹窗');
-        // this.modify({
-        //   hallId: this.hallItem.id,
-        //   state: '', // 0 可用 ; 1 不可用
-        //   size: '',
-        //   category: '', //规格
-        // });
+        this.modifyVisible = true;
       },
       //显示新的删除确认弹框
       handleRemove: function () {
@@ -87,7 +141,31 @@
           });
         });
       },
-
+      onSubmit: function () {
+        const data = this.hall;
+        this.modify({
+          hallId: data.id,
+          state: data.avail === true ? 0 : 1,
+          row: data.row,
+          col: data.col,
+          category: data.category,
+          name: data.name
+        }).then(res => {
+          console.log(res)
+        });
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        });
+        this.modifyVisible = false
+      },
+      onCancel: function () {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+        this.modifyVisible = false
+      }
     }
   }
 </script>
@@ -176,6 +254,21 @@
     .card-content {
       display: flex;
       justify-content: space-evenly;
+    }
+
+    .modify-dialog {
+      .main {
+        .size {
+          span {
+            flex: 0 0 auto;
+          }
+        }
+      }
+    }
+
+    .el-input {
+      display: inline;
+      background-color: red;
     }
   }
 

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-text">
         <span>当前可用影厅</span>
-        <el-button  icon="el-icon-plus">添加新的影厅</el-button>
+        <el-button icon="el-icon-plus" @click="handleNewHall">添加新的影厅</el-button>
       </div>
       <div class="choose">
 
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex'
+  import {mapGetters, mapActions,mapMutations} from 'vuex'
   import HallCard from "../../../components/admin/hallCard";
 
   export default {
@@ -45,7 +45,16 @@
     methods: {
       ...mapActions({
         flushHall: 'getHalls'
-      })
+      }),
+      ...mapMutations({
+        newHall:'appendHallList'
+      }),
+      handleNewHall:function() {
+        this.newHall({
+          name:'null',
+          state: 1, // 0 可用 ; 1 不可用
+        })
+      }
     },
   }
 </script>
