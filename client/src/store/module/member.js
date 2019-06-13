@@ -1,8 +1,12 @@
-import {purchaseMemberCard} from "../../service/memberService";
+import {purchaseMemberCard, getMemberInfo, rechargeVIP} from "../../service/memberService";
 
 const state = {
-  VIPCardId: '',
-  VIPLevel: 0
+  basicInfo: {
+    VIPCardId: null,
+    VIPLevel: 0,
+    VIPCardBalance: 0,
+    ownDate: null
+  }
 };
 const getters = {};
 
@@ -18,30 +22,57 @@ const actions = {
       if (typeof response === "number") {
         return response
       } else {
-        commit('updateUser', {
-          VIPCardId: response.VIPCardId,
-          VIPLevel: response.VIPLevel
-        })
         return response
       }
-      
-      // if (typeof response === "number") {
-      //   return response;
-      // } else {
-      //   //更新model
-      //   commit('updateUser', {
-      //     userId: response.id,
-      //     account: response.account,
-      //     roleName: response.roleName,
-      //   });
+    });
+  },
 
-      //   return state
+  async getMemberInfo({commit}, payload) {
+    // console.log('hh')
+    return getMemberInfo({
+      userId: payload.userId,
+    }).then(response => {
+      console.log(response)
+      if (typeof response === "number") {
+        return response
+      } else {
+        commit('updateMember', response);
+        return response
+      }
+    });
+  },
+
+  async rechargeVIP({commit, state}, payload) {
+    // console.log('hh')
+    return rechargeVIP({
+      rechargeAmount: payload.rechargeAmount,
+      VIPCardId: payload.VIPCardId,
+      rechargeTime: payload.rechargeTime
+    }).then(response => {
+      if (response) {
+        return response
+      } else {
+        // res为空才正常
+        return 200
+      }
+      // if (typeof response === "number") {
+      //   return response
+      // } else {
+      //   commit('updateMember', response);
+      //   return response
       // }
     });
   }
 };
 
-const mutations = {};
+const mutations = {
+  updateMember: (state, payload) => {
+    state.basicInfo = payload
+  },
+  recharge: (state, payload) => {
+    state.basicInfo.VIPCardBalance += payload
+  }
+};
 export default {
   state,
   getters,

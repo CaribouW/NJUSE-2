@@ -15,9 +15,13 @@
                 active-text-color="#ffd04b"
                 :router="true"
               >
-                <el-menu-item index="/VIP/buyCard">
+                <el-menu-item index="/VIP/buyCard" v-if="!isMember">
                   <i class="user_menu"></i>
                   <span>会员注册</span>
+                </el-menu-item>
+                <el-menu-item index="/VIP/VIPInfo" v-else>
+                  <i class="user_menu"></i>
+                  <span>会员信息</span>
                 </el-menu-item>
                 <el-menu-item index="/VIP/VIPrights">
                   <i class="user_history"></i>
@@ -39,8 +43,8 @@
   export default {
     data () {
       return {
-        tabPosition: 'left'
-        
+        tabPosition: 'left',
+        isMember: false
       }
     },
     methods: {
@@ -50,6 +54,23 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
+      // 判断是否是会员
+      getMemberInfo () {
+        this.$store.dispatch('getMemberInfo' ,{
+          userId: sessionStorage.getItem('userId'),
+        }).then(res => {
+          console.log(res)
+          if (res === 404) {
+            this.isMember = false
+          } else {
+            this.isMember = true
+          }
+        })
+      }
+    },
+    mounted () {
+      this.getMemberInfo()
+      // this.memberCheck()
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button @click="handleLogin">登录</el-button>
-    <el-button @click="handleLogout">登出</el-button>
+    <!-- <el-button @click="handleLogin">登录</el-button>
+    <el-button @click="handleLogout">登出</el-button> -->
     <canvas id="cas"></canvas>
   </div>
 </template>

@@ -53,61 +53,44 @@
 
 
 <script>
-  import $ from 'jquery'
-  import mock from '@/mock/mock.js'
-
-  export default {
-    data() {
-      return {
-        roleName: 'gust',
-        id: '',
-        VIP: false,
-        keyword: '',
-        // 登陆or未登录
-        logined: true,
-        showDropdown: false,
-        managerNavList: [
-          {text: '首页', isActive: true, index: 'index'},
-          {text: '影库', isActive: false, index: 'movielist'},
-          {text: '经理入口', isActive: false, index: 'manager'},
-        ],
-        adminNavList: [
-          {text: '首页', isActive: true, index: 'index'},
-          {text: '影库', isActive: false, index: 'movielist'},
-          {text: '管理员入口', isActive: false, index: 'admin'},
-        ],
-        userNavList: [
-          {text: '首页', isActive: true, index: 'index'},
-          {text: '影库', isActive: false, index: 'movielist'},
-          {text: '快速购票', isActive: false, index: 'quick'},
-        ],
-        userCenterList: [
-          {text: '个人中心', index: 'user'},
-          {text: '消息', index: 'message'},
-          {text: '退出登陆', index: 'logout'},
-        ]
-      }
+import $ from 'jquery'
+import mock from '@/mock/mock.js'
+export default {
+  data () {
+    return {
+      roleName: 'gust',
+      id: '',
+      VIP: false,
+      keyword: '',
+      // 登陆or未登录
+      logined: true,
+      showDropdown: false,
+      managerNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '经理入口', isActive: false, index: 'manager'},
+      ],
+      adminNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '管理员入口', isActive: false, index: 'admin'},
+      ],
+      userNavList: [
+        {text: '首页', isActive: true, index: 'index'},
+        {text: '影库', isActive: false, index: 'movielist'},
+        {text: '快速购票', isActive: false, index: 'quick'},
+      ],
+      userCenterList: [
+        {text: '个人中心',index: 'user'},
+        {text: '消息', index: 'message'},
+        {text: '退出登陆', index: 'logout'},
+      ]
+    }
+  },
+  methods: {
+    goVIP(id) {
+      this.$router.push('/VIP')
     },
-    methods: {
-      goVIP(id) {
-        if (this.VIP) {
-          this.$router.push({
-            path: '/VIP/VIPInfo',
-            query: {
-              id: '1'
-              // id: id
-            }
-          })
-        } else {
-          this.$router.push({
-            path: '/VIP/buyCard',
-            query: {
-              id: '1'
-              // id: id
-            }
-          })
-        }
-      },
       goLogin() {
         this.$router.push("/login")
       },
