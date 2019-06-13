@@ -1,30 +1,28 @@
 <template>
   <div class="VIP">
+    <div class="VIP_rectangle">
       <el-container>
         <el-aside width="260px">
           <el-row class="tac">
             <el-col :span="24">
               <el-menu
                 default-active="/VIP/buyCard"
-                :router="true"
-                class="vip_menu"
+                class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose"
                 background-color="#131c1c"
                 text-color="#fff"
-                active-text-color="#ffd04b">
+                active-text-color="#ffd04b"
+                :router="true"
+              >
                 <el-menu-item index="/VIP/buyCard">
-                  <i class="vip_buyCard"></i>
-                  <span slot="title">会员注册</span>
+                  <i class="user_menu"></i>
+                  <span>会员注册</span>
                 </el-menu-item>
-                 <!-- <el-menu-item index="/user/history">
+                <el-menu-item index="/VIP/VIPrights">
                   <i class="user_history"></i>
-                  <span slot="title">历史订单</span>
-                </el-menu-item> -->
-                <el-menu-item index="/VIP/VIPrights" style="margin:10px;">
-                  <i class="VIPrights"></i>
                   <span slot="title">会员权益</span>
-                </el-menu-item>
+                </el-menu-item>             
               </el-menu>
             </el-col>
           </el-row>
@@ -33,6 +31,7 @@
           <router-view/>
         </el-main>
       </el-container>
+  </div>
   </div>
 </template>
 

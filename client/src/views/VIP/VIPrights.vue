@@ -40,12 +40,8 @@
 </template>
 
 <script>
-import vip_aside from "../VIP/index.vue"
 export default {
     name:"VIPrights",
-    components:{
-        vip_aside,
-    },
     data(){
         return{
             tabPosition:'left',
