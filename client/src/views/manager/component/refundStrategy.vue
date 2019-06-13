@@ -4,7 +4,7 @@
       <div class="header-text">
         <span>退票策略</span>
         <el-button icon="el-icon-plus"
-                   @click="newItem"
+                   @click="newRefundStrategy"
         >添加新的退票策略
         </el-button>
       </div>
