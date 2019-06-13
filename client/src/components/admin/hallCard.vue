@@ -26,7 +26,7 @@
     </div>
     <div class="card-content">
       <el-button @click="handleModify">修改</el-button>
-<!--      <el-button @click="handleRemove" style="visibility: hidden">删除</el-button>-->
+      <!--      <el-button @click="handleRemove" style="visibility: hidden">删除</el-button>-->
     </div>
 
     <el-dialog
@@ -120,8 +120,7 @@
         category: item.category
       }
     },
-    computed: {
-    },
+    computed: {},
     methods: {
       ...mapActions({
         modify: 'modifyHall',
@@ -276,6 +275,7 @@
     .card-content {
       display: flex;
       justify-content: space-evenly;
+
       .el-button {
         flex: 1 0 auto;
       }

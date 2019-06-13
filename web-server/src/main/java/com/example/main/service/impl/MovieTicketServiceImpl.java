@@ -12,6 +12,7 @@ import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
+import io.swagger.models.auth.In;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
 
                 object.put("orderId", item.getOrderId());
                 //slot
-                TimeSlot timeSlot = timeSlotRepository.findTimeSlotBySlotId(tickets.get(0).getTicketId());
+                TimeSlot timeSlot = timeSlotRepository.findTimeSlotByTicketId(tickets.get(0).getTicketId());
                 object.put("scheduleId", timeSlot.getSlotId());
                 object.put("scheduleStartTime", dateUtils.dateToStr(timeSlot.getStartTime()));
                 //hall
@@ -69,10 +70,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
 
                 //seats
                 JSONArray seats = new JSONArray();
-                tickets.forEach(ticket -> {
-                    String[] strings = ticket.getPosition().split(",");
-                    seats.add(String.format("%d排%d座", Integer.parseInt(strings[0]), Integer.parseInt(strings[1])));
-                });
+                tickets.forEach(ticket -> seats.add(ticket.getRow() + "," + ticket.getCol()));
                 object.put("seats", seats);
                 //sum price
                 object.put("sum", item.getExpense());
@@ -171,10 +169,12 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             orderRepository.save(order);
             //更新所有的电影票
             seats.forEach(item -> {
+                String[] strings = item.split(",");
                 MovieTicket movieTicket = new MovieTicket();
                 movieTicket.setTicketId(idUtils.getUUID32());
                 movieTicket.setOrderId(order.getOrderId());
-                movieTicket.setPosition(item);
+                movieTicket.setRow(Integer.parseInt(strings[0]));
+                movieTicket.setCol(Integer.parseInt(strings[1]));
                 movieTicket.setSlotId(shceduleId);
                 movieTicketRepository.save(movieTicket);
             });

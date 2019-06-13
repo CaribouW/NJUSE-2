@@ -1,7 +1,6 @@
 package com.example.main.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 影厅信息更改
@@ -45,15 +43,6 @@ public class HallServiceImpl implements HallService {
             List<TimeSlot> list = timeSlotRepository.findAll();
             //按照时间由小到大
             list.sort(Comparator.comparing(TimeSlot::getStartTime));
-            JSONArray array = new JSONArray();
-//            list.forEach(item -> {
-//                JSONObject object = new JSONObject();
-//                object.put("slotID", item.getSlotId());
-//                object.put("startTime", dateUtils.dateToStr(item.getStartTime()));
-//                object.put("endTime", dateUtils.dateToStr(item.getEndTime()));
-//                object.put("price", item.getTicketPrize());
-//                array.add(object);
-//            });
             JSONObject ans = new JSONObject();
             //put arr
             ans.put("slot", list);
@@ -68,17 +57,7 @@ public class HallServiceImpl implements HallService {
     public JSON getHallList() {
         try {
             List<MovieHall> movieHalls = movieHallRepository.findAll();
-            JSONArray array = new JSONArray();
-            movieHalls.forEach(item -> {
-                JSONObject object = new JSONObject();
-                object.put("hallID", item.getHallId());
-                object.put("name", item.getHallName());
-                object.put("state", item.getState());
-                object.put("size", item.getSize());
-                object.put("category", item.getCategory());
-                array.add(object);
-            });
-            return Response.success(array);
+            return Response.success(movieHalls);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
@@ -90,7 +69,8 @@ public class HallServiceImpl implements HallService {
             MovieHall movieHall = movieHallRepository.findByHallId(req.getString("hallId"));
             movieHall.setState(req.getBoolean("state"));
             movieHall.setHallName(req.getString("name"));
-            movieHall.setSize(req.getString("size"));
+            movieHall.setRow(req.getInteger("row"));
+            movieHall.setCol(req.getInteger("col"));
             movieHall.setCategory(req.getString("category"));
             movieHallRepository.save(movieHall);
             return Response.success(null);

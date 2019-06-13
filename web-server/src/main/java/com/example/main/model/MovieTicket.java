@@ -10,8 +10,10 @@ import java.util.Objects;
 public class MovieTicket implements Serializable {
     private String ticketId;//ticketId
     private String slotId;  //场次
-    private String position;//座位
-//    private double price;   //实际付款
+    //    private String position;//座位
+    private int row;
+    private int col;
+    //    private double price;   //实际付款
     private String orderId;//ticketId
 
 
@@ -35,15 +37,6 @@ public class MovieTicket implements Serializable {
         this.slotId = slotId;
     }
 
-    @Basic
-    @Column(name = "position")
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -51,13 +44,12 @@ public class MovieTicket implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         MovieTicket that = (MovieTicket) o;
         return Objects.equals(ticketId, that.ticketId) &&
-                Objects.equals(slotId, that.slotId) &&
-                Objects.equals(position, that.position);
+                Objects.equals(slotId, that.slotId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, slotId, position);
+        return Objects.hash(ticketId, slotId, row, col);
     }
 
 
@@ -69,5 +61,23 @@ public class MovieTicket implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    @Column(name = "row")
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    @Column(name = "col")
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
     }
 }

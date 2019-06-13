@@ -9,7 +9,8 @@ import java.util.Objects;
 public class MovieHall implements Serializable {
     private String hallId;
     private String hallName;    //影厅名
-    private String size;        //尺寸
+    private int row;
+    private int col;
     private String category;    //类型
     private boolean state;          //是否可用
 
@@ -33,19 +34,6 @@ public class MovieHall implements Serializable {
         this.hallName = hallName;
     }
 
-    /**
-     * 逗号隔开 m,n
-     * 表示行列
-     */
-    @Basic
-    @Column(name = "size")
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
 
     @Basic
     @Column(name = "category")
@@ -64,13 +52,12 @@ public class MovieHall implements Serializable {
         MovieHall movieHall = (MovieHall) o;
         return Objects.equals(hallId, movieHall.hallId) &&
                 Objects.equals(hallName, movieHall.hallName) &&
-                Objects.equals(size, movieHall.size) &&
                 Objects.equals(category, movieHall.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hallId, hallName, size, category);
+        return Objects.hash(hallId, hallName, category);
     }
 
     @Basic
@@ -81,5 +68,23 @@ public class MovieHall implements Serializable {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    @Column(name = "row_num")
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    @Column(name = "col_num")
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
     }
 }

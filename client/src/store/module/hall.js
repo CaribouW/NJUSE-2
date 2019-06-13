@@ -19,15 +19,13 @@ const actions = {
     const data = getHallList().then(
       res => {
         const list = res.map(item => {
-          const size = item.size;
-          const arr = size.split(',');
           return {
-            id: item.hallID,
+            id: item.hallId,
             name: item.name,
             state: item.state,
-            row: arr[0],  //行数
-            col: arr[1], //列数
-            category:item.category
+            row: item.row,  //行数
+            col: item.col, //列数
+            category: item.category
           }
         });
         return commit('flushList', list);
@@ -36,9 +34,10 @@ const actions = {
   },
   //修改单个电影信息
   async modifyHall({dispatch, commit, state}, payload) {
-    console.log(payload)
+    console.log(payload);
     return modifyHall({
-      size: payload.row + ',' + payload.col,
+      row: payload.row,
+      col: payload.col,
       category: payload.category,
       hallId: payload.hallId,
       state: payload.state,
