@@ -43,16 +43,7 @@ export default {
     height: 790px;
     margin-bottom: 50px ;
   }
-}
-.card_header{
-    font-size: 30px;
-    text-align: left;
-    margin-bottom: 10px;
-}
-.hint{
-    margin-top:50px;
-}
-.el-button{
+  .el-button{
     margin-top: 20px;
     border-radius: 25px;
     padding: 8px 65px;
@@ -62,6 +53,16 @@ export default {
     border-color: #CFF9FE;
     width:35%
 }
+}
+.card_header{
+    font-size: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+.hint{
+    margin-top:50px;
+}
+
 
 
 </style>
