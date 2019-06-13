@@ -14,3 +14,27 @@ export function purchaseMemberCard({userId,cardBalance,ownDate}) {
     return dealResponse(res)
   })
 }
+
+// 获取会员信息
+export function getMemberInfo({userId}) {
+  console.log(userId)
+  return doGet({
+    url: '/vip/',
+    params: {
+      userId: userId,
+    }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}
+
+// 会员卡充值
+export async function rechargeVIP(payload) {
+  return doPut({
+    url: '/vip/recharge',
+    body: payload
+  }).then(res => {
+    console.log(res)
+    return dealResponse(res)
+  })
+}
