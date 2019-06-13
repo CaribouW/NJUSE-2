@@ -260,7 +260,7 @@
             <span>3号激光厅</span><span v-for="item in selectedSeat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="movie_paySuccess_ticket_right">
-            <img src="@/assets/images/movie/timg.png" alt="">
+            <img :src="movieInfo.pic" alt="">
           </div>
         </div>
         <div class="movie_paySuccess_cinema">
@@ -388,7 +388,7 @@ export default {
     },
     // 返回首页
     goOrderHistory () {
-      this.$router.push('/history')
+      this.$router.push('/user/history')
     },
     goHomepage () {
       this.$router.push('/index')
