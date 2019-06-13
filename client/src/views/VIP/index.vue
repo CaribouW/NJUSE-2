@@ -5,20 +5,25 @@
           <el-row class="tac">
             <el-col :span="24">
               <el-menu
-                default-active="1"
+                default-active="/VIP/buyCard"
+                :router="true"
                 class="vip_menu"
                 @open="handleOpen"
                 @close="handleClose"
                 background-color="#131c1c"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-                <el-menu-item index="1" @click="goBuyCard()">
+                <el-menu-item index="/VIP/buyCard">
                   <i class="vip_buyCard"></i>
-                  <span>会员注册</span>
+                  <span slot="title">会员注册</span>
                 </el-menu-item>
-                <el-menu-item index="2" @click="goVIPrights()">
+                 <!-- <el-menu-item index="/user/history">
+                  <i class="user_history"></i>
+                  <span slot="title">历史订单</span>
+                </el-menu-item> -->
+                <el-menu-item index="/VIP/VIPrights" style="margin:10px;">
                   <i class="VIPrights"></i>
-                  <span>会员权益</span>
+                  <span slot="title">会员权益</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -44,12 +49,6 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
-      },
-      goBuyCard() {
-        this.$router.push("/VIP/buyCard")
-      },
-      goVIPrights() {
-        this.$router.push("/VIP/VIPrights")
       },
     }
   }

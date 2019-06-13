@@ -8,7 +8,7 @@
                     <p>您当前还不是会员！ 点击购买会员卡</p>
                 </div>
                 <div class="card">
-                    <img src="@/assets/images/vip/huiyuanqia.png" alt="" style="width:170px;height:150px;">
+                    <img src="@/assets/images/vip/34A5E5AE-3165-47C0-977E-B540DE3067DE.png" alt="" style="width:320px;height:200px;">
                     <p>¥300/张</p>
                 </div>
                 <div class="card_button">
