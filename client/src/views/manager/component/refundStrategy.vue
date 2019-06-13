@@ -3,7 +3,10 @@
     <div class="header">
       <div class="header-text">
         <span>退票策略</span>
-        <el-button  icon="el-icon-plus">添加新的退票策略</el-button>
+        <el-button icon="el-icon-plus"
+                   @click="newItem"
+        >添加新的退票策略
+        </el-button>
       </div>
       <div class="choose">
 
@@ -27,9 +30,18 @@
   export default {
     name: "refundStrategy",
     components: {RefundCard},
+    created() {
+      this.$store.dispatch('getRefundList');
+    },
     computed: {
       ...mapGetters({
         refunds: 'refunds'
+      }),
+
+    },
+    methods: {
+      ...mapActions({
+        newRefundStrategy: 'newRefundStrategy'
       })
     }
   }
@@ -62,6 +74,7 @@
         }
       }
     }
+
     .cards {
       padding: 20px 20px 40px;
     }

@@ -135,7 +135,7 @@ public class StrategyServiceImpl implements StrategyService {
     }
 
     @Override
-    public JSON getRefundStrategy() {
+    public JSON getRefundStrategyList() {
         try {
             return Response.success(refundStrategyRepository.findAll());
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class StrategyServiceImpl implements StrategyService {
         try {
             RefundStrategy record = new RefundStrategy();
             record.setId(req.getString("id"));
-            record.setLimitTime(req.getFloat("time"));
+            record.setTime(req.getFloat("time"));
             record.setRate(req.getFloat("rate"));
             refundStrategyRepository.save(record);
             return Response.success(null);
@@ -156,6 +156,33 @@ public class StrategyServiceImpl implements StrategyService {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
 
+    }
+
+    @Override
+    public JSON newRefundStrategy() {
+        try {
+            RefundStrategy strategy =
+                    new RefundStrategy();
+            strategy.setId(idUtils.getUUID32());
+            strategy.setRate(0);
+            strategy.setTime(0);
+            refundStrategyRepository.save(strategy);
+            return Response.success(strategy);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON removeRefundStrategy(String id) {
+        try {
+            refundStrategyRepository.deleteById(id);
+            return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
     }
 
 

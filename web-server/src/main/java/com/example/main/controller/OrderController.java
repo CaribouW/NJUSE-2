@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.main.service.HallService;
 import com.example.main.service.MovieTicketService;
+import com.example.main.service.StrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ public class OrderController {
     private MovieTicketService movieTicketService;
     @Autowired
     private HallService hallService;
+    @Autowired
+    private StrategyService strategyService;
 
     @GetMapping("/order/history")
     public JSON getAllHisByUid(@RequestParam(value = "userId") String uid) {
@@ -29,7 +32,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/order/cancel")
-    public JSON orderCancel(@RequestBody JSONObject req){
+    public JSON orderCancel(@RequestBody JSONObject req) {
         return movieTicketService.orderCancel(req.getString("orderId"));
     }
 
@@ -38,9 +41,29 @@ public class OrderController {
 
         return movieTicketService.orderConfirm(req);
     }
+
     @PutMapping("/order/consume")
-    public JSON orderConsume(@RequestBody JSONObject req){
+    public JSON orderConsume(@RequestBody JSONObject req) {
         return movieTicketService.orderConsume(req);
     }
 
+    @PutMapping("/refund/strategy")
+    public JSON modifyRefundStrategy(@RequestBody JSONObject req) {
+        return strategyService.updateRefundStrategy(req);
+    }
+
+    @GetMapping("/refund/strategy/list")
+    public JSON getRefundStrategyList() {
+        return strategyService.getRefundStrategyList();
+    }
+
+    @PostMapping("/refund/strategy")
+    public JSON newRefundStrategy() {
+        return strategyService.newRefundStrategy();
+    }
+
+    @DeleteMapping("/refund/strategy")
+    public JSON removeRefundStrategy(@RequestParam(value = "id") String id) {
+        return strategyService.removeRefundStrategy(id);
+    }
 }

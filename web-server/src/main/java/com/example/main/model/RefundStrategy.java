@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "strategy_refund", schema = "SE2")
 public class RefundStrategy implements Serializable {
     private String id;
-    private float limitTime;
+    private float time;
     private float rate;
 
     @Id
@@ -22,12 +22,12 @@ public class RefundStrategy implements Serializable {
 
     @Basic
     @Column(name = "limit_time")
-    public float getLimitTime() {
-        return limitTime;
+    public float getTime() {
+        return time;
     }
 
-    public void setLimitTime(float limitTime) {
-        this.limitTime = limitTime;
+    public void setTime(float time) {
+        this.time = time;
     }
 
     @Basic

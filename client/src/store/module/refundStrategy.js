@@ -1,19 +1,7 @@
 import {doGet, doDelete, doPost, dealResponse, doPut} from "../../service/baseService";
 
 const state = {
-  refundStrategyList: [{
-    id: '1',    //id
-    rate: 0.3,  //退票返还比例
-    time: 10    //约定期限
-  }, {
-    id: '2',
-    rate: 0.3,
-    time: 10
-  }, {
-    id: '3',
-    rate: 0.3,
-    time: 10
-  }]
+  refundStrategyList: [{}]
 };
 
 const getters = {
@@ -23,18 +11,57 @@ const getters = {
 const actions = {
   async getRefundList({commit, state}) {
     return doGet({
-      url: '/refund/strategy',
+      url: '/refund/strategy/list',
     }).then(res => {
       return dealResponse(res)
     }).then(list => {
       commit('flushList', list)
     })
+  },
+  async modifyRefundItem({commit, state}, payload) {
+    return doPut({
+      url: '/refund/strategy',
+      body: payload
+    }).then(res => {
+      return dealResponse(res);
+    }).then(res => {
+    })
+  },
+  async newRefundStrategy({commit, state}) {
+    return doPost({
+      url: '/refund/strategy',
+    }).then(res => {
+      return dealResponse(res)
+    }).then(res => {
+      commit('appendList', res)
+    })
+  },
+  async removeRefundStrategy({commit, state}, {id}) {
+    return doDelete({
+      url: '/refund/strategy',
+      params: {
+        id
+      }
+    }).then(res => {
+      console.log(res);
+      return dealResponse(res)
+    }).then(res => {
+      commit('popItem', {id})
+    })
   }
 };
 const mutations = {
   flushList: (state, payload) => {
-    state.refundStrategyList = payload
+    state.refundStrategyList = payload;
   },
+  appendList: (state, payload) => {
+    state.refundStrategyList.push(payload)
+  },
+  popItem: (state, {id}) => {
+    state.refundStrategyList = state.refundStrategyList.filter(item => {
+      return item.id !== id
+    });
+  }
 };
 
 export default {

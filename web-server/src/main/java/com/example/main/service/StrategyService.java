@@ -45,7 +45,7 @@ public interface StrategyService {
     /**
      * 获取退票策略列表
      */
-    JSON getRefundStrategy();
+    JSON getRefundStrategyList();
 
     /**
      * 修改退票策略
@@ -53,4 +53,13 @@ public interface StrategyService {
      */
     JSON updateRefundStrategy(JSONObject req);
 
+    /**
+     * 创建新的退票策略
+     * */
+    JSON newRefundStrategy();
+
+    /**
+     * 删除退票策略
+     * */
+    JSON removeRefundStrategy(String id);
 }

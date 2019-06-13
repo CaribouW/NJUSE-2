@@ -215,9 +215,9 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     private double computeRefundAmount(double price, double time) {
         List<RefundStrategy> refundStrategies =
                 refundStrategyRepository.findAll();
-        refundStrategies.sort((o1, o2) -> (int) (o1.getLimitTime() - o2.getLimitTime()));
+        refundStrategies.sort((o1, o2) -> (int) (o1.getTime() - o2.getTime()));
         for (RefundStrategy item : refundStrategies) {
-            if (time <= item.getLimitTime()) {
+            if (time <= item.getTime()) {
                 return price * item.getRate();
             }
         }

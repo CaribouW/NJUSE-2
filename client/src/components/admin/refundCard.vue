@@ -33,6 +33,8 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters, mapMutations} from 'vuex'
+
   export default {
     name: "refundCard",
     props: ['item'],
@@ -49,6 +51,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        modify: 'modifyRefundItem'
+      }),
       //进入修改模式
       handleModify: function () {
         this.changeAble = true;
@@ -56,21 +61,26 @@
         this.tmpStore = {
           rate: this.rate,
           time: this.time
-        }
+        };
+
       },
 
       //显示新的删除确认弹框
       handleRemove: function () {
         const this_ = this;
+
         this.$confirm('此操作将删除该退票策略, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          this.$store.dispatch('removeRefundStrategy', {id: this_.item.id})
+            .then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            });
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -79,12 +89,19 @@
         });
       },
 
-      handleStore: function (rate, time) {
-        this.$message({
-          type: 'success',
-          message: '修改成功!'
+      handleStore: function () {
+        this.modify({
+          id: this.item.id,
+          time: this.time,
+          rate: this.rate / 100
+        }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          });
+          this.changeAble = false
         });
-        this.changeAble = false
+
       },
 
       handleCancle: function () {
@@ -101,8 +118,7 @@
       this.rate = this.$props.item.rate * 100;
       this.time = this.$props.item.time;
     },
-    computed: {
-    }
+    computed: {}
   }
 </script>
 

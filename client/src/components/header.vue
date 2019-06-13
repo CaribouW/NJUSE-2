@@ -166,8 +166,8 @@ export default {
       // this.$axios.post('http://localhost:3000/user/Logout').then(res => {
       //   if (res.data.status === 200) {
       //     this.$message.success('已退出登录')
-      //     sessionStorage.removeItem('id')
-      //     sessionStorage.removeItem('role')
+      //     sessionStorage.removeRefundStrategy('id')
+      //     sessionStorage.removeRefundStrategy('role')
       //     this.logined = !this.logined
       //   } else {
       //     this.navList.forEach(function (obj) {
@@ -184,9 +184,9 @@ export default {
       //   // this.$router.push('login')
       //   if (res.data.status === 200) {
       //     this.$message.success('已退出登录')
-      //     localStorage.removeItem('roleName')
-      //     localStorage.removeItem('account')
-      //     localStorage.removeItem('id')
+      //     localStorage.removeRefundStrategy('roleName')
+      //     localStorage.removeRefundStrategy('account')
+      //     localStorage.removeRefundStrategy('id')
       //     this.logined = !this.logined
       //   } else {
       //     this.$message.error('出错了，请稍后再试')

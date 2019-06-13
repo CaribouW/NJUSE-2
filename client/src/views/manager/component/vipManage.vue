@@ -109,9 +109,9 @@ export default {
     //     userId: sessionStorage.getItem('userId'),
     //   }).then(res => {
     //     this.$message.success('已退出登录')
-    //     sessionStorage.removeItem('roleName')
-    //     sessionStorage.removeItem('account')
-    //     sessionStorage.removeItem('userId')
+    //     sessionStorage.removeRefundStrategy('roleName')
+    //     sessionStorage.removeRefundStrategy('account')
+    //     sessionStorage.removeRefundStrategy('userId')
     //     this.logined = !this.logined
     //   })
     //   },
