@@ -13,8 +13,9 @@ import com.example.main.model.UserInfo;
 import com.example.main.repository.*;
 import com.example.main.service.RoleService;
 import com.example.main.utils.IDUtils;
+import com.example.main.utils.SignUpHelper;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +34,12 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private MapperUserRoleRepository userRoleRepository;
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private IDUtils idUtils;
+    @Autowired
+    private SignUpHelper signUpHelper;
 
     @Override
     public JSON getAllAdmins() {
@@ -59,11 +65,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public JSON addAdmin() {
+    public JSON addAdmin(String account, String password) {
         try {
             //update name
             User user = new User();
-            return Response.success(null);
+            user.setPassword(signUpHelper.encryptPassword(password));
+            user.setUserId(idUtils.getUUID32());
+            //userInfo
+            UserInfo userInfo = new UserInfo();
+            userInfo.setAccount(account);
+            userInfo.setUserId(user.getUserId());
+            userInfo.setAdminDesc(MovieRoleType.ADMIN.getRoleDesc());
+            //set mapper
+            MapperUserRole userRole = new MapperUserRole();
+            userRole.setId(idUtils.getUUID32());
+            userRole.setUserId(user.getUserId());
+            userRole.setRoleId(String.valueOf(MovieRoleType.ADMIN.getVal()));
+
+            userRepository.save(user);
+            userInfoRepository.save(userInfo);
+            userRoleRepository.save(userRole);
+            return Response.success(userInfo);
 
         } catch (NullPointerException e) {
             return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
@@ -76,7 +98,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public JSON updateAdmin(JSONObject req) {
         try {
+            UserInfo userInfo =
+                    userInfoRepository.findUserInfoByUserId(req.getString("userId"));
+            userInfo.setAdminDesc(req.getString("desc"));
+            userInfoRepository.save(userInfo);
             return Response.success(null);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
@@ -89,7 +117,6 @@ public class RoleServiceImpl implements RoleService {
             //update role id
             mapperUserRole.setRoleId(roleRepository.findRoleByRoleName(RoleType.AUDIENCE.getContent()).getRoleId());
             //remove name
-
             userRoleRepository.saveAndFlush(mapperUserRole);
             return Response.success(null);
         } catch (NullPointerException e) { //record not present

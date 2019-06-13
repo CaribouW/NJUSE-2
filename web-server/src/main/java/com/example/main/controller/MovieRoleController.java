@@ -22,17 +22,18 @@ public class MovieRoleController {
     }
 
     @PostMapping("/new")
-    public JSON addAdmin() {
-        return roleService.addAdmin();
+    public JSON addAdmin(@RequestBody JSONObject req) {
+        return roleService.addAdmin(req.getString("account"),
+                req.getString("password"));
     }
 
     @PutMapping("/")
-    public JSON updateAdmin(@RequestBody JSONObject req){
+    public JSON updateAdmin(@RequestBody JSONObject req) {
         return roleService.updateAdmin(req);
     }
 
     @DeleteMapping("/")
-    public JSON deleteAdmin(@RequestBody JSONObject req){
+    public JSON deleteAdmin(@RequestBody JSONObject req) {
         return roleService.deleteAdmin(req.getString("userId"));
     }
 }

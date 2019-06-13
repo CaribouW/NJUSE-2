@@ -11,8 +11,10 @@ public interface RoleService {
 
     /**
      * 添加管理员
-     * */
-    JSON addAdmin();
+     *
+     * @param account
+     * @param password*/
+    JSON addAdmin(String account, String password);
 
     /**
      * 更新管理员信息

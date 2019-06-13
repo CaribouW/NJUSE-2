@@ -17,6 +17,21 @@
                  v-bind:item="item"
       ></role-card>
     </div>
+
+    <el-dialog
+      :visible.sync="modifyVisible"
+      :modal-append-to-body='false'
+      title="注册管理员账号"
+      top="20vh"
+      width="40%"
+      class="modify-dialog"
+    >
+      <div class="body">
+          <el-form>
+
+          </el-form>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -29,6 +44,7 @@
     components: {RoleCard},
     data() {
       return {
+        modifyVisible: false,
         roles: [{
           id: '',
           name: '',
@@ -47,12 +63,15 @@
         }).then(res => {
           return res.list;
         }).then(res => {
-          console.log(res)
           this_.roles = res;
         });
       },
       handleNewRole: function () {
-
+        this.modifyVisible = true;
+        this.$message({
+          type: 'info',
+          message: '开始新建管理员角色账号!'
+        });
       }
     },
     mounted() {
@@ -91,6 +110,9 @@
 
     .cards {
       padding: 20px 20px 40px;
+    }
+    .modify-dialog{
+
     }
   }
 </style>
