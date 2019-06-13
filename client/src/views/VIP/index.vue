@@ -40,6 +40,7 @@
     data () {
       return {
         tabPosition: 'left'
+        
       }
     },
     methods: {

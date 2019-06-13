@@ -14,20 +14,15 @@
                   </el-col>
                   <el-col :span="16">
                     <div class="success_counttime">
-                      距离放映 1 天 23 小时 12 分钟
+                      {{timeSubtract(slot.startTime,order.confirmDate)}}
                     </div>
                   </el-col>
                 </el-row>
                 <div class="success_details">
                   <el-row style="font-size:14px;">
-                    <el-col :span="8">
+                    <el-col :span="16">
                       <div class="success_date">
-                        {{hall.startTime}}
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="success_time">
-                        10:10 ～ 13:11
+                        {{dateFormat(slot.startTime)}} ～ {{dateFormat(slot.endTime)}}
                       </div>
                     </el-col>
                   </el-row>
@@ -154,12 +149,41 @@ export default {
       percent:'80',
       total:'98',
       distance:'',
+      // startTime:this.slot.startTime
+
     }
   },
   methods: {
     handleChange(val) {
         console.log(val);
       },
+
+      //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+  dateFormat:function(time) {
+    var date=new Date(time);
+    var year=date.getFullYear();
+    var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+    var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+    var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+    var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+    // 拼接
+    return year+"-"+month+"-"+day+" "+hours+":"+minutes;
+  },
+  timeSubtract:function(time1,time2){
+    var date1 = new Date(time1)
+    var date2 = new Date(time2)
+    
+    // var s1 = date1.getTime(),s2 = date2.getTime();
+    var total = (date1 - date2)/1000;
+    console.log(total)
+    var day = parseInt(total / (24*60*60));//计算整数天数
+    var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+    var hour = parseInt(afterDay/(60*60));//计算整数小时数
+    var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
+    var min = parseInt(afterHour/60);//计算整数分
+    return "距离开场时间还有   "+day+" 天 "+hour+" 小时 "+min+" 分钟 ";
+  },
+
     //显示新的修改弹窗
       handleRefund: function () {
         this.refundVisible = true;
@@ -177,8 +201,7 @@ export default {
     // this.distance=this.slot.startTime-this.order.confirmDate
     console.log(this.cardMsg)
     console.log(this.movie)
-  }
-  
+  },
 
 }
 
