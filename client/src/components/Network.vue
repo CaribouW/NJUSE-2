@@ -1,10 +1,40 @@
 <template>
-  <canvas id="cas"></canvas>
+  <div>
+    <el-button @click="handleLogin">登录</el-button>
+    <el-button @click="handleLogout">登出</el-button>
+    <canvas id="cas"></canvas>
+  </div>
 </template>
 
 <script>
+  import {userLogin, logout} from '../service/userService'
+
   export default {
     name: "Network",
+    data() {
+      return {
+        id: '',
+      }
+    },
+    methods: {
+      handleLogin() {
+        const this_ = this;
+        userLogin({
+          account: 'audience',
+          password: '12345678'
+        }).then(res => {
+          console.log(res);
+          this_.id = res.id
+        })
+      },
+      handleLogout() {
+        logout({
+          userId: this.id
+        }).then(res => {
+          console.log(res)
+        })
+      },
+    },
     mounted() {
       console.log('hello')
       var canvas = document.getElementById("cas");

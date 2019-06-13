@@ -40,6 +40,9 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     private DateUtils dateUtils;
     @Autowired
     private RefundStrategyRepository refundStrategyRepository;
+    @Autowired
+    private MovieInfoRepository movieInfoRepository;
+
 
     @Autowired
     private IDUtils idUtils;
@@ -52,27 +55,36 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             orders.forEach(item -> {
                 JSONObject object = new JSONObject();
                 //得到所有的tickets
+
                 List<MovieTicket> tickets
                         = movieTicketRepository.findMovieTicketsByOrderId(item.getOrderId());
+                TimeSlot slot = timeSlotRepository.findTimeSlotByTicketId(tickets.get(0).getTicketId());
+                MovieHall hall = movieHallRepository.findMovieHallBySlotId(slot.getSlotId());
+                MovieInfo movieInfo = movieInfoRepository.findByMovieId(slot.getMovieId());
+                object.put("slot", slot);
+                object.put("tickets", tickets);
+                object.put("hall", hall);
+                object.put("movie", movieInfo);
+                object.put("order",item);
 
-                object.put("orderId", item.getOrderId());
-                //slot
-                TimeSlot timeSlot = timeSlotRepository.findTimeSlotByTicketId(tickets.get(0).getTicketId());
-                object.put("scheduleId", timeSlot.getSlotId());
-                object.put("scheduleStartTime", dateUtils.dateToStr(timeSlot.getStartTime()));
-                //hall
-                MovieHall hall = movieHallRepository.findByHallId(timeSlot.getHallId());
-                object.put("hallName", hall.getName());
-                object.put("type", hall.getCategory());
-
-                //seats
-                JSONArray seats = new JSONArray();
-                tickets.forEach(ticket -> seats.add(ticket.getRow() + "," + ticket.getCol()));
-                object.put("seats", seats);
-                //sum price
-                object.put("sum", item.getExpense());
-                object.put("state", item.getState());
-                object.put("confirmTime", dateUtils.dateToStr(item.getConfirmDate()));
+//                object.put("orderId", item.getOrderId());
+//                //slot
+//                TimeSlot timeSlot = timeSlotRepository.findTimeSlotByTicketId(tickets.get(0).getTicketId());
+//                object.put("scheduleId", timeSlot.getSlotId());
+//                object.put("scheduleStartTime", dateUtils.dateToStr(timeSlot.getStartTime()));
+//                //hall
+//                MovieHall hall = movieHallRepository.findByHallId(timeSlot.getHallId());
+//                object.put("hallName", hall.getName());
+//                object.put("type", hall.getCategory());
+//
+//                //seats
+//                JSONArray seats = new JSONArray();
+//                tickets.forEach(ticket -> seats.add(ticket.getRow() + "," + ticket.getCol()));
+//                object.put("seats", seats);
+//                //sum price
+//                object.put("sum", item.getExpense());
+//                object.put("state", item.getState());
+//                object.put("confirmTime", dateUtils.dateToStr(item.getConfirmDate()));
 
                 array.add(object);
             });

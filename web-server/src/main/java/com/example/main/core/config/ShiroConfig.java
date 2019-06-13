@@ -41,6 +41,24 @@ public class ShiroConfig {
     private final Logger logger = LoggerFactory.getLogger(ShiroConfig.class);
 
     @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    /**
+     * 自动创建代理
+     *
+     * @return
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        advisorAutoProxyCreator.setUsePrefix(true);
+        return advisorAutoProxyCreator;
+    }
+
+    @Bean
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
         userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
@@ -125,10 +143,6 @@ public class ShiroConfig {
         return matcher;
     }
 
-    @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
 
     /**
      * 开启shiro aop注解支持.
@@ -145,18 +159,6 @@ public class ShiroConfig {
         return advisor;
     }
 
-    /**
-     * 自动创建代理
-     *
-     * @return
-     */
-    @Bean
-    @DependsOn({"lifecycleBeanPostProcessor"})
-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-        advisorAutoProxyCreator.setProxyTargetClass(true);
-        return advisorAutoProxyCreator;
-    }
 
     //  filter begin-------------------------
     @Bean

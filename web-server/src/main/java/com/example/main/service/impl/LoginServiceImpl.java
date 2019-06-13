@@ -109,11 +109,11 @@ public class LoginServiceImpl implements LoginService {
     public JSON logout(String uid) {
         try {
             User record = userRepository.findUserByUserId(uid);
-            if (null == record) {
-                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
-            } else if (!tokenManager.isLogin()) {//未登录
-                return Response.fail(ResponseType.USER_OUT);
-            }
+//            if (null == record) {
+//                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+//            } else if (!tokenManager.isLogin()) {//未登录
+//                return Response.fail(ResponseType.USER_OUT);
+//            }
             tokenManager.logout();
             return Response.success(null);
         } catch (Exception e) {

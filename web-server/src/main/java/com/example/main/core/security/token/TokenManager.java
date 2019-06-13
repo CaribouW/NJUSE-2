@@ -84,6 +84,7 @@ public class TokenManager {
         PswToken token = new PswToken(user.getUserId(), user.getPassword());
         token.setRememberMe(rememberMe);
         SecurityUtils.getSubject().login(token);
+        System.out.println(isLogin());
         return getToken();
     }
 
