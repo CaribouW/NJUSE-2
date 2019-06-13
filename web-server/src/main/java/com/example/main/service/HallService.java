@@ -35,4 +35,11 @@ public interface HallService {
      * 删除排片信息
      */
     JSON deleteSlot(String slotId);
+
+    /**
+     * 查询指定场次的剩余座位情况
+     * @param id
+     */
+    JSON getRestSeats(String id);
+
 }

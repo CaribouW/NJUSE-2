@@ -6,6 +6,7 @@ import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.MovieHall;
+import com.example.main.model.MovieTicket;
 import com.example.main.model.TimeSlot;
 import com.example.main.repository.MovieHallRepository;
 import com.example.main.repository.MovieTicketRepository;
@@ -16,6 +17,7 @@ import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -139,6 +141,32 @@ public class HallServiceImpl implements HallService {
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
+    }
+
+    @Override
+    public JSON getRestSeats(String id) {
+        try {
+            TimeSlot slot = timeSlotRepository.findTimeSlotBySlotId(id);
+            MovieHall hall = movieHallRepository.findByHallId(slot.getHallId());
+            int row = hall.getRow();
+            int col = hall.getCol();
+            int[][] ans = new int[row][col];
+            for (int[] i : ans) {
+                Arrays.fill(i, 1);
+            }
+            List<MovieTicket> tickets =
+                    movieTicketRepository.findMovieTicketsBySlotId(id);
+            tickets.forEach(ticket -> {
+                ans[ticket.getRow()][ticket.getCol()] = 0;
+            });
+
+            return Response.success(ans);
+        } catch (NullPointerException e) {
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+
     }
 
 }

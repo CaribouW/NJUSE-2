@@ -19,6 +19,14 @@ public class SlotController {
     private HallService hallService;
 
     /**
+     * 查询指定场次的剩余座位情况
+     */
+    @GetMapping("/schedule/rest")
+    public JSON getRestSeats(@RequestParam(value = "scheduleId") String id) {
+        return hallService.getRestSeats(id);
+    }
+
+    /**
      * 管理员得到所有排片信息
      */
     @GetMapping("/schedule/list")
