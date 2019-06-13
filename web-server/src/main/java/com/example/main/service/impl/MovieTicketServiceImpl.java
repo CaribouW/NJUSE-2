@@ -12,12 +12,9 @@ import com.example.main.repository.*;
 import com.example.main.service.MovieTicketService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
-import io.swagger.models.auth.In;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +62,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
                 object.put("scheduleStartTime", dateUtils.dateToStr(timeSlot.getStartTime()));
                 //hall
                 MovieHall hall = movieHallRepository.findByHallId(timeSlot.getHallId());
-                object.put("hallName", hall.getHallName());
+                object.put("hallName", hall.getName());
                 object.put("type", hall.getCategory());
 
                 //seats

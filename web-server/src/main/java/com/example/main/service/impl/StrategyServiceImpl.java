@@ -43,7 +43,7 @@ public class StrategyServiceImpl implements StrategyService {
     @Override
     public JSON updateCouponStrategy(JSONObject req) {
         try {
-            Coupon coupon = couponRepository.findCouponByCouponId(req.getString("couponID"));
+            Coupon coupon = couponRepository.findCouponByCouponId(req.getString("couponId"));
             coupon.setName(req.getString("couponName"));
             coupon.setStartDate(dateUtils.strToDate(req.getString("startDate"),
                     DateStrPattern.YEAR_MONTH_DAY.getPat()));

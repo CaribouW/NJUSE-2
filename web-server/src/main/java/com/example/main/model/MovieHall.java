@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "movie_hall", schema = "SE2", catalog = "")
 public class MovieHall implements Serializable {
     private String hallId;
-    private String hallName;    //影厅名
+    private String name;    //影厅名
     private int row;
     private int col;
     private String category;    //类型
@@ -26,12 +26,12 @@ public class MovieHall implements Serializable {
 
     @Basic
     @Column(name = "hall_name")
-    public String getHallName() {
-        return hallName;
+    public String getName() {
+        return name;
     }
 
-    public void setHallName(String hallName) {
-        this.hallName = hallName;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -51,13 +51,13 @@ public class MovieHall implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         MovieHall movieHall = (MovieHall) o;
         return Objects.equals(hallId, movieHall.hallId) &&
-                Objects.equals(hallName, movieHall.hallName) &&
+                Objects.equals(name, movieHall.name) &&
                 Objects.equals(category, movieHall.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hallId, hallName, category);
+        return Objects.hash(hallId, name, category);
     }
 
     @Basic

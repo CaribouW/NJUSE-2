@@ -68,7 +68,7 @@ public class HallServiceImpl implements HallService {
         try {
             MovieHall movieHall = movieHallRepository.findByHallId(req.getString("hallId"));
             movieHall.setState(req.getBoolean("state"));
-            movieHall.setHallName(req.getString("name"));
+            movieHall.setName(req.getString("name"));
             movieHall.setRow(req.getInteger("row"));
             movieHall.setCol(req.getInteger("col"));
             movieHall.setCategory(req.getString("category"));

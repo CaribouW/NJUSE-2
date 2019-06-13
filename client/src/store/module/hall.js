@@ -34,7 +34,6 @@ const actions = {
   },
   //修改单个电影信息
   async modifyHall({dispatch, commit, state}, payload) {
-    console.log(payload);
     return modifyHall({
       row: payload.row,
       col: payload.col,
