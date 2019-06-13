@@ -14,6 +14,7 @@ public class UserInfo implements Serializable {
     private String avatarUrl;   //头像url
     private String sex;     //性别
     private Date birth;
+    private String adminDesc;   //作为管理员的描述
 
     @Id
     @Column(name = "user_id",length = 32)
@@ -89,5 +90,15 @@ public class UserInfo implements Serializable {
 
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+
+    @Basic
+    @Column(name = "admin_desc")
+    public String getAdminDesc() {
+        return adminDesc;
+    }
+
+    public void setAdminDesc(String adminDesc) {
+        this.adminDesc = adminDesc;
     }
 }

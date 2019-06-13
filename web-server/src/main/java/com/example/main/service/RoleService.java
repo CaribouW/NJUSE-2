@@ -12,7 +12,7 @@ public interface RoleService {
     /**
      * 添加管理员
      * */
-    JSON addAdmin(JSONObject req);
+    JSON addAdmin();
 
     /**
      * 更新管理员信息

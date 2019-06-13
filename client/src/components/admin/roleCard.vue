@@ -9,7 +9,7 @@
           <a style="font-size: 24px">{{item.name}}</a>
         </span>
         <span class="rate">管理员权限：
-          <a style="font-size:15px">{{func}}</a>
+          <a style="font-size:15px">{{desc}}</a>
         </span>
         <span class="rate">管理员ID：
           <a style="font-size:15px">{{item.id}}</a>
@@ -46,7 +46,7 @@
     data() {
       return {
         changeAble: false,
-        func: '管理员',
+        desc: '管理员',
         tmpFunc: '',
         options: [
           {
@@ -63,6 +63,9 @@
         ]
       }
     },
+    created() {
+      this.desc = this.item.desc
+    },
     methods: {
       handleModify: function () {
         this.changeAble = true;
@@ -73,9 +76,7 @@
       },
       handleStore: function () {
         this.changeAble = false;
-        this.func = this.tmpFunc; //store back
-
-
+        this.desc = this.tmpFunc; //store back
         this.$message({
           type: 'success',
           message: '修改成功!'

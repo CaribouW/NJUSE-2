@@ -13,7 +13,7 @@ public class MapperUserRole implements Serializable {
 
     @Basic
     @Id
-    @Column(name = "id",length = 32)
+    @Column(name = "id", length = 32)
     public String getId() {
         return id;
     }
@@ -23,7 +23,7 @@ public class MapperUserRole implements Serializable {
     }
 
     @Basic
-    @Column(name = "user_id",length = 32)
+    @Column(name = "user_id", length = 32)
     public String getUserId() {
         return userId;
     }
@@ -33,7 +33,7 @@ public class MapperUserRole implements Serializable {
     }
 
     @Basic
-    @Column(name = "role_id",length = 32)
+    @Column(name = "role_id", length = 32)
     public String getRoleId() {
         return roleId;
     }
@@ -56,4 +56,5 @@ public class MapperUserRole implements Serializable {
     public int hashCode() {
         return Objects.hash(userId, roleId, id);
     }
+
 }

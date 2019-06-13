@@ -11,7 +11,7 @@
       <el-divider direction="horizontal"></el-divider>
     </div>
     <div class="cards">
-      <role-card class="card-item" 
+      <role-card class="card-item"
                  v-for="item in roles"
                  :key="item.id"
                  v-bind:item="item"
@@ -32,6 +32,7 @@
         roles: [{
           id: '',
           name: '',
+          desc: '',
         }]
       }
     },
@@ -46,11 +47,12 @@
         }).then(res => {
           return res.list;
         }).then(res => {
+          console.log(res)
           this_.roles = res;
         });
       },
-      handleNewRole:function () {
-        
+      handleNewRole: function () {
+
       }
     },
     mounted() {

@@ -3,10 +3,12 @@ package com.example.main.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.core.enums.MovieRoleType;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.enums.RoleType;
 import com.example.main.core.response.Response;
 import com.example.main.model.MapperUserRole;
+import com.example.main.model.User;
 import com.example.main.model.UserInfo;
 import com.example.main.repository.*;
 import com.example.main.service.RoleService;
@@ -36,13 +38,15 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public JSON getAllAdmins() {
         try {
-            List<UserInfo> users = userInfoRepository.findALLByRole(RoleType.ADMIN.getContent());
+            List<UserInfo> users =
+                    userInfoRepository.findALLByRole(MovieRoleType.ADMIN.getRoleDesc());
             JSONObject ans = new JSONObject();
             JSONArray array = new JSONArray();
             users.forEach(item -> {
                 JSONObject object = new JSONObject();
                 object.put("id", item.getUserId());
                 object.put("name", item.getName());
+                object.put("desc", item.getAdminDesc());
                 array.add(object);
             });
             ans.put("list", array);
@@ -55,24 +59,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public JSON addAdmin(JSONObject req) {
+    public JSON addAdmin() {
         try {
-            String uid = req.getString("userId");
-            if (userRoleRepository.findByUserId(uid) != null) { //already admin
-                return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
-            }
             //update name
-            UserInfo userInfo = userInfoRepository.findUserInfoByUserId(uid);
-            userInfo.setName(req.getString("name"));
-            userInfoRepository.saveAndFlush(userInfo);
-            //insert role
-            MapperUserRole mapperUserRole =
-                    new MapperUserRole();
-            mapperUserRole.setRoleId(roleRepository.findRoleByRoleName(RoleType.ADMIN.getContent()).getRoleId());
-            mapperUserRole.setId(idUtils.getUUID32());
-            mapperUserRole.setUserId(uid);
-            userRoleRepository.saveAndFlush(mapperUserRole);
-
+            User user = new User();
             return Response.success(null);
 
         } catch (NullPointerException e) {
