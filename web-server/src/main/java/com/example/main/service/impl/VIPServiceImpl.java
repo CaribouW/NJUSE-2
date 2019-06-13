@@ -100,6 +100,7 @@ public class VIPServiceImpl implements VIPService {
             history.setAmount(amount);
             history.setRechargeTime(dateUtils.strToDate(rechargeTime
                     , DateStrPattern.YEAR_MONTH_DAY.getPat()));
+            history.setVipId(id);
             //save
             historyRepository.save(history);
             return Response.success(null);
