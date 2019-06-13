@@ -16,8 +16,9 @@
         </span>
 
       </div>
-      <div class="btns">
+      <div class="btns" v-if="!deleted">
         <el-button @click="handleModify" v-if="!changeAble">修改权限</el-button>
+        <el-button @click="handleRemove" v-if="!changeAble">删除管理员</el-button>
         <div v-else>
           <el-button @click="handleStore">保存修改</el-button>
           <el-select v-model="tmpFunc"
@@ -32,7 +33,9 @@
           </el-select>
         </div>
       </div>
-
+      <div class="dele" v-else
+        style="color: rgba(255,63,73,0.8)"
+      >该管理员已被删除</div>
     </div>
   </el-card>
 </template>
@@ -46,6 +49,7 @@
     data() {
       return {
         changeAble: false,
+        deleted: false,
         desc: '管理员',
         tmpFunc: '',
         options: [
@@ -59,6 +63,12 @@
           }, {
             value: '普通观众',
             label: '普通观众'
+          }, {
+            value: '吃瓜群众',
+            label: '吃瓜群众',
+          }, {
+            value: '前台售票员',
+            label: '前台售票员'
           }
         ]
       }
@@ -77,9 +87,54 @@
       handleStore: function () {
         this.changeAble = false;
         this.desc = this.tmpFunc; //store back
-        this.$message({
-          type: 'success',
-          message: '修改成功!'
+        const this_ = this;
+        doPut({
+          url: '/admin',
+          body: {
+            userId: this_.item.id,
+            desc: this.tmpFunc,
+          }
+        }).then(res => {
+          return dealResponse(res);
+        }).then(res => {
+          if (typeof res === "number") {
+            this.$message({
+              type: 'warn',
+              message: '修改失败!'
+            });
+          } else {
+            this.$message({
+              type: 'info',
+              message: '修改成功!'
+            });
+          }
+        })
+
+      },
+      handleRemove: function () {
+        const this_ = this;
+        this.$confirm('此操作将删除该管理员,无法撤回, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          await doDelete({
+            url: '/admin',
+            params: {
+              id: this_.item.id
+            }
+          }).then(res => {
+            this_.deleted = true;
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       }
     }

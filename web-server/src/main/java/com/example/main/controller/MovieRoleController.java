@@ -27,13 +27,14 @@ public class MovieRoleController {
                 req.getString("password"));
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public JSON updateAdmin(@RequestBody JSONObject req) {
         return roleService.updateAdmin(req);
     }
 
-    @DeleteMapping("/")
-    public JSON deleteAdmin(@RequestBody JSONObject req) {
-        return roleService.deleteAdmin(req.getString("userId"));
+    @DeleteMapping("")
+    public JSON deleteAdmin(@RequestParam(value = "id")
+                                    String userId) {
+        return roleService.deleteAdmin(userId);
     }
 }

@@ -44,20 +44,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public JSON getAllAdmins() {
         try {
-            List<UserInfo> users =
-                    userInfoRepository.findALLByRole(MovieRoleType.ADMIN.getRoleDesc());
-            JSONObject ans = new JSONObject();
-            JSONArray array = new JSONArray();
-            users.forEach(item -> {
-                JSONObject object = new JSONObject();
-                object.put("id", item.getUserId());
-                object.put("name", item.getName());
-                object.put("desc", item.getAdminDesc());
-                array.add(object);
-            });
-            ans.put("list", array);
-
-            return Response.success(ans);
+            return Response.success(userInfoRepository.findALLByRole(MovieRoleType.ADMIN.getRoleDesc()));
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }

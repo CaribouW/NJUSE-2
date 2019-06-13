@@ -26,10 +26,21 @@
       width="40%"
       class="modify-dialog"
     >
-      <div class="body">
-          <el-form>
-
-          </el-form>
+      <div class="form">
+        <el-form>
+          <el-form-item label="账户名称">
+            <el-input v-model="form.account"></el-input>
+          </el-form-item>
+          <el-form-item label="账户密码">
+            <el-input v-model="form.password" show-password></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码">
+            <el-input v-model="form.check" show-password></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="onSubmit">注册账户</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </el-dialog>
   </div>
@@ -37,7 +48,7 @@
 
 <script>
   import RoleCard from "../../../components/admin/roleCard";
-  import {dealResponse, doGet} from '../../../service/baseService'
+  import {dealResponse, doGet, doPost} from '../../../service/baseService'
 
   export default {
     name: "MovieRoleManage",
@@ -49,7 +60,12 @@
           id: '',
           name: '',
           desc: '',
-        }]
+        }],
+        form: {
+          account: '',
+          password: '',
+          check: ''
+        }
       }
     },
     computed: {},
@@ -61,9 +77,13 @@
         }).then(res => {
           return dealResponse(res)
         }).then(res => {
-          return res.list;
-        }).then(res => {
-          this_.roles = res;
+          this_.roles = res.map(item => {
+            return {
+              id: item.userId,
+              name: item.account,
+              desc: item.adminDesc
+            }
+          });
         });
       },
       handleNewRole: function () {
@@ -71,6 +91,29 @@
         this.$message({
           type: 'info',
           message: '开始新建管理员角色账号!'
+        });
+      },
+      onSubmit: function () {
+        const this_ = this;
+        doPost({
+          url: '/admin/new',
+          body: {
+            account: this_.form.account,
+            password: this_.form.password
+          }
+        }).then(res => {
+          return dealResponse(res)
+        }).then(res => {
+          this_.roles.push({
+            id: res.userId,
+            name: res.account,
+            desc: res.adminDesc
+          });
+          this.$message({
+            type: 'success',
+            message: '管理员创建成功!'
+          });
+          this_.modifyVisible = false
         });
       }
     },
@@ -111,8 +154,11 @@
     .cards {
       padding: 20px 20px 40px;
     }
-    .modify-dialog{
 
+    .modify-dialog {
+      .form {
+        padding: 2%
+      }
     }
   }
 </style>
