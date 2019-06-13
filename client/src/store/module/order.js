@@ -21,6 +21,7 @@ const actions = {
     return getHistory({
       userId: userId
     }).then(res => {
+      console.log(res)
       return res
     })
   },
