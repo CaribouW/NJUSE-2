@@ -15,13 +15,6 @@
       <div class="homepage_movie_middle">
         <div class="homepage_movie_middle_left">
           <subCircle class="subCircle" @getMovieNotify="getMovie"></subCircle>
-<!--          <ul>-->
-<!--            <li v-for="item in type" :key="item.index" :class="{selectedType:item.isSelected}" @click="getMovie(item)">-->
-<!--              {{item.text}}-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--          <img src="@/assets/images/homepage/fullsizerender(16).png" alt=""><br/>-->
-<!--          <img src="@/assets/images/homepage/GO！GET A MOVIE.png" alt="">-->
         </div>
         <div class="homepage_movie_middle_right">
           <div class="homepage_movie_middle_right_title">
@@ -98,6 +91,7 @@
               movieId: id
             }
           })
+          this.$store.commit('purchase', null)
         } else {
           this.$message.error('请先登录')
           this.$router.push('/login')

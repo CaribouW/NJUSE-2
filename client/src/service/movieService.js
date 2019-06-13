@@ -1,6 +1,15 @@
 //进行电影相关的接口操作
 import {doGet, doDelete, doPost, doPut, dealResponse} from "./baseService";
 
+// 获取电影排片信息
+export function getMovieSchedule() {
+  return doGet({
+    url: '/schedule/list',
+  }).then(res => {
+    return dealResponse(res)
+  })
+}
+
 // 获取电影详情
 export function getMovieBasicInfo({userId, movieId}) {
   return doGet({

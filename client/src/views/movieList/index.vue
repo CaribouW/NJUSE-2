@@ -64,6 +64,7 @@
               movieId: id
             }
           })
+          this.$store.commit('purchase', null)
         } else {
           this.$message.error('请先登录')
           this.$router.push('/login')

@@ -294,6 +294,7 @@ export default {
   },
   data () {
     return {
+      schedule: {},
       chartData: {
         columns: ['日期', '余额', '比率'],
         rows: [
@@ -380,6 +381,11 @@ export default {
     }
   },
   methods: {
+    checkQuickPurchase () {
+      if (this.$store.state.movie.quickPurchase) {
+        this.selectSeatDialogVisible = true
+      }
+    },
     // 返回首页
     goOrderHistory () {
       this.$router.push('/history')
@@ -456,12 +462,16 @@ export default {
     },
   },
   mounted () {
+    this.checkQuickPurchase()
     this.$store.dispatch('getMovieBasicInfo', {
       userId: sessionStorage.getItem('userId'),
       movieId: this.$route.query.movieId
     }).then(res => {
       this.movieInfo = res
+    })
+    this.$store.dispatch('getMovieSchedule').then(res => {
       console.log(res)
+      this.schedule = res[0]
     })
   }
 }

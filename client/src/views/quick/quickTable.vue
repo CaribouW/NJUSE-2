@@ -120,6 +120,16 @@
       //Redirect to the movie form
       purchase: function () {
         console.log(this.date)
+        this.$router.push({
+          path: '/movie/detail',
+          query: {
+            movieId: '3606'
+          }
+        })
+        this.$store.commit('purchase', {
+          movieId: '3606',
+          scheduleId: '111'
+        })
       }
     },
     computed: {
