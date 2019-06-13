@@ -46,8 +46,8 @@ public class VIPController {
     }
 
     /**
-     * 根据userId 得到关联的历史充值记录
      */
+     * 根据userId 得到关联的历史充值记录
     @GetMapping("/history/list")
     public JSON getHistoryVip(@RequestParam(value = "userId") String uid) {
         return vipService.findHistoryListByUid(uid);

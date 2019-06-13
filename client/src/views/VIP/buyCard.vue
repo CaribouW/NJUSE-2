@@ -12,7 +12,7 @@
                     <p>¥300/张</p>
                 </div>
                 <div class="card_button">
-                    <el-button round style="color:#CFF9FE;">购买</el-button>
+                    <el-button round style="color:#CFF9FE;" @click="purchaseVIP()">购买</el-button>
                 </div>
             </div>
         </div>
@@ -29,8 +29,22 @@ export default {
         return{
             tabPosition:'left',
         }
+    },
+    methods: {
+      purchaseVIP () {
+        this.$store.dispatch('purchaseMemberCard', {
+          userId: sessionStorage.getItem('userId'),
+          cardBalance: '300',
+          ownDate: '2018-05-09'
+        }).then(res => {
+          if (typeof res === 'number') {
+            this.$message.error('您已是会员，请勿重复购买！')
+          } else {
+            this.$router.push('/VIP/VIPrights')
+          }
+        })
+      }
     }
-
 }
 </script>
 
