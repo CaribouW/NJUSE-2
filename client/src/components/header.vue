@@ -194,7 +194,7 @@ export default {
       // }).catch(err => {
       //   this.$message.error('出错啦，请稍后再试')
       // })
-      this.$router.push('/index')
+      this.goLogin()
     },
     search () {
       this.$router.push('/search')
