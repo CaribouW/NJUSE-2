@@ -8,10 +8,10 @@ const getters = {
 };
 
 const actions = {
-  async refund({}, payload) {
+  async refund({}, payload) { 
     return refund({
-      userId:userId,
-      orderId: orderId,
+      userId:payload.userId,
+      orderId: payload.orderId,
     }).then(res => { 
       console.log(res)
       return res

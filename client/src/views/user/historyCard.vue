@@ -14,7 +14,15 @@
                   </el-col>
                   <el-col :span="16">
                     <div class="success_counttime">
-                      {{timeSubtract(slot.startTime,order.confirmDate)}}
+                    <div v-if="order.state=='0'">
+                      距离开场时间还有: {{timeSubtract(slot.startTime)}}
+                    </div>
+                    <div v-else-if="order.state=='1'">
+                      订单已取消
+                    </div>
+                    <div v-else-if="order.state=='2'">
+                      订单未支付
+                    </div>
                     </div>
                   </el-col>
                 </el-row>
@@ -57,12 +65,12 @@
             </el-col>
             <el-col :span="4">
               <div class="grid-content bg-purple-light">
-                <img src="@/assets/images/movielist/161905.30186585_1000 copy.png" alt="" style="width:70px;height:100px;">
+                <img :src="movie.poster" alt="" style="width:70px;height:100px;">
               </div>
-              </el-col>
+              </el-col> 
           </el-row>  
         </div>
-        <div class="success_body">
+        <div class="success_body" v-if="order.state=='0'">
           <p style="color: #CFF9FE;">取电影票</p>
           <el-row>
             <el-col :span="12">
@@ -102,7 +110,17 @@
                 共{{tickets.length}}张   合计：¥{{slot.ticketPrize*tickets.length}}.00
                 </div>
                 <div class="buttons" style="padding-top:5px;">
-                  <el-button round @click="handleRefund(order.orderId)">退票</el-button>
+
+                  <div v-if="order.state=='0'">
+                      <el-button round @click="handleRefund(order.orderId)">退票</el-button>
+                  </div>
+                  <div v-if="order.state=='1'">
+                      <el-button round @click="handleRebuy">重购</el-button>
+                  </div>
+                  <div v-if="order.state=='2'">
+                      <el-button round @click="handlePay(order.orderId)">支付</el-button>
+                  </div>
+                  
                   <el-dialog
                     :visible.sync="refundVisible"
                     :modal-append-to-body='false'
@@ -114,10 +132,10 @@
                     <div class="refund_main">
                       <el-form>
                         <el-form-item label="">
-                          <span>当前已购票 {{mintues}} 分钟,退还比例为 {{percent}}% ,共计 {{total}} 元。是否确认退票？</span>
+                          <span>当前已购票 {{timeSubtract(order.confirmDate)}},退还比例为 {{percent*100}}% ,共计 {{percent*slot.ticketPrize*tickets.length}} 元。是否确认退票？</span>
                         </el-form-item>
-                        <el-form-item>
-                          <el-button type="primary" @click="onSubmit(order.orderId)">退票</el-button>
+                        <el-form-item style="margin-left:35%;">
+                          <el-button type="primary" @click="onSubmit">退票</el-button>
                           <el-button @click="onCancel">取消</el-button>
                         </el-form-item>
                       </el-form>
@@ -149,7 +167,9 @@ export default {
       percent:'80',
       total:'98',
       distance:'',
-      // startTime:this.slot.startTime
+      refundVisible:false,
+      refundStrategy:[],
+      thisStrategy:{},
 
     }
   },
@@ -158,44 +178,101 @@ export default {
         console.log(val);
       },
 
-      //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
-  dateFormat:function(time) {
-    var date=new Date(time);
-    var year=date.getFullYear();
-    var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-    var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-    var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
-    var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
-    // 拼接
-    return year+"-"+month+"-"+day+" "+hours+":"+minutes;
-  },
-  timeSubtract:function(time1,time2){
-    var date1 = new Date(time1)
-    var date2 = new Date(time2)
-    
-    // var s1 = date1.getTime(),s2 = date2.getTime();
-    var total = (date1 - date2)/1000;
-    console.log(total)
-    var day = parseInt(total / (24*60*60));//计算整数天数
-    var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
-    var hour = parseInt(afterDay/(60*60));//计算整数小时数
-    var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
-    var min = parseInt(afterHour/60);//计算整数分
-    return "距离开场时间还有   "+day+" 天 "+hour+" 小时 "+min+" 分钟 ";
-  },
+    //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+    dateFormat:function(time) {
+      var date=new Date(time);
+      var year=date.getFullYear();
+      var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+      var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+      var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+      var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
 
-    //显示新的修改弹窗
-      handleRefund: function () {
+      return year+"-"+month+"-"+day+" "+hours+":"+minutes;
+    },
+
+    //距离开场还有多久时间
+    timeSubtract:function(time2){
+      var date1 = new Date()
+      var date2 = new Date(time2)
+      var total = (Math.abs(date2 - date1))/1000;
+      var day = parseInt(total / (24*60*60));//计算整数天数
+      var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+      var hour = parseInt(afterDay/(60*60));//计算整数小时数
+      var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
+      var min = parseInt(afterHour/60);//计算整数分
+      return day+" 天 "+hour+" 小时 "+min+" 分钟 ";
+    },
+
+     //距离开场还有多久时间 单位为分钟
+    timeSubtract_minute:function(time2){
+      let date1 = new Date()
+      let date2 = new Date(time2)
+      let total = (Math.abs(date2 - date1))/1000;
+      var min = parseInt(total/60);//计算整数分
+      return min
+    },
+
+
+    //显示新的修改弹窗，获取退票策略
+    handleRefund: function () { 
+      this.$store.dispatch('getRefundList').then(res => {
+        this.refundStrategy=res
+        this.getStrategy()
         this.refundVisible = true;
-
-      },
-      onSubmit: function () {
-        var that = this;
-      console.log(orderId)
-      this.$store.dispatch('refund', sessionStorage.getItem('userId'),orderId).then(res => {
-        console.log(res)
       });
+      
+    },
+
+    getStrategy:function(){
+      let time0=this.refundStrategy[0].time
+      let time1=this.refundStrategy[1].time
+      let time2=this.refundStrategy[2].time
+      let time=this.timeSubtract_minute(this.slot.startTime)
+      if(time0>=time){
+        this.percent=this.refundStrategy[0].rate
       }
+      else if(time0<time&&time<=time1){
+        this.percent=this.refundStrategy[1].rate
+      }
+      else if(time1<time){
+        this.percent=this.refundStrategy[2].rate
+      }
+    },
+
+    onSubmit: function () {
+      console.log(sessionStorage.getItem('userId'))
+      this.$store.dispatch('refund', {
+        userId:sessionStorage.getItem('userId'),
+        orderId:this.order.orderId})
+        .then(res => {
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          });
+          this.refundVisible = false
+          // this.$parent.created();
+          console.log(res)
+        
+      });
+    },
+    onCancel: function () {
+        this.$message({
+          type: 'info',
+          message: '已取消修改'
+        });
+        this.refundVisible = false
+      },
+
+/**
+ * 
+ */
+    handleRebuy:function(){
+      this.$router.push('/')
+    },
+
+    handlePay:function(orderId){
+
+    },
   },
   created () {
     // this.distance=this.slot.startTime-this.order.confirmDate
@@ -211,9 +288,10 @@ export default {
 .success{
   margin:10px;
   border:1px solid #CFF9FE;
-  height: 400px; 
+  // height: 400px; 
   border-radius: 15px;
   padding-left: 40px;
+  padding-bottom: 10px;
   text-align: left;
   width: 92%;
 
@@ -245,6 +323,7 @@ export default {
   .success_counttime{
     font-size: 14px;
     color: #CFF9FE;
+    margin-top:4px;
   }
   .success_details{
     text-align: left;
