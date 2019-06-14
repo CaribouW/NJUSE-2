@@ -6,10 +6,10 @@
         <span>影厅选择:</span>
         <el-select v-model="value" placeholder="请选择">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in hallList"
+            :key="item.hallId"
+            :label="item.name+'厅'"
+            :value="item.hallId">
           </el-option>
         </el-select>
       </div>
@@ -74,26 +74,26 @@
         </el-form-item>
         <el-form-item label="*放映影厅：" :label-width="formLabelWidth">
           <el-select v-model="form.hall" placeholder="请选择影厅">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="item in hallList"
+            :key="item.hallId"
+            :label="item.name+'厅'"
+            :value="item.hallId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="*开始时间：" :label-width="formLabelWidth">
           <el-date-picker
             v-model="form.startTime"
             align="right"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions2">
+            type="datetime"
+            placeholder="选择开始时刻">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="*结束时间：" :label-width="formLabelWidth">
           <el-date-picker
             v-model="form.endTime"
             align="right"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions2">
+            type="datetime"
+            placeholder="选择结束时刻">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="*场次票价：" :label-width="formLabelWidth">
@@ -110,6 +110,7 @@
 
 <script>
   import admin from '../index.vue'
+  import { getHallList } from '@/service/HallService.js'
 
   export default {
     name: 'scheduleManagement',
@@ -118,23 +119,28 @@
     },
     data() {
       return {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }],
+        halls: [],
         value: '',
         // 查看排片
         pickerOptions1: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
+          // disabledDate(time) {
+          //   return time.getTime() > Date.now();
+          // },
           shortcuts: [{
+            text: '后天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+              picker.$emit('pick', date);
+            }
+          },{
+            text: '明天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          },{
             text: '今天',
             onClick(picker) {
               picker.$emit('pick', new Date());
@@ -169,32 +175,6 @@
           desc: ''
         },
         formLabelWidth: '100px',
-        // 新增排片
-        pickerOptions2: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        }
       }
     },
     methods: {
@@ -206,6 +186,20 @@
       },
       onCancel() {
         this.dialogFormVisible = false
+      }
+    },
+    mounted: function(){
+      getHallList().then(
+        res => {
+          this.halls = res
+        }
+      )
+    },
+    computed: {
+      hallList: function(){
+        return this.halls.filter(function(item){
+          return item.state === true
+        })
       }
     }
   }
