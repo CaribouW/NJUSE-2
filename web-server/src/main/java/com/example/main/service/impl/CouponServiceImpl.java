@@ -94,8 +94,12 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public JSON newCouponsForVip(JSONObject req) {
         try {
-            double limitation = req.getDouble("limitation");
-            List<VIPCard> vipCards = findAllVipsByLimitation(limitation);
+            JSONArray ids =
+                    req.getJSONArray("vipIdList");
+            List<VIPCard> vipCards = ids.toJavaList(String.class)
+                    .stream()
+                    .map(item -> vipCardRepository.findVIPCardByCardId(item))
+                    .collect(Collectors.toList());
             Coupon coupon = couponRepository.findCouponByCouponId(req.getString("couponId"));
             //save to the users
             List<MapperUserCoupon> userCoupons = vipCards.stream().map(item -> {

@@ -133,4 +133,9 @@ public class VIPServiceImpl implements VIPService {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
+
+    @Override
+    public JSON findAllVipCards() {
+        return Response.success(vipCardRepository.findAll());
+    }
 }

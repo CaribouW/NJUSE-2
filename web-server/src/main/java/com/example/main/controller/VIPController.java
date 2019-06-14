@@ -65,4 +65,9 @@ public class VIPController {
     public JSON updateStrategyList(@RequestBody JSONArray req) {
         return strategyService.updateVIPStrategy(req);
     }
+
+    @GetMapping("/list")
+    public JSON getAllVipCards(){
+        return vipService.findAllVipCards();
+    }
 }

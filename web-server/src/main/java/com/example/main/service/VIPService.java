@@ -19,4 +19,6 @@ public interface VIPService {
      * 根据userId 得到关联的历史充值记录
      * */
     JSON findHistoryListByUid(String uid);
+
+    JSON findAllVipCards();
 }
