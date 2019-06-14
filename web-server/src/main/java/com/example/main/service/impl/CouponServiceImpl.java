@@ -6,16 +6,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.CouponType;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
-import com.example.main.model.Coupon;
-import com.example.main.model.MapperMovieCoupon;
-import com.example.main.model.MapperUserCoupon;
+import com.example.main.model.*;
 import com.example.main.repository.*;
 import com.example.main.service.CouponService;
 import com.example.main.utils.DateUtils;
+import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +33,12 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private MapperMovieCouponRepository movieCouponRepository;
     @Autowired
+    private VIPRechargeHistoryRepository historyRepository;
+
+    @Autowired
     private DateUtils dateUtils;
+    @Autowired
+    private IDUtils idUtils;
 
     @Override
     public JSON findAllCouponsByUid(String uid) {
@@ -85,4 +90,41 @@ public class CouponServiceImpl implements CouponService {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
     }
+
+    @Override
+    public JSON newCouponsForVip(JSONObject req) {
+        try {
+            double limitation = req.getDouble("limitation");
+            List<VIPCard> vipCards = findAllVipsByLimitation(limitation);
+            Coupon coupon = couponRepository.findCouponByCouponId(req.getString("couponId"));
+            //save to the users
+            List<MapperUserCoupon> userCoupons = vipCards.stream().map(item -> {
+                MapperUserCoupon userCoupon = new MapperUserCoupon();
+                userCoupon.setId(idUtils.getUUID32());
+                userCoupon.setCouponId(coupon.getCouponId());
+                userCoupon.setUserId(item.getUserId());
+                userCoupon.setVipId(item.getCardId());
+                userCoupon.setState(CouponType.UN_USED.getCode());
+                userCouponRepository.save(userCoupon);
+                return userCoupon;
+            }).collect(Collectors.toList());
+            return Response.success(userCoupons);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    //根据充值金额，查找vip卡
+    private List<VIPCard> findAllVipsByLimitation(double limitation) {
+        return vipCardRepository.findAll().stream()
+                .filter(item -> {
+                    Optional<Double> optional
+                            = historyRepository.findAllByVipId(item.getCardId())
+                            .stream()
+                            .map(VIPRechargeHistory::getAmount)
+                            .reduce(Double::sum);
+                    return optional.isPresent() && optional.get() >= limitation;
+                }).collect(Collectors.toList());
+    }
+
 }
