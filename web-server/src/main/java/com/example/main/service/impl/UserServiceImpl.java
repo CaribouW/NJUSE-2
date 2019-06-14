@@ -52,6 +52,10 @@ public class UserServiceImpl implements UserService {
             if (null != tmp) {
                 return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
             }
+            if (!userInfoRepository.existsById(userId) ||
+                    !movieInfoRepository.existsById(movieId)) {
+                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+            }
             //添加信息
             favorList.setFavorId(idUtils.getUUID32());
             favorList.setUserId(userId);
