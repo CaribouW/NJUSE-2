@@ -7,11 +7,11 @@ const getters = {
   // getUserId: state => state.userId
 };
 
-const actions = {
-  async refund({}, payload) {
+const actions = { 
+  async refund({}, payload) { 
     return refund({
-      userId:userId,
-      orderId: orderId,
+      userId:payload.userId,
+      orderId: payload.orderId,
     }).then(res => { 
       console.log(res)
       return res

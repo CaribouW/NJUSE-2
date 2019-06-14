@@ -10,4 +10,6 @@ public interface VIPRechargeHistoryRepository extends BaseRepository<VIPRecharge
     @Query(value = "select * from vip_recharge_history h where h.vip_id in " +
             "(select v.id from vip v where v.user_id = :uid)", nativeQuery = true)
     List<VIPRechargeHistory> findAllByUserId(@Param(value = "uid") String uid);
+
+    List<VIPRechargeHistory> findAllByVipId(String vid);
 }

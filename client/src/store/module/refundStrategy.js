@@ -16,6 +16,7 @@ const actions = {
       return dealResponse(res)
     }).then(list => {
       commit('flushList', list)
+      return list
     })
   },
   async modifyRefundItem({commit, state}, payload) {

@@ -11,7 +11,7 @@ import user from "./index.vue"
 import historyCard from "./historyCard.vue"
 export default {
   name: 'history',
-  components: {
+  components: { 
     user,
     historyCard,
   },
@@ -30,28 +30,15 @@ export default {
    */
   created: function () {
     var that = this;
-      console.log(sessionStorage.getItem('userId'))
       this.$store.dispatch('getHistory', sessionStorage.getItem('userId')).then(res => {
         this.data_getHistory=res.orderList
         console.log(this.data_getHistory)
       });
+      
   },
 
   methods: {
-    // handleChange(val) {
-    //     console.log(val);
-    //   },
-    // //显示新的修改弹窗
-    //   handleRefund: function () {
-    //     this.refundVisible = true;
-    //   },
-    //   onSubmit: function () {
-    //     var that = this;
-    //   console.log(sessionStorage.getItem('userId'))
-    //   this.$store.dispatch('refund', sessionStorage.getItem('userId'),orderId).then(res => {
-    //     console.log(res)
-    //   });
-    //   }
+
   }
 }
 </script>
@@ -66,9 +53,6 @@ export default {
     height: 790px;
     margin-bottom: 50px ;
   }  
-  .cards{
-
-  }
 
 }
 </style>

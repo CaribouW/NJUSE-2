@@ -21,7 +21,7 @@ public class CouponController {
     /**
      * 消耗优惠券
      */
-    @PutMapping("/")
+    @PutMapping("")
     public JSON consumeCoupon(@RequestBody JSONObject req) {
         return couponService.consumeCoupon(req.getString("userId"),
                 req.getString("couponId"));
@@ -35,13 +35,18 @@ public class CouponController {
                                       String uid) {
         return couponService.findAllCouponsByUid(uid);
     }
+
     /**
      * 更新优惠策略
-     * */
+     */
 
     @PutMapping("/strategy")
     public JSON updateCouponStrategy(@RequestBody JSONObject req) {
         return strategyService.updateCouponStrategy(req);
     }
 
+    @PostMapping("/vip")
+    public JSON newCouponsForVip(@RequestBody JSONObject req) {
+        return couponService.newCouponsForVip(req);
+    }
 }
