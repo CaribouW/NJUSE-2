@@ -21,7 +21,6 @@
                       <div v-for="record in rechargeList" :key="record.time">
                         <span>充值金额：{{record.amount}}</span><span>充值时间：{{record.time}}</span>
                       </div>
-                      
                     </el-collapse-item>
                   </el-collapse>
                 </div>
@@ -54,12 +53,24 @@ export default {
         }).then(res => {
           if (res === 200) {
             this.$store.commit('recharge', parseInt(this.amount))
+            this.getRechargeHistory()
             this.$message.success('充值成功')
           } else {
             this.$message.error('充值失败')
           }
         })
       },
+      getNowFormatDate() {//获取当前时间
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+        var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+        var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
+            + " "  + date.getHours()  + seperator2  + date.getMinutes();
+        return currentdate;
+      },
+
       getRechargeHistory () {
         this.$store.dispatch('getRechargeHistory', {
           userId: sessionStorage.getItem('userId')
@@ -74,6 +85,7 @@ export default {
     mounted () {
       this.vipInfo = this.$store.state.member.basicInfo
       this.getRechargeHistory()
+      console.log(this.getNowFormatDate())
     }
 
 }
