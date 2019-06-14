@@ -21,12 +21,12 @@ const getters = {
 
 const actions = {
   async getUserInfo({commit, state}, userId) {
-    console.log(userId)
     return getUserInfo({
-      uid: userId
+      id: userId
     }).then(res => {
+      console.log(res) 
       return res
-    })
+    }) 
   },
   async userLogin({commit, state}, payload) {
     return userLogin({

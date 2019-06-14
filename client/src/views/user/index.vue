@@ -19,16 +19,10 @@
                   <i class="user_menu"></i>
                   <span>基本信息</span>
                 </el-menu-item>
-                <el-submenu>
-                  <template slot="title" style="padding-left:5px;">
-                    <i class="user_coupon"></i>
-                    <span>相关优惠</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="/user/coupon">会员优惠券</el-menu-item>
-                    <el-menu-item index="/user/coupon">普通优惠券</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
+                <el-menu-item index="/user/coupon">
+                  <i class="user_coupon"></i>
+                  <span>相关优惠</span>
+                </el-menu-item>
                 <el-menu-item index="/user/history">
                   <i class="user_history"></i>
                   <span slot="title">历史订单</span>
