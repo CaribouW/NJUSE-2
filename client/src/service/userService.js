@@ -5,7 +5,7 @@ import {dealResponse,baseIP} from './baseService.js'
  * 获取用户信息
  * */
 export function getUserInfo({id}) {
-  console.log(id)
+  // console.log(id)
   return axios.get('/user/basicInfo', {
     params: {
       id:id

@@ -16,7 +16,7 @@
           <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:21px;height:21px;">
           生日：2019-01-01
         </span><br/>
-      <el-button round style="color:#CFF9FE;" @click="goModify()">修改信息</el-button>
+      <el-button round style="color:#CFF9FE;" @click="goModify()">编辑信息</el-button>
     </div>
   </div>
 </template>

@@ -1,7 +1,18 @@
-const state = {};
-const getters = {};
+import {getCoupon} from '../../service/couponService.js'
+const state = {
+  userId:'',
+};
+const getters = {}; 
 
-const actions = {};
+const actions = {
+  async getCoupon({}, userId) {
+    return getCoupon({
+      userId: userId
+    }).then(res => {
+      return res
+    })
+  },
+};
 
 const mutations = {};
 export default {
@@ -9,4 +20,4 @@ export default {
   getters,
   actions,
   mutations
-}
+} 

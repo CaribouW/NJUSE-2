@@ -15,7 +15,7 @@
                   <el-col :span="16">
                     <div class="success_counttime">
                     <div v-if="order.state=='0'">
-                      距离开场时间还有: {{timeSubtract(slot.startTime)}}
+                       {{timeSubtract(slot.startTime)}}
                     </div>
                     <div v-else-if="order.state=='1'">
                       订单已取消
@@ -132,7 +132,7 @@
                     <div class="refund_main">
                       <el-form>
                         <el-form-item label="">
-                          <span>当前已购票 {{timeSubtract(order.confirmDate)}},退还比例为 {{percent*100}}% ,共计 {{percent*slot.ticketPrize*tickets.length}} 元。是否确认退票？</span>
+                          <span>当前 {{timeSubtract(order.confirmDate)}},退还比例为 {{percent*100}}% ,共计 {{percent*slot.ticketPrize*tickets.length}} 元。是否确认退票？</span>
                         </el-form-item>
                         <el-form-item style="margin-left:35%;">
                           <el-button type="primary" @click="onSubmit">退票</el-button>
@@ -190,17 +190,21 @@ export default {
       return year+"-"+month+"-"+day+" "+hours+":"+minutes;
     },
 
-    //距离开场还有多久时间
+    //距离开场还有多久时间 
     timeSubtract:function(time2){
       var date1 = new Date()
       var date2 = new Date(time2)
-      var total = (Math.abs(date2 - date1))/1000;
-      var day = parseInt(total / (24*60*60));//计算整数天数
-      var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
-      var hour = parseInt(afterDay/(60*60));//计算整数小时数
-      var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
-      var min = parseInt(afterHour/60);//计算整数分
-      return day+" 天 "+hour+" 小时 "+min+" 分钟 ";
+      var total =(date2 - date1)/1000;
+      if(total>0){
+        var day = parseInt(total / (24*60*60));//计算整数天数
+        var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+        var hour = parseInt(afterDay/(60*60));//计算整数小时数
+        var afterHour = total - day*24*60*60 - hour*60*60;//取得算出小时数后剩余的秒数
+        var min = parseInt(afterHour/60);//计算整数分
+        return "距离电影开始还有： "+day+" 天 "+hour+" 小时 "+min+" 分钟 ";
+      }else{
+        return "电影已放映"
+      }
     },
 
      //距离开场还有多久时间 单位为分钟
@@ -245,10 +249,17 @@ export default {
         userId:sessionStorage.getItem('userId'),
         orderId:this.order.orderId})
         .then(res => {
+          if(res=='604'){
+            this.$message({
+            type: 'info',
+            message: '电影已开始放映，无法进行退票操作！'
+          });
+          }else{
           this.$message({
             type: 'success',
-            message: '修改成功'
+            message: '退票成功'
           });
+          }
           this.refundVisible = false
           // this.$parent.created();
           console.log(res)
