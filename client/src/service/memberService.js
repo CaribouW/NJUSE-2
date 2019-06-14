@@ -38,3 +38,14 @@ export async function rechargeVIP(payload) {
     return dealResponse(res)
   })
 }
+
+export function getRechargeHistory({userId}) {
+  return doGet({
+    url: '/vip/history/list',
+    params: {
+      userId: userId,
+    }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}

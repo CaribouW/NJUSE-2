@@ -6,11 +6,24 @@
             <div class="info_body">
                 <p class="info_level">会员等级：黄金会员</p>
                 <p class="info_balance">会员卡余额：¥ {{vipInfo.VIPCardBalance}}</p>
-                <p>会员卡ID：{{vipInfo.VIPCardId}}</p>
-                <div class="record">
-                    <div class="divider"></div>
-                </div>
+                <p>会员卡号：5343765353259682</p>
+                <el-input
+                  placeholder="请输入金额"
+                  v-model="amount"
+                  oninput = "value=value.replace(/[^\d]/g,'')"
+                  maxlength="5"
+                  clearable>
+                </el-input>
                 <el-button type="primary" round @click="rechargeVIP">充值</el-button>
+                <div class="VIPInfo_record">
+                  <el-collapse v-model="activeNames">
+                    <el-collapse-item title="充值记录" name="1">
+                      <div v-for="record in rechargeList" :key="record.time">
+                        <span>充值金额：{{record.amount}}</span><span>充值时间：{{record.time}}</span>
+                      </div>
+                    </el-collapse-item>
+                  </el-collapse>
+                </div>
             </div>
         </div>
 </template>
@@ -25,28 +38,54 @@ export default {
     data(){
         return{
             tabPosition:'left',
-            vipInfo: {}
+            activeNames: ['1'],
+            amount: '',
+            vipInfo: {},
+            rechargeList: []
         }
     },
     methods: {
       rechargeVIP () {
         this.$store.dispatch('rechargeVIP', {
-          rechargeAmount: '100',
+          rechargeAmount: parseInt(this.amount),
           VIPCardId: this.vipInfo.VIPCardId,
           rechargeTime: '2019-05-09 21:00'
         }).then(res => {
           if (res === 200) {
-            this.$store.commit('recharge', 100)
+            this.$store.commit('recharge', parseInt(this.amount))
+            this.getRechargeHistory()
             this.$message.success('充值成功')
           } else {
             this.$message.error('充值失败')
           }
         })
+      },
+      getNowFormatDate() {//获取当前时间
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+        var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+        var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
+            + " "  + date.getHours()  + seperator2  + date.getMinutes();
+        return currentdate;
+      },
+
+      getRechargeHistory () {
+        this.$store.dispatch('getRechargeHistory', {
+          userId: sessionStorage.getItem('userId')
+        }).then(res => {
+          this.rechargeList = res.rechargeList
+          console.log(this.rechargeList)
+        }).catch(err => {
+          console.log(err)
+        })
       }
     },
     mounted () {
       this.vipInfo = this.$store.state.member.basicInfo
-      console.log(this.vipInfo)
+      this.getRechargeHistory()
+      console.log(this.getNowFormatDate())
     }
 
 }

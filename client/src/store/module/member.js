@@ -1,4 +1,4 @@
-import {purchaseMemberCard, getMemberInfo, rechargeVIP} from "../../service/memberService";
+import {purchaseMemberCard, getMemberInfo, rechargeVIP, getRechargeHistory} from "../../service/memberService";
 
 const state = {
   basicInfo: {
@@ -55,14 +55,17 @@ const actions = {
         // res为空才正常
         return 200
       }
-      // if (typeof response === "number") {
-      //   return response
-      // } else {
-      //   commit('updateMember', response);
-      //   return response
-      // }
+    });
+  },
+
+  async getRechargeHistory({}, payload) {
+    return getRechargeHistory({
+      userId: payload.userId
+    }).then(response => {
+      return response
     });
   }
+
 };
 
 const mutations = {
