@@ -87,23 +87,20 @@
         :modal-append-to-body='false'
         top="5vh"
         width="60%">
-        <!-- <div class="movieList">
-          <img src="@/assets/images/movie/timg.png" alt="" v-for="items in movieList" 
-          :class="{movie_is_active:items.isActive}" @click="selectMovie(items)">
-        </div> -->
         <div class="movieInfo">
           <span>{{movieInfo.name}}</span> <span>豆瓣评分 {{movieInfo.score}}</span>
           <span>{{movieInfo.basicInfo.type}}</span><span>{{movieInfo.basicInfo.duration}}分钟</span>
         </div>
         <div class="movieDate">
-          <span v-for="each in moviePurchase.date">{{each}}</span>
+          <span v-for="each in scheduleDate">{{each}}</span>
         </div>
         <div class="movieTime">
           <el-carousel :interval="0" type="card" height="430px" indicator-position="none" :autoplay="false" :loop="false"> 
-            <el-carousel-item v-for="item in moviePurchase.date" :key="item.index">
-              <span class="medium">2019-{{ item }}</span>
+            <el-carousel-item v-for="(item, index) in scheduleDate" :key="index">
+              <span class="medium">{{ item }}</span>
               <div class="movieTime_ticket">
-                <ticket v-for="i in 15" :key="i" @selectSeatChildNotify="confirmSeat"></ticket>
+                <ticket v-for="i in schedule" :key="i.startTime" @selectSeatChildNotify="confirmSeat" :schedule="i"
+                 v-if="i.startTime.slice(0, 10) === item"></ticket>
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -360,7 +357,8 @@ export default {
       },
       movieInfo: {},
       // 计时器
-      oTimer: null
+      oTimer: null,
+      schedule: []
     }
   },
   computed: {
@@ -378,6 +376,15 @@ export default {
     },
     totalPrice: function () {
       return this.selectedSeat.length * this.price
+    },
+    scheduleDate: function () {
+      var arr = []
+      this.schedule.forEach(function (obj) {
+        if (arr.indexOf(obj.startTime.slice(0,10)) == -1) {
+          arr.push(obj.startTime.slice(0,10))
+        }
+      })
+      return arr
     }
   },
   methods: {
@@ -462,6 +469,7 @@ export default {
     },
   },
   mounted () {
+    var _this = this
     this.checkQuickPurchase()
     this.$store.dispatch('getMovieBasicInfo', {
       userId: sessionStorage.getItem('userId'),
@@ -469,9 +477,16 @@ export default {
     }).then(res => {
       this.movieInfo = res
     })
-    this.$store.dispatch('getMovieSchedule').then(res => {
+    _this.$store.dispatch('getMovieSchedule').then(res => {
       console.log(res)
-      this.schedule = res[0]
+      res.slot.forEach(function (obj) {
+        console.log(obj.movieId)
+        if (_this.$route.query.movieId === obj.movieId) {
+          _this.schedule.push(obj)
+          console.log(_this.schedule)
+          console.log(_this.scheduleDate)
+        }
+      })
     })
   }
 }
