@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             ans.put("pic", userInfo.getAvatarUrl());
             ans.put("id", uid);
             ans.put("vip", "vip");
-            ans.put("birthday", dateUtils.dateToStr(userInfo.getBirth() == null ? new Date() : userInfo.getBirth()));
+            ans.put("birthday",userInfo.getBirth());
             ans.put("sex", userInfo.getSex().equals("male") ? 1 : 0);
             return Response.success(ans);
         } catch (Exception e) {
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
                 JSONObject object = new JSONObject();
                 object.put("movieId", item.getMovieId());
                 object.put("movieName", item.getName());
-                object.put("releaseDate", dateUtils.dateToStr(item.getUploadDate()));
+                object.put("releaseDate", item.getUploadDate());
                 object.put("releaseArea", item.getNation());
                 object.put("imgURL", item.getPoster());
                 //get all crews

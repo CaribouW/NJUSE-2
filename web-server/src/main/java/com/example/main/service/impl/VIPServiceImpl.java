@@ -74,7 +74,7 @@ public class VIPServiceImpl implements VIPService {
             res.put("VIPCardId", vipCard.getCardId());
             res.put("VIPCardBalance", vipCard.getRemainValue());
             res.put("VIPLevel", vipCard.getVipLevel());
-            res.put("ownDate", dateUtils.dateToStr(vipCard.getOwnDate()));
+            res.put("ownDate", vipCard.getOwnDate());
             return Response.success(res);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
@@ -121,7 +121,7 @@ public class VIPServiceImpl implements VIPService {
             JSONArray array = new JSONArray();
             list.forEach(item -> {
                 JSONObject object = new JSONObject();
-                object.put("time", dateUtils.dateToStr(item.getRechargeTime()));
+                object.put("time", item.getRechargeTime());
                 object.put("amount", item.getAmount());
                 array.add(object);
             });

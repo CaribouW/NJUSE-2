@@ -56,8 +56,8 @@ public class CouponServiceImpl implements CouponService {
                 single.put("couponName", item.getName());
                 single.put("couponAmount", item.getDiscount());
                 single.put("useCondition", item.getThreshHold());
-                single.put("startDate", dateUtils.dateToStr(item.getStartDate())); //封装一个时间格式处理工具类
-                single.put("endDate", dateUtils.dateToStr(item.getEndDate()));
+                single.put("startDate", item.getStartDate()); //封装一个时间格式处理工具类
+                single.put("endDate", item.getEndDate());
                 single.put("type", null == userCoupon.getVipId() ? 0 : 1);
                 single.put("state", userCoupon.getState());
                 List<String> ids = movieCouponRepository.findMovieIdsByCouponId(item.getCouponId())

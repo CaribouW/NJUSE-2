@@ -78,7 +78,7 @@ public class MovieServiceImpl implements MovieService {
             basicInfo.put("director", "director");
             basicInfo.put("type", movie.getCategory());
             basicInfo.put("duration", movie.getTimeLength());
-            basicInfo.put("showTime", dateUtils.dateToStr(movie.getUploadDate()));
+            basicInfo.put("showTime", movie.getUploadDate());
             basicInfo.put("hierachical", movie.getHierarchical());
             basicInfo.put("pic", movie.getHPoster());
             basicInfo.put("language", movie.getLang());

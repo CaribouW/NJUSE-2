@@ -23,7 +23,7 @@ public class MovieInfo implements Serializable {
     private String stills;  //剧照,用逗号隔开
     private String video;   //电影预告片url
     private String videoList; //视频列表,逗号隔开
-    private String  category;//类型,给予枚举类
+    private String category;//类型,给予枚举类
     private String nation;  //国家
     private String lang;    //语言
     private String briefIntro;//简介
@@ -31,7 +31,7 @@ public class MovieInfo implements Serializable {
     private String imdb;        //
     private String productionCompany; //出品公司
     private String distributionCompany; //发行公司
-    private int state;     //上映状态,给予枚举类
+//    private int state;     //上映状态,给予枚举类
 
     @Id
     @Column(name = "movie_id", length = 32)
@@ -156,15 +156,6 @@ public class MovieInfo implements Serializable {
         return Objects.hash(movieId, name, downDate, uploadDate, score, timeLength, poster, category, nation, lang);
     }
 
-    @Basic
-    @Column(name = "state")
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 
     @Basic
     @Column(name = "name_en")
