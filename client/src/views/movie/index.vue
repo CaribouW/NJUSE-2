@@ -117,7 +117,8 @@
         top="5vh"
         width="60%">
         <div class="movie">
-          <span>{{movieInfo.name}}</span><span>05-07</span><span>10:10-13:11</span><span>普通3D</span>
+          <span>{{movieInfo.name}}</span><span>{{(ticketInfo.startTime || '').slice(0,10)}}</span>
+          <span>{{(ticketInfo.startTime || '').slice(10,16)}}-{{(ticketInfo.endTime || '').slice(10,16)}}</span><span>普通3D</span>
         </div>
         <div class="seat">
           <div class="seat_head">
@@ -127,7 +128,7 @@
           </div>
           <div class="seat_content">
             <div class="seat_content_screen">
-              三号厅 银幕
+              {{hall.name}}厅 银幕
             </div>
             <div v-for="(cols,colIndex) in seat">
               <div v-for="(each, rolIndex) in cols" :key="">
@@ -137,15 +138,13 @@
                 <img src="@/assets/images/movie/TIM图片20190610142614.png" alt="" v-if="each==2" 
                 class="canSelect" @click="selectSeat(colIndex, rolIndex, $event)">
               </div>
-              <!-- <img :src="[each==1 ? seatImg[1] : seatImg[0]]" alt="" v-for="(each, rolIndex) in cols" :key="" 
-              :class="{canSelect: each !== 0}" @click="each!==0 && selectSeat(colIndex, rolIndex, $event)"> -->
             </div>
           </div>
         </div>
         <div class="selectedTicket">
           <div v-for="item in selectedSeat">
             <span>{{item[0]+1}}排{{item[1]+1}}座</span>
-            <span>{{price}}元</span>
+            <span>{{ticketInfo.ticketPrize}}元</span>
           </div>
         </div>
         <div class="seatConfirmbuttom" @click="comfirmOrder" v-if="selectedSeat.length>0">
@@ -166,8 +165,8 @@
         <div class="confirmOrder_ticket">
           <div class="confirmOrder_ticket_left">
             <span>{{movieInfo.name}}</span><span>{{selectedSeat.length}}张</span><br/>
-            <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
-            <span>3号激光厅</span><span v-for="item in selectedSeat" class="seat">{{item[0]+1}}排{{item[1]+1}}座</span>
+            <span>{{(ticketInfo.startTime || '').slice(0,10)}}</span><span>{{(ticketInfo.startTime || '').slice(10,16)}}～{{(ticketInfo.endTime || '').slice(10,16)}}</span><span>（普通3D）</span><br/><span>凉凉电影院南京大学仙林校区店</span><br/>
+            <span>{{hall.name}}厅</span><span v-for="item in selectedSeat" class="seat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="confirmOrder_ticket_center">
             <img :src="movieInfo.pic" alt="">
@@ -252,9 +251,9 @@
         </div>
         <div class="movie_paySuccess_ticket">
           <div class="movie_paySuccess_ticket_left">
-            <span>海王</span><span>{{selectedSeat.length}}张</span><br/>
-            <span>今天 05-07</span><span>10:10～13:11</span><span>（普通3D）</span><br/><span>中影国际影城南京仙林金鹰店</span><br/>
-            <span>3号激光厅</span><span v-for="item in selectedSeat">{{item[0]+1}}排{{item[1]+1}}座</span>
+            <span>{{movieInfo.name}}</span><span>{{selectedSeat.length}}张</span><br/>
+            <span>{{(ticketInfo.startTime || '').slice(0,10)}}</span><span>{{(ticketInfo.startTime || '').slice(10,16)}}～{{(ticketInfo.endTime || '').slice(10,16)}}</span><span>（普通3D）</span><br/><span>凉凉电影院南京大学仙林校区店</span><br/>
+            <span>{{hall.name}}厅</span><span v-for="item in selectedSeat" class="seat">{{item[0]+1}}排{{item[1]+1}}座</span>
           </div>
           <div class="movie_paySuccess_ticket_right">
             <img :src="movieInfo.pic" alt="">
@@ -291,7 +290,8 @@ export default {
   },
   data () {
     return {
-      schedule: {},
+      ticketInfo: {},
+      hall: {},
       chartData: {
         columns: ['日期', '余额', '比率'],
         rows: [
@@ -303,18 +303,8 @@ export default {
           { '日期': '1月6日', '余额': 7123, '比率': 0.20 }
         ]
       },
-      price: 49,
       // 座位
-      seat: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-      [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-      [1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
-      [1, 1, 0, 0, 0, 0, 0, 1, 1, 1],
-      [1, 1, 1, 0, 0, 0, 1, 1, 1, 1]], 
+      seat: [], 
       
       seatImg: [
         require('@/assets/images/movie/TIM图片20190609150257.png'),
@@ -351,14 +341,11 @@ export default {
       //   distributionCompany: '华纳',director: '温子仁',
       //   language: '英语', imdb: 'tt1477834', score: 9.1
       // },
-      moviePurchase: {
-        ChineseName: '海王', score: 9.1, type:'科幻/动作', duration: '143',
-        date: ['05-09', '05-10', '05-11', '05-12', '05-13']
-      },
       movieInfo: {},
       // 计时器
       oTimer: null,
-      schedule: []
+      schedule: [],
+      orderId: ''
     }
   },
   computed: {
@@ -375,7 +362,7 @@ export default {
       return arr
     },
     totalPrice: function () {
-      return this.selectedSeat.length * this.price
+      return this.selectedSeat.length * this.ticketInfo.ticketPrize
     },
     scheduleDate: function () {
       var arr = []
@@ -385,6 +372,9 @@ export default {
         }
       })
       return arr
+    },
+    ticketDate: function () {
+      // return this.ticketInfo.startTime.slice(0,10)
     }
   },
   methods: {
@@ -430,9 +420,19 @@ export default {
         el.src = this.seatImg[1]
       }
     },
-    confirmSeat () {
+    confirmSeat (data) {
       this.purchaseDialogVisible = false
       this.selectSeatDialogVisible = true
+      // 获取座位信息
+      this.hall = data[0]
+      this.ticketInfo = data[1]
+      console.log(this.ticketInfo)
+      console.log(this.hall)
+      this.$store.dispatch('getRestSchedule',{
+        scheduleId: this.ticketInfo.slotId
+      }).then(res => {
+        this.seat = res
+      })
     },
     // 确认订单函数
     comfirmOrder () {
@@ -453,7 +453,26 @@ export default {
     },
     // 确认订单后付款
     pay () {
-      this.payDialogVisible = true
+      var seats = []
+      this.selectedSeat.forEach(each => {
+        var ret = each[0] + "," + each[1]
+        seats.push(ret)
+      })
+      // 确认订单
+      this.$store.dispatch('confirmOrder', {
+        userId: sessionStorage.getItem('userId'),
+        scheduleId: this.ticketInfo.slotId,
+        confirmTime: this.getNowFormatDate(),
+        seats: seats
+      }).then(res => {
+        console.log(res)
+        if (res.orderId) {
+          this.orderId = res.orderId
+          this.payDialogVisible = true
+        } else {
+          this.$message.error('出错了')
+        }
+      })
     },
     // 银行卡付款
     payByBank () {
@@ -465,10 +484,36 @@ export default {
     payByMember () {
       this.payDialogVisible = false
       this.confirmOrderDialogVisible = false
-      this.paySuccessDialogVisible = true
+      this.$store.dispatch('consume', {
+        userId: sessionStorage.getItem('userId'),
+        consumption: this.totalPrice,
+        orderId: this.orderId,
+      }).then(res => {
+        console.log(res)
+        if (res === 605) {
+          this.$message.error('您的余额不足，请充值。')
+        } else {
+          this.paySuccessDialogVisible = true
+        }
+      })
+      
     },
+    getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
+        var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
+        var hours = date.getHours()<10? "0" + date.getHours():date.getHours()
+        var minutes = date.getMinutes()<10? "0" + date.getMinutes():date.getMinutes()
+        var seconds = date.getSeconds()<10? "0" + date.getSeconds():date.getSeconds()
+        var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
+            + " "  +hours  + seperator2  + minutes
+            + seperator2 + seconds
+        return currentdate;
+    }
   },
-  mounted () {
+  created () {
     var _this = this
     this.checkQuickPurchase()
     this.$store.dispatch('getMovieBasicInfo', {
@@ -478,13 +523,9 @@ export default {
       this.movieInfo = res
     })
     _this.$store.dispatch('getMovieSchedule').then(res => {
-      console.log(res)
       res.slot.forEach(function (obj) {
-        console.log(obj.movieId)
         if (_this.$route.query.movieId === obj.movieId) {
           _this.schedule.push(obj)
-          console.log(_this.schedule)
-          console.log(_this.scheduleDate)
         }
       })
     })

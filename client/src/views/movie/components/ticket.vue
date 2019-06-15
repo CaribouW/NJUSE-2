@@ -30,7 +30,6 @@
         var ret = null
         this.halls.forEach(element => {
           if (element.id === this.schedule.hallId) {
-            console.log(element.id)
             ret = element
           }
         });
@@ -47,7 +46,10 @@
     },
     methods: {
       notifyParent: function () {
-        this.$emit('selectSeatChildNotify', 'the msg');
+        var msg = []
+        msg.push(this.hall)
+        msg.push(this.schedule)
+        this.$emit('selectSeatChildNotify', msg);
       },
       ...mapActions({
         flushHall: 'getHalls'
@@ -55,9 +57,6 @@
     },
     mounted () {
       this.flushHall()
-      console.log(this.halls)
-      console.log(this.schedule)
-      console.log(this.hall)
     }
   }
 </script>

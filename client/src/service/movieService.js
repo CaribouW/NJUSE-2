@@ -55,3 +55,15 @@ export function getMovieStaff({movieId}) {
     return dealResponse(res)
   })
 }
+
+// 查询指定场次的剩余座位情况(0,1)
+export function getRestSchedule({scheduleId}) {
+  return doGet({
+    url: '/schedule/rest',
+    params: {
+      scheduleId: scheduleId,
+    }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}
