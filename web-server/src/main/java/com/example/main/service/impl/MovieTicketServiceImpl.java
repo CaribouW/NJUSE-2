@@ -65,7 +65,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
                 object.put("tickets", tickets);
                 object.put("hall", hall);
                 object.put("movie", movieInfo);
-                object.put("order",item);
+                object.put("order", item);
 
 //                object.put("orderId", item.getOrderId());
 //                //slot
@@ -214,6 +214,7 @@ public class MovieTicketServiceImpl implements MovieTicketService {
 
             card.setRemainValue(card.getRemainValue() - consumption);
             vipCardRepository.save(card); //save the card
+            order.setConfirmDate(new Date());
             order.setState(OrderStateType.PAID.getValue());            //set paid
             orderRepository.save(order);
             JSONObject ans = new JSONObject();
