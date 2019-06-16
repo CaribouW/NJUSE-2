@@ -17,6 +17,7 @@ import com.example.main.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,7 +86,7 @@ public class VIPServiceImpl implements VIPService {
     public JSON recharge(JSONObject req) {
         double amount = req.getDouble("rechargeAmount");
         String id = req.getString("VIPCardId");
-        String rechargeTime = req.getString("rechargeTime");
+//        String rechargeTime = req.getString("rechargeTime");
         try {
             VIPCard vipCard =
                     vipCardRepository.findVIPCardByCardId(id);
@@ -98,8 +99,7 @@ public class VIPServiceImpl implements VIPService {
             VIPRechargeHistory history = new VIPRechargeHistory();
             history.setId(idUtils.getUUID32());
             history.setAmount(amount);
-            history.setRechargeTime(dateUtils.strToDate(rechargeTime
-                    , DateStrPattern.YEAR_MONTH_DAY.getPat()));
+            history.setRechargeTime(new Date());
             history.setVipId(id);
             //save
             historyRepository.save(history);

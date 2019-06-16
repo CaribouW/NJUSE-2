@@ -53,44 +53,45 @@
 
 
 <script>
-import $ from 'jquery'
-import mock from '@/mock/mock.js'
-export default {
-  data () {
-    return {
-      roleName: 'gust',
-      id: '',
-      VIP: false,
-      keyword: '',
-      // 登陆or未登录
-      logined: true,
-      showDropdown: false,
-      managerNavList: [
-        {text: '首页', isActive: true, index: 'index'},
-        {text: '影库', isActive: false, index: 'movielist'},
-        {text: '经理入口', isActive: false, index: 'manager'},
-      ],
-      adminNavList: [
-        {text: '首页', isActive: true, index: 'index'},
-        {text: '影库', isActive: false, index: 'movielist'},
-        {text: '管理员入口', isActive: false, index: 'admin'},
-      ],
-      userNavList: [
-        {text: '首页', isActive: true, index: 'index'},
-        {text: '影库', isActive: false, index: 'movielist'},
-        {text: '快速购票', isActive: false, index: 'quick'},
-      ],
-      userCenterList: [
-        {text: '个人中心',index: 'user'},
-        {text: '消息', index: 'message'},
-        {text: '退出登陆', index: 'logout'},
-      ]
-    }
-  },
-  methods: {
-    goVIP(id) {
-      this.$router.push('/VIP')
+  import $ from 'jquery'
+  import mock from '@/mock/mock.js'
+
+  export default {
+    data() {
+      return {
+        roleName: 'gust',
+        id: '',
+        VIP: false,
+        keyword: '',
+        // 登陆or未登录
+        logined: true,
+        showDropdown: false,
+        managerNavList: [
+          {text: '首页', isActive: true, index: 'index'},
+          {text: '影库', isActive: false, index: 'movielist'},
+          {text: '经理入口', isActive: false, index: 'manager'},
+        ],
+        adminNavList: [
+          {text: '首页', isActive: true, index: 'index'},
+          {text: '影库', isActive: false, index: 'movielist'},
+          {text: '管理员入口', isActive: false, index: 'admin'},
+        ],
+        userNavList: [
+          {text: '首页', isActive: true, index: 'index'},
+          {text: '影库', isActive: false, index: 'movielist'},
+          {text: '快速购票', isActive: false, index: 'quick'},
+        ],
+        userCenterList: [
+          {text: '个人中心', index: 'user'},
+          {text: '消息', index: 'message'},
+          {text: '退出登陆', index: 'logout'},
+        ]
+      }
     },
+    methods: {
+      goVIP(id) {
+        this.$router.push('/VIP')
+      },
       goLogin() {
         this.$router.push("/login")
       },
@@ -107,7 +108,7 @@ export default {
       activeFun: function (data) {
         this.$router.push('/' + data.index)
         if (this.roleName === 'admin') {
-          console.log(this.roleName)
+          // console.log(this.roleName)
           this.adminNavList.forEach(function (obj) {
             obj.isActive = false;
           });
@@ -186,7 +187,7 @@ export default {
     },
     // 保证header在登录注册时不会显示
     created: function () {
-      console.log(sessionStorage.getItem('roleName'))
+      // console.log(sessionStorage.getItem('roleName'))
       if (sessionStorage.getItem('roleName') === 'audience') {
         this.logined = true
         this.roleName = 'audience'
@@ -200,7 +201,7 @@ export default {
         this.logined = false
         this.roleName = 'gust'
       }
-      console.log(this.roleName)
+      // console.log(this.roleName)
     }
   }
 </script>
@@ -215,6 +216,7 @@ export default {
   .header {
     // background-color: #201f1d;
     // background-color: red;
+
     height: 70px;
     display: block;
     padding: 50px 20px 0 20px;
