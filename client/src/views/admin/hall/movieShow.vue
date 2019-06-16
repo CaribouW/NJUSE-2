@@ -43,7 +43,7 @@
         style="width: 100%">
         <el-table-column
           label="电影上映日期"
-          prop="date"
+          prop="uploadDate"
           sortable>
         </el-table-column>
         <el-table-column
@@ -52,7 +52,7 @@
         </el-table-column>
         <el-table-column
           label="电影下映日期"
-          prop="date"
+          prop="downDate"
           sortable>
         </el-table-column>
         <el-table-column
@@ -86,40 +86,76 @@
 
 <script>
   import admin from '../index.vue'
+  import { getAllMovie } from '@/service/movieService.js'
 
   export default {
     name: 'movieShow',
     components: {admin},
     data() {
       return {
+        // 所有上架电影
+        movieList: [],
+        // 状态筛选设置项
         options: [{
-          value: '选项1',
-          label: '已上映'
+          value: '全部',
+          label: '全部'
+        },{
+          value: '已下映',
+          label: '已下映'
         }, {
-          value: '选项2',
+          value: '热映中',
+          label: '热映中'
+        },{
+          value: '未上映',
           label: '未上映'
         }],
         value: '',     // 电影状态筛选值
-        startTime: '',  //电影上映时间
-        endTime: '',   //电影下映时间
-        tableData: [{
-          date: '2016-05-02',
-          name: '复仇者联盟',
-          state: '已上映'
-        }, {
-          date: '2016-05-04',
-          name: '蜘蛛侠',
-          state: '未上映'
-        }, {
-          date: '2016-05-01',
-          name: '复仇者联盟',
-          state: '已上映'
-        }, {
-          date: '2016-05-03',
-          name: '蚁人',
-          state: '未上映'
-        }],
+        startTime: null,  //电影上映时间
+        endTime: null,   //电影下映时间
+        // tableData: [{
+        //   uploadDate: '2016-04-01',
+        //   downDate: '2016-05-02',
+        //   name: '复仇者联盟',
+        //   state: '已上映'
+        // }, {
+        //   uploadDate: '2016-04-01',
+        //   downDate: '2016-05-04',
+        //   name: '蜘蛛侠',
+        //   state: '未上映'
+        // }, {
+        //   uploadDate: '2016-04-01',
+        //   downDate: '2016-05-01',
+        //   name: '复仇者联盟',
+        //   state: '已上映'
+        // }, {
+        //   uploadDate: '2016-04-01',
+        //   downDate: '2016-05-03',
+        //   name: '蚁人',
+        //   state: '未上映'
+        // }],
         search: '',
+      }
+    },
+    computed: {
+      tableData: function(){
+        var movies = this.movieList
+        if(this.startTime!==null){
+          console.log(this.startTime)
+          movies = movies.filter(function(movie){
+            return new Date(movie.uploadDate).toDateString() === this.startTime.toDateString()
+          },this)
+        }
+        if(this.endTime!==null){
+          movies = movies.filter(function(movie){
+            return new Date(movie.downDate).toDateString() === this.endTime.toDateString()
+          },this)
+        }
+        if(this.value!==''&this.value!=='全部'){
+          movies = movies.filter(function(movie){
+            return movie.state===this.value
+          },this)
+        }
+        return movies
       }
     },
     methods: {
@@ -128,17 +164,61 @@
       },
       handleDelete(index, row) {
         console.log(index, row);
+      },
+      mark(movieList){
+        var tmp = movieList
+        for(var i = 0; i<tmp.length;i++){
+            var start = new Date(tmp[i].uploadDate).getTime()
+            var end = new Date(tmp[i].downDate).getTime()
+            var now = new Date().getTime()
+            if(start>now){
+              tmp[i].state = '未上映'
+            }
+            else if(start<=now & now<=end){
+              tmp[i].state = '热映中'
+            }
+            else{
+              tmp[i].state = '已下映'
+            }
+          }
+        return tmp
       }
     },
+    mounted: function(){
+      // getAllMovie().then(
+      //   res => {
+      //     console.log(res)
+          
+      //     this.movieList = this.mark(res)
+      //   }
+      // )
+      this.movieList = this.mark([{
+          uploadDate: '2016-04-01',
+          downDate: '2016-05-02',
+          name: '复仇者联盟',
+          state: '已上映'
+        }, {
+          uploadDate: '2016-04-01',
+          downDate: '2016-05-04',
+          name: '蜘蛛侠',
+          state: '未上映'
+        }, {
+          uploadDate: '2016-04-01',
+          downDate: '2016-05-01',
+          name: '复仇者联盟',
+          state: '已上映'
+        }, {
+          uploadDate: '2019-07-01',
+          downDate: '2019-08-03',
+          name: '蚁人',
+        }])
+      
+    }
   }
 </script>
 
 <style lang="scss">
   ._movieShow {
-    * {
-      // background-color: #131c1c;
-    }
-
     text-align: start;
     color: #ffffff;
     padding: 15px 25px 15px 25px;
