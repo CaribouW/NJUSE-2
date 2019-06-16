@@ -16,7 +16,28 @@ export function getUserInfo({id}) {
     console.log(res)
     return dealResponse(res);
   });
-}
+} 
+ 
+/**v\
+ * 修改用户信息
+ * */
+export function modifyUserInfo(payload) {
+  // console.log(id)
+  return axios.get('/user/basicInfo/modify', {
+    params: {
+      id:payload.id,
+      pic:payload.info.pic,
+      name:payload.info.name,
+      sex:payload.info.sex,
+      birthday:payload.info.birthday
+    },
+    withCredentials: true,
+    baseURL: baseIP
+  }).then(res => {
+    console.log(res)
+    return dealResponse(res);
+  });
+} 
 
 /**
  * 用户登录
