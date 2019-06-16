@@ -4,7 +4,7 @@
       :data="tableData"
       border
       class="table"
-      fit = 'true'
+      fit='true'
       style="width: 100%;">
       <el-table-column
         prop="date"
@@ -125,16 +125,16 @@
             query: {
               movieId: '3606'
             }
-          })
+          });
           this.$store.commit('purchase', {
             movieId: '3606',
             scheduleId: '111'
           })
         } else {
-          this.$message.error('请先登录')
+          this.$message.error('请先登录');
           this.$router.push('/login')
         }
-        
+
       }
     },
     computed: {
@@ -154,6 +154,7 @@
 
     .table {
       background-color: transparent;
+
       .cell {
         text-align: center;
       }
