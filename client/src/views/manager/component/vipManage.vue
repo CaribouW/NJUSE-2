@@ -71,15 +71,15 @@ export default {
             tableData: [{
                 rank: 'VIP 1',
                 name: '青铜会员',
-                discount:'',
+                discount_input:'9.5折',
                 }, {
                 rank: 'VIP 2',
                 name: '白银会员',
-                discount:'',
+                discount_input:'9.0折',
                 }, {
                 rank: 'VIP 3',
                 name: '黄金会员',
-                discount:'',
+                discount_input:'8.5折',
             }],
             options: [{
                 value: '选项1',
@@ -102,19 +102,12 @@ export default {
         }
     },
     methods: {
-    //   goModify() {
-    //     var that = this
-
-    //     that.$store.dispatch('userLogout' ,{
-    //     userId: sessionStorage.getItem('userId'),
-    //   }).then(res => {
-    //     this.$message.success('已退出登录')
-    //     sessionStorage.removeRefundStrategy('roleName')
-    //     sessionStorage.removeRefundStrategy('account')
-    //     sessionStorage.removeRefundStrategy('userId')
-    //     this.logined = !this.logined
-    //   })
-    //   },
+      goModify:function() {
+        // this.$store.dispatch('getRefundList').then(res => {
+        // this.getStrategy()
+        // this.refundVisible = true;
+    //   });
+      },
     }
 
 }
