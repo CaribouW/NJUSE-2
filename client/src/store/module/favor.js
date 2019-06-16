@@ -7,9 +7,9 @@ const getters = {
 }; 
 
 const actions = {  
-  async getFavorList({commit}, payload) {
+  async getFavorList({commit}, userId) {
     return getFavorList({
-      userId: payload.userId
+      userId: userId
     }).then(res => {
       commit('getFavorList', res.favorList)
       return state.favorList

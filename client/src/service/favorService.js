@@ -12,7 +12,6 @@ export function getFavorList({userId}) {
             userId:userId
           }
       }).then(res => {
-        console.log(res)
         return dealResponse(res)
          
       })

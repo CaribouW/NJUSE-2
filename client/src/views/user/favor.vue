@@ -1,53 +1,34 @@
 <template>
     <div class="favor">
       <div class="favor_header">  
-        <el-row>
-            <el-col :span="12">
-              <div class="grid-content bg-purple">
-                共10部影片
-              </div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content bg-purple-light">
-                <el-dropdown>
-                    <span class="el-dropdown-link">
-                        按上映时间<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>按上映时间排序</el-dropdown-item>
-                        <el-divider></el-divider>
-                        <el-dropdown-item>按标记时间排序</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-              </div>
-              </el-col>
-          </el-row>
-      </div>
-
-      <div class="favor_movies">
-        <div class="favor_date">
-          <el-row>
-            <el-col :span="24"><div class="grid-content bg-purple2">2019-05-19 周日</div></el-col>
-          </el-row>
+        <div class="grid-content bg-purple" style="font-size:20px;">
+          <b>共标记 {{favorList.length}} 部影片为喜爱</b>
         </div>
-        <div class="favor_details">
+      </div>
+      <div class="favor_movies" v-for="favor in favorList" :key="favor.movieId">
+        <div class="favor_details" >
           <el-row>
             <el-col :span="4">
               <div class="grid-content bg-purple3">
-                <img src="@/assets/images/movielist/161905.30186585_1000 copy.png" alt="" style="width:72px;height:109px;">
+                <img :src="favor.imgURL" alt="" style="width:72px;height:109px;">
               </div>
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light3">
-                <span style="color:#CFF9FE;font-size:20px;"><b>海王</b> </span><br/>
+                <span style="color:#CFF9FE;font-size:20px;"><b>{{favor.movieName}}</b> </span><br/>
                 <span>豆瓣评分：9.1</span><br/>
-                <span>主演名</span><br/>
-                <span>2019-05-01 在中国大陆上映</span>
+                <span>主演:{{favor.mainActor}}</span><br/>
+                <span>{{favor.releaseDate}} 在{{favor.releaseArea}}上映</span>
               </div>
             </el-col>
             <el-col :span="8">
-              <div class="grid-content bg-purple4">
-                <el-button round disabled>即将上映</el-button>
+              <div class="favor_buttons" >
+                <div v-if="favor.state=='立即购票'">
+                  <el-button round @click="toBuy(favor.movieId)">{{favor.state}}</el-button>
+                </div>
+                <div v-else>
+                  <el-button round disabled="">{{favor.state}}</el-button>
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -66,14 +47,36 @@ export default {
   data () {
     return {
       tabPosition: 'left',
-      favorList:[]
+      favorList:[],
+      state:'',
     }
   },
   methods: {
     updateFavorList:function(){
       this.$store.dispatch('getFavorList', sessionStorage.getItem('userId')).then(res => {
-        console.log(res)
+        this.favorList=res
+        console.log(this.favorList)
+        this.handleState()
       });
+    },
+    handleState:function(){
+      for(let i=0;i<this.favorList.length;i++){
+        if(this.favorList[i].releaseDate!=null){
+          let date=new Date(this.favorList[i].releaseDate)
+          let dateCurrent=new Date()
+          if(date<dateCurrent){
+            this.favorList[i].state="立即购票"
+          }else{
+            this.favorList[i].state="即将上映"
+          }
+        }else{
+          this.favorList[i].state="立即购票"
+        }
+        
+      }
+    },
+    toBuy:function(movieId){
+      this.$router.push('../movie/detail?movieId='+movieId)
     }
   },
   /**
@@ -118,47 +121,21 @@ export default {
     min-height: 30px;
     font-size: 15px
   }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
+  .favor_details{
+    border: #CFF9FE solid 1px;
+    border-radius: 10px;
+    padding:10px;
+    margin-top:10px;
   }
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #ffffff;
-  }
-  .el-icon-arrow-down {
-    font-size: 15px;
-  }
-  .el-dropdown-menu{
-    background-color: #131C1C;
-    border: #ffffff;
-  }
-  .el-dropdown-item{
-      color: #fff;
-  }
-}
-.el-popper{
-  background-color: #131C1C;
-  padding: 0;
-}
-.el-dropdown-menu__item{
+  .el-button.is-disabled,.el-button{
+  margin-top: 35px;
+  border-radius: 25px;
+  padding: 8px 20px;
+  background-color: rgba($color: #131C1C, $alpha: 0.5);
+  font-size: 16px;
   color: #ffffff;
-  padding: 0 10px 0 10px;
-  
-}
-.el-divider--horizontal{
-  margin: 1px;
-}
-.favor_date{
-  margin-top: 5px;
-  height: 40px;
-  background-color: rgba($color: #d8d8d8, $alpha: 0.05);
-}
-.bg-purple2  {
-  padding-left: 20px;
-  padding-top: 10px;
-  text-align: left;
-  margin-bottom: 10px;
+  border-color: #CFF9FE
+  }
 }
 .bg-purple3  {
   height: 110px;
@@ -171,15 +148,6 @@ export default {
 .bg-purple4  {
   padding-top: 20px;
   padding-right: 0;
-}
-.el-button.is-disabled{
-  margin-top: 20px;
-  border-radius: 25px;
-  padding: 8px 20px;
-  background-color: rgba($color: #131C1C, $alpha: 0.5);
-  font-size: 16px;
-  color: #ffffff;
-  border-color: #CFF9FE
 }
 </style>
 
