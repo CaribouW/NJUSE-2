@@ -13,10 +13,6 @@
   export default {
     data() {
       return {
-        ticket: {
-          startTime: '20:45', endTime: '23:46', type: '英语/普通3D',
-          price: '54.5', memberPrice: '51.5', moviehall: '13号厅 按摩椅'
-        },
       }
     },
     computed: {

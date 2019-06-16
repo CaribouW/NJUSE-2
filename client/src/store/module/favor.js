@@ -1,23 +1,36 @@
-import {getFavorList} from '../../service/favorService.js'
+import {getFavorList, getFavorCounter} from '../../service/favorService.js'
 const state = {
-  userId:'',
+  favorList: [],
 };
 const getters = {
   // getUserId: state => state.userId
 };
 
 const actions = {  
-  async getFavorList({}, userId) {
+  async getFavorList({commit}, payload) {
     return getFavorList({
-      userId: userId
+      userId: payload.userId
     }).then(res => {
-      console.log(res)
+      commit('getFavorList', res.favorList)
+      return state.favorList
+    })
+  },
+
+  async getFavorCounter({}, payload) {
+    return getFavorCounter({
+      movieId: payload.movieId
+    }).then(res => {
+      
       return res
     })
   },
 };
 
-const mutations = {};
+const mutations = {
+  getFavorList: (state, payload) => {
+    state.favorList= payload
+  },
+};
 export default {
   state,
   getters,

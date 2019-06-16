@@ -9,12 +9,13 @@ import schedule from "./module/schedule";
 import order from './module/order'
 import refundStrategy from './module/refundStrategy'
 import member from './module/member'
+import favor from './module/favor'
 // 配置vuex
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     todos, user, movie, coupon,
-    hall, order, schedule, refundStrategy,member
+    hall, order, schedule, refundStrategy,member,favor
   }
 })

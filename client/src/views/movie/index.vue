@@ -3,9 +3,9 @@
     <div class="movie_poster">
       <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
       <div class="movie_poster_name">{{movieInfo.name}}</div>
-      <div class="movie_poster_typeAndFavour">{{movieInfo.basicInfo.type}}<span>0人想看</span></div>
-      <div class="movie_poster_mark" @click="favour=!favour">
-        <span v-if="favour">标记为喜爱</span><span v-else class="favour">已喜爱</span>
+      <div class="movie_poster_typeAndFavour" v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}<span>0人想看</span></div>
+      <div class="movie_poster_mark" @click="favor=!favor">
+        <span v-if="!favor">标记为喜爱</span><span v-else class="favour">已喜爱</span>
       </div>
       <div class="movie_poster_purchase" @click="purchaseDialogVisible = true">
         立即购票
@@ -29,7 +29,7 @@
             <div>
               <span class="basicInfo_title">基本信息</span>
               <div class="movie_info_content_basicInfo">
-                <div>中文名</div><div>{{movieInfo.basicInfo.ChineseName}}</div><div>类型</div><div>{{movieInfo.basicInfo.type}}</div>
+                <div>中文名</div><div>{{movieInfo.basicInfo.ChineseName}}</div><div>类型</div><div v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
                 <div>英文名</div><div>{{movieInfo.basicInfo.EnglishName}}</div><div>片长</div><div>{{movieInfo.basicInfo.duration}}分钟</div>
@@ -89,14 +89,14 @@
         width="60%">
         <div class="movieInfo">
           <span>{{movieInfo.name}}</span> <span>豆瓣评分 {{movieInfo.score}}</span>
-          <span>{{movieInfo.basicInfo.type}}</span><span>{{movieInfo.basicInfo.duration}}分钟</span>
+          <span v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}</span><span>{{movieInfo.basicInfo.duration}}分钟</span>
         </div>
         <div class="movieDate">
           <span v-for="each in scheduleDate">{{each}}</span>
         </div>
-        <div class="movieTime">
+        <div class="movieTime" v-if="scheduleDate.length !== 0">
           <el-carousel :interval="0" type="card" height="430px" indicator-position="none" :autoplay="false" :loop="false"> 
-            <el-carousel-item v-for="(item, index) in scheduleDate" :key="index">
+            <el-carousel-item v-for="(item, index) in scheduleDate" :key="index" v-if="scheduleDate">
               <span class="medium">{{ item }}</span>
               <div class="movieTime_ticket">
                 <ticket v-for="i in schedule" :key="i.startTime" @selectSeatChildNotify="confirmSeat" :schedule="i"
@@ -104,6 +104,9 @@
               </div>
             </el-carousel-item>
           </el-carousel>
+        </div>
+        <div v-else class="error">
+          暂无排片
         </div>
         <div slot="title" class="header-title">
             <img src="@/assets/images/movie/title.png" alt="">
@@ -290,6 +293,7 @@ export default {
   },
   data () {
     return {
+      favorList: [],
       ticketInfo: {},
       hall: {},
       chartData: {
@@ -326,21 +330,12 @@ export default {
         minute: 15,
         second: 0,
       },
-      // 是否标记喜爱
-      favour: false,
       // 弹出对话框控制
       purchaseDialogVisible: false,
       selectSeatDialogVisible: false,
       confirmOrderDialogVisible: false,
       payDialogVisible: false,
       paySuccessDialogVisible: false,
-      // movieInfo: {
-      //   ChineseName: '海王',type:'科幻/动作',
-      //   EnglishName: 'Aquaman',duration: '143',
-      //   productionCompany: '华纳',showTime: '2018-12-7',
-      //   distributionCompany: '华纳',director: '温子仁',
-      //   language: '英语', imdb: 'tt1477834', score: 9.1
-      // },
       movieInfo: {},
       // 计时器
       oTimer: null,
@@ -375,6 +370,20 @@ export default {
     },
     ticketDate: function () {
       // return this.ticketInfo.startTime.slice(0,10)
+    },
+    favor: function () {
+      var ret = false
+      if (this.favorList.length === 0) {
+        console.log(this.favorList)
+        return false
+      } else {
+        this.favorList.forEach(each => {
+          if (each.movieId === this.$route.query.movieId) {
+            ret = true
+          }
+        })
+        return ret
+      }
     }
   },
   methods: {
@@ -382,6 +391,14 @@ export default {
       if (this.$store.state.movie.quickPurchase) {
         this.selectSeatDialogVisible = true
       }
+    },
+    // 判断是否标记喜爱
+    getFavorList () {
+      this.$store.dispatch('getFavorList', {
+        userId: sessionStorage.getItem('userId')
+      }).then(res => {
+        this.favorList = res
+      })
     },
     // 返回首页
     goOrderHistory () {
@@ -516,12 +533,14 @@ export default {
   created () {
     var _this = this
     this.checkQuickPurchase()
+    // 获取电影详情
     this.$store.dispatch('getMovieBasicInfo', {
       userId: sessionStorage.getItem('userId'),
       movieId: this.$route.query.movieId
     }).then(res => {
       this.movieInfo = res
     })
+    // 获取电影排片
     _this.$store.dispatch('getMovieSchedule').then(res => {
       res.slot.forEach(function (obj) {
         if (_this.$route.query.movieId === obj.movieId) {
@@ -529,6 +548,8 @@ export default {
         }
       })
     })
+    // 获取
+    _this.getFavorList()
   }
 }
 </script>
@@ -724,6 +745,7 @@ export default {
         >div{display: inline-block;}
       }
     }
+    .error{font-size: 40px; margin-bottom: 20px;}
   }
   &_selectSeat{
     .el-dialog__body{

@@ -18,3 +18,14 @@ export function getFavorList({userId}) {
         
       })
   }
+
+  export function getFavorCounter({movieId}) {
+    return doGet({
+      url: '/favor/counter',
+      params: {
+        movieId: movieId,
+      }
+    }).then(res => {
+      return dealResponse(res)
+    })
+  }
