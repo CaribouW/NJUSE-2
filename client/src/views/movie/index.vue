@@ -398,7 +398,8 @@ export default {
         userId: sessionStorage.getItem('userId'),
         movieId: this.$route.query.movieId,
       }).then(res => {
-        this.favor = true
+        this.getFavorList()
+        this.getFavorCounter()
       })
     },
     deleteFavor () {
@@ -406,7 +407,8 @@ export default {
         userId: sessionStorage.getItem('userId'),
         movieId: this.$route.query.movieId,
       }).then(res => {
-        this.favor = !this.favor
+        this.getFavorList()
+        this.getFavorCounter()
       })
     },
     getFavorCounter () {
@@ -599,6 +601,9 @@ export default {
       left: 200px;
       top: 350px;
       cursor: pointer;
+    }
+    &_mark{
+      >span{display: block;}
     }
     &_purchase{
       top: 450px;
