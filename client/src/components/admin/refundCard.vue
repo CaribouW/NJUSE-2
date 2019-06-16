@@ -18,6 +18,7 @@
       <div class="btns" v-if="!changeAble">
         <el-button @click="handleModify">修改</el-button>
         <el-button @click="handleRemove">删除</el-button>
+        
       </div>
       <div class="btns" v-else>
         <el-button @click="handleStore">保存修改</el-button>

@@ -36,7 +36,7 @@
 
       ></el-table-column>
       <el-table-column
-        prop="btn"
+        prop="index"
       >
         <el-button
           type="text"
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+  import {doGet, doPost, doPut, dealResponse} from "../../service/baseService";
+
   export default {
     name: "quickTable",
     props: {
@@ -141,6 +143,37 @@
       isBlank: function (data) {
         return data === null;
       }
+    },
+    mounted() {
+      const this_ = this;
+      doGet({
+        url: '/schedule/list',
+      }).then(res => {
+        return dealResponse(res)
+      }).then(res => {
+        this_.tableData = res.slot.map(item => {
+          const m = '';
+          doGet({
+            url: '/movie/list'
+          }).then(res => {
+            const list = dealResponse(res);
+            const m = list.filter(movie => {
+              return movie.movieId === item.movieId
+            })
+            return m
+          }).then(res => {
+            return {
+              movieId: item.movieId,
+              movieName: res.name,
+              slotId: item.slotId,
+              date: item.startTime,
+              category: item.property,
+              price: '￥' + item.ticketPrize,
+            }
+          });
+
+        })
+      })
     }
   }
 </script>
