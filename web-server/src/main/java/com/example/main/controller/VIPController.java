@@ -73,7 +73,7 @@ public class VIPController {
     }
 
     @GetMapping("/list")
-    public JSON getAllVipCards() {
-        return vipService.findAllVipCards();
+    public JSON getAllVipCards(@RequestParam(name = "limitation", defaultValue = "0") double limitation) {
+        return vipService.findAllVipCards(limitation);
     }
 }

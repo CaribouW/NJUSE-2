@@ -20,6 +20,6 @@ public interface VIPService {
      * */
     JSON findHistoryListByUid(String uid);
 
-    JSON findAllVipCards();
+    JSON findAllVipCards(double limitation);
 
 }

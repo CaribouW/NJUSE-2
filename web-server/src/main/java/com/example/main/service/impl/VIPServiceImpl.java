@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 会员相关;
@@ -135,8 +136,17 @@ public class VIPServiceImpl implements VIPService {
     }
 
     @Override
-    public JSON findAllVipCards() {
-        return Response.success(vipCardRepository.findAll());
+    public JSON findAllVipCards(double limitation) {
+        List<VIPCard> vipCards = vipCardRepository.findAll().stream()
+                .filter(item -> {
+                    String id = item.getCardId();
+                    double value = historyRepository.findAllByVipId(id)
+                            .stream()
+                            .map(h -> h.getAmount()).reduce((v1, v2) -> v1 + v2).get();
+                    return value >= limitation;
+                }).collect(Collectors.toList());
+
+        return Response.success(vipCards);
     }
 
 }
