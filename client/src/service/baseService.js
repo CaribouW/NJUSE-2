@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export const baseIP = 'http://106.14.140.93:8080/se-server/';
+
 // export const baseIP = 'http://localhost:18080';
 
 export async function dealResponse(response) {
@@ -38,11 +39,11 @@ export async function doPut({url, params, body}) {
   })
 }
 
-export async function doDelete({url, params,data}) {
+export async function doDelete({url, params, data}) {
   return axios.delete(url, {
     params: params,
     withCredentials: true,
-    data:data,
+    data: data,
     baseURL: baseIP,
     responseType: 'application/json'
   })
