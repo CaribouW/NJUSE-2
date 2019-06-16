@@ -186,13 +186,14 @@ export default {
     },
     // 保证header在登录注册时不会显示
     created: function () {
+      console.log(sessionStorage.getItem('roleName'))
       if (sessionStorage.getItem('roleName') === 'audience') {
         this.logined = true
         this.roleName = 'audience'
       } else if (sessionStorage.getItem('roleName') === 'admin') {
         this.logined = true
         this.roleName = 'admin'
-      } else if (sessionStorage.getItem('roleName') === 'engineer') {
+      } else if (sessionStorage.getItem('roleName') === 'manager') {
         this.logined = true
         this.roleName = 'engineer'
       } else {

@@ -1,27 +1,62 @@
 <template>
   <div class="ticket">
-    <span>{{ticket.startTime}}</span><span class="purchase" @click="notifyParent()">购票</span>
-    <span>{{ticket.endTime}}散场</span>
-    <span>{{ticket.type}}</span><span>{{ticket.price}}元</span>
-    <span>{{ticket.moviehall}}</span><span>会员价{{ticket.memberPrice}}元</span>
+    <span>{{start}}</span><span class="purchase" @click="notifyParent()">购票</span>
+    <span>{{end}}散场</span>
+    <span>{{hall.category}}</span><span>{{schedule.ticketPrize}}元</span>
+    <span>{{hall.name}}厅</span><span>会员价{{schedule.ticketPrize}}元</span>
   </div>
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex'
+
   export default {
     data() {
       return {
         ticket: {
           startTime: '20:45', endTime: '23:46', type: '英语/普通3D',
           price: '54.5', memberPrice: '51.5', moviehall: '13号厅 按摩椅'
-        }
+        },
+      }
+    },
+    computed: {
+      start: function () {
+        return this.schedule.startTime.slice(11, 16)
+      },
+      end: function () {
+        return this.schedule.endTime.slice(11, 16)
+      },
+      hall: function () {
+        var ret = null
+        this.halls.forEach(element => {
+          if (element.id === this.schedule.hallId) {
+            ret = element
+          }
+        });
+        return ret
+      },
+      ...mapGetters({
+        halls: 'hallList'
+      })
+    },
+    props: {
+      schedule: {
+        type: Object
       }
     },
     methods: {
       notifyParent: function () {
-        console.log('123');
-        this.$emit('selectSeatChildNotify', 'the msg');
-      }
+        var msg = []
+        msg.push(this.hall)
+        msg.push(this.schedule)
+        this.$emit('selectSeatChildNotify', msg);
+      },
+      ...mapActions({
+        flushHall: 'getHalls'
+      })
+    },
+    mounted () {
+      this.flushHall()
     }
   }
 </script>

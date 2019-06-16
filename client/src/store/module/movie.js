@@ -1,4 +1,4 @@
-import {getMovieBasicInfo, getAllMovie, getMovieSchedule, getMoviePhoto, getMovieStaff} from '../../service/movieService.js'
+import {getMovieBasicInfo, getAllMovie, getMovieSchedule, getRestSchedule, getMoviePhoto, getMovieStaff} from '../../service/movieService.js'
 
 const state = {
   movieList: [{
@@ -29,6 +29,14 @@ const actions = {
     return getMovieBasicInfo({
       userId: payload.userId,
       movieId: payload.movieId
+    }).then(res => {
+      return res
+    })
+  },
+
+  async getRestSchedule({}, payload) {
+    return getRestSchedule({
+      scheduleId: payload.scheduleId,
     }).then(res => {
       return res
     })

@@ -75,6 +75,7 @@ export default {
         this.$store.dispatch('getRechargeHistory', {
           userId: sessionStorage.getItem('userId')
         }).then(res => {
+          console.log(res)
           this.rechargeList = res.rechargeList
           console.log(this.rechargeList)
         }).catch(err => {

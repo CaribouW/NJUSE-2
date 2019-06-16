@@ -34,3 +34,27 @@ export function getHistory({userId}) {
         
       })
   }
+
+  export function confirmOrder(payload) {
+    return doPost({
+        url: '/order/confirm',
+        body: {
+          userId: payload.userId,
+          scheduleId: payload.scheduleId,
+          confirmTime: payload.confirmTime,
+          seats: payload.seats
+        }
+      }).then(res => {
+        return dealResponse(res)
+      })
+  }
+
+  // 消费
+  export async function consume(payload) {
+    return doPut({
+      url: "/order/consume",
+      body: payload
+    }).then(res => {
+      return dealResponse(res)
+    })
+  }

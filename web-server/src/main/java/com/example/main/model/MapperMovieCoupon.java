@@ -39,5 +39,4 @@ public class MapperMovieCoupon {
         this.couponId = couponId;
     }
 
-
 }
