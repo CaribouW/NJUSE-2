@@ -4,7 +4,7 @@ const state = {
 };
 const getters = {
   // getUserId: state => state.userId
-};
+}; 
 
 const actions = {  
   async getFavorList({}, userId) {
@@ -13,7 +13,7 @@ const actions = {
     }).then(res => {
       console.log(res)
       return res
-    })
+    }) 
   },
 };
 

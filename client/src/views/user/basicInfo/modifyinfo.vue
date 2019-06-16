@@ -16,7 +16,7 @@
       </div>
       <div class="modify_id">
         <el-input
-          type="text"
+          type="text" 
           placeholder="请输入新用户名"
           v-model="userName"
           maxlength="10"

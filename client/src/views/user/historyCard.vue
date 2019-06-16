@@ -118,7 +118,7 @@
                       <el-button round @click="handleRebuy">重购</el-button>
                   </div>
                   <div v-if="order.state=='2'">
-                      <el-button round @click="handlePay(order.orderId)">支付</el-button>
+                      <el-button round @click="handlePay">支付</el-button>
                   </div>
                   
                   <el-dialog
@@ -283,17 +283,12 @@ export default {
  * 
  */
     handleRebuy:function(){
-      this.$router.push('/')
+      this.$router.push('../movie/detail?movieId='+this.movie.movieId)
     },
 
-    handlePay:function(orderId){
-
+    handlePay:function(){
+      this.$router.push('../movie/detail?movieId='+this.movie.movieId)
     },
-  },
-  created () {
-    // this.distance=this.slot.startTime-this.order.confirmDate
-    // console.log(this.cardMsg)
-    // console.log(this.movie)
   },
 
 }
@@ -346,7 +341,7 @@ export default {
   }
   .success_header{
     border-bottom: 1px solid #979797;
-    height: 135px;
+    // height: 135px;
     margin:0 30px 10px 0; 
   }
   .success_body{

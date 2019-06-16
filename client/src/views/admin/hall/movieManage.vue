@@ -44,32 +44,25 @@
         <div class="_box_card_item">
           <div class="_box_card_item_title"><span><strong>* </strong>分类</span></div>
           <div class="_box_card_item_content">
-            <el-form>
-              <el-form-item label="地区">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="规格">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+            <div class="region category">
+              <span class="category_title">地区：</span>
+              <input class="category_input" v-model="region" placeholder="请输入地区"/>
+            </div>
+            <div class="language category">
+              <span class="category_title">语言：</span>
+              <input class="category_input" v-model="language" placeholder="请输入语言"/>
+            </div>
+            <div class="type category">
+              <span class="category_title">类型：</span>
+              <el-select v-model="type" multiple placeholder="请选择电影类型">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
           </div>
         </div>
         <div class="_box_card_item">
@@ -96,7 +89,7 @@
           <div class="_box_card_item_content">
             <div class="block">
               <el-date-picker
-                v-model="value2"
+                v-model="upDate"
                 align="right"
                 type="date"
                 placeholder="选择日期"
@@ -110,7 +103,7 @@
           <div class="_box_card_item_content">
             <div class="block">
               <el-date-picker
-                v-model="value2"
+                v-model="downDate"
                 align="right"
                 type="date"
                 placeholder="选择日期"
@@ -130,19 +123,44 @@
         <div class="_box_card_item">
           <div class="_box_card_item_title"><span>电影预告片</span></div>
           <div class="_box_card_item_content">
-
+            <el-upload
+              class="upload-demo"
+              drag
+              action="https://jsonplaceholder.typicode.com/posts/"
+              multiple>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <!-- <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            </el-upload>
           </div>
         </div>
         <div class="_box_card_item">
           <div class="_box_card_item_title"><span>剧照</span></div>
           <div class="_box_card_item_content">
-
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
           </div>
         </div>
         <div class="_box_card_item">
           <div class="_box_card_item_title"><span>视频</span></div>
           <div class="_box_card_item_content">
-
+            <el-upload
+              class="upload-demo"
+              drag
+              action="https://jsonplaceholder.typicode.com/posts/"
+              multiple>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <!-- <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            </el-upload>
           </div>
         </div>
 
@@ -170,15 +188,59 @@
         },
         dialogImageUrl: '',
         dialogVisible: false,
-        formInline: {
-          user: '',
-          region: ''
-        },
-        num: 120,
+
+        options: [{
+          value: '喜剧',
+          label: '喜剧'
+        }, {
+          value: '爱情',
+          label: '爱情'
+        }, {
+          value: '动作',
+          label: '动作'
+        }, {
+          value: '枪战',
+          label: '枪战'
+        }, {
+          value: '犯罪',
+          label: '犯罪'
+        }, {
+          value: '惊悚',
+          label: '惊悚'
+        }, {
+          value: '恐怖',
+          label: '恐怖'
+        }, {
+          value: '悬疑',
+          label: '悬疑'
+        }, {
+          value: '动画',
+          label: '动画'
+        }, {
+          value: '家庭',
+          label: '家庭'
+        }, {
+          value: '奇幻',
+          label: '奇幻'
+        }, {
+          value: '魔幻',
+          label: '魔幻'
+        }, {
+          value: '科幻',
+          label: '科幻'
+        }, {
+          value: '战争',
+          label: '战争'
+        }, {
+          value: '青春',
+          label: '青春'
+        }],
+        region: '',
+        language: '',
+        type:[],
+
+        num: 120, // 放映时长
         pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
           shortcuts: [{
             text: '今天',
             onClick(picker) {
@@ -200,7 +262,9 @@
             }
           }]
         },
-        value2: '',
+        upDate: '', //上映时间
+        downDate: '', //下映时间
+
       };
     },
     methods: {
@@ -264,6 +328,20 @@
         ._box_card_item_content {
           padding-left: 18px;
           margin-top: 10px;
+          .category{
+            font-size: 15px;
+            margin-bottom: 10px;
+            .category_input{
+              background-color: transparent;
+              border: solid 1px #cff9fe;
+              border-radius: 4px;
+              width: 40%;
+              height: 40px;
+              padding-left: 10px;
+              color: #ffffff;
+              // font-size: 17px;
+            }
+          }
         }
 
         // 电影名称的输入框
@@ -313,7 +391,9 @@
         
       }
     }
-    
+    .el-select{
+      width: 41.5%;
+    }
   }
 </style>
 

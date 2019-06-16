@@ -21,7 +21,7 @@ export function getUserInfo({id}) {
 /**v\
  * 修改用户信息
  * */
-export function modifyUserInfo(payload) {
+export function updateUser(payload) {
   // console.log(id)
   return axios.get('/user/basicInfo/modify', {
     params: {

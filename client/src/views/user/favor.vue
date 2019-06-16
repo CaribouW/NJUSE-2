@@ -65,11 +65,24 @@ export default {
   },
   data () {
     return {
-      tabPosition: 'left'
+      tabPosition: 'left',
+      favorList:[]
     }
   },
   methods: {
-  }
+    updateFavorList:function(){
+      this.$store.dispatch('getFavorList', sessionStorage.getItem('userId')).then(res => {
+        console.log(res)
+      });
+    }
+  },
+  /**
+   * 页面加载之前获取数据
+   */ 
+  created: function () {
+      this.updateFavorList()
+      
+  },
 }
 </script>
 

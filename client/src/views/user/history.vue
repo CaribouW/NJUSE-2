@@ -27,17 +27,20 @@ export default {
 
   /**
    * 页面加载之前获取数据
-   */
+   */ 
   created: function () {
-    var that = this;
-      this.$store.dispatch('getHistory', sessionStorage.getItem('userId')).then(res => {
-        this.data_getHistory=res.orderList
-        console.log(this.data_getHistory)
-      });
+      this.updateHistoryList()
       
   },
 
   methods: {
+    updateHistoryList:function(){
+      this.$store.dispatch('getHistory', sessionStorage.getItem('userId')).then(res => {
+        this.data_getHistory=res.orderList
+        console.log(this.data_getHistory)
+      });
+    }
+
 
   }
 }

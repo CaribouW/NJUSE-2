@@ -19,7 +19,7 @@ const actions = {
   },
   async getHistory({commit, state}, userId) {
     return getHistory({
-      userId: userId
+      userId: userId 
     }).then(res => {
       console.log(res)
       return res
