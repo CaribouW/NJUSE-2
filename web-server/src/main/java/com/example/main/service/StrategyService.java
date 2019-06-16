@@ -62,4 +62,6 @@ public interface StrategyService {
      * 删除退票策略
      * */
     JSON removeRefundStrategy(String id);
+
+    JSON newStrategyVIP(Double amount, Double discount);
 }

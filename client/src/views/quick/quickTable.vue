@@ -38,12 +38,15 @@
       <el-table-column
         prop="index"
       >
-        <el-button
-          type="text"
-          style="color: #cff9fe;"
-          @click="purchase()"
-        >立即购买
-        </el-button>
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            style="color: #cff9fe;"
+            @click="purchase(scope.$index, scope.row)"
+          >立即购买
+          </el-button>
+
+        </template>
 
       </el-table-column>
       <div style="border: solid 1px #cff9fe;"></div>
@@ -120,7 +123,7 @@
       },
       //Purchase the ticket
       //Redirect to the movie form
-      purchase: function () {
+      purchase: function (index, row) {
         if (sessionStorage.getItem('userId')) {
           this.$router.push({
             path: '/movie/detail',

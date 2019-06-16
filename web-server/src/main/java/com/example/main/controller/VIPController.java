@@ -46,7 +46,7 @@ public class VIPController {
     }
 
     /**
-     *  根据userId 得到关联的历史充值记录
+     * 根据userId 得到关联的历史充值记录
      */
     @GetMapping("/history/list")
     public JSON getHistoryVip(@RequestParam(value = "userId") String uid) {
@@ -66,8 +66,14 @@ public class VIPController {
         return strategyService.updateVIPStrategy(req);
     }
 
+    @PostMapping("/strategy/recharge")
+    public JSON newStrategyVIP(@RequestBody JSONObject req) {
+        return strategyService.newStrategyVIP(req.getDouble("amount"),
+                req.getDouble("discount"));
+    }
+
     @GetMapping("/list")
-    public JSON getAllVipCards(){
+    public JSON getAllVipCards() {
         return vipService.findAllVipCards();
     }
 }

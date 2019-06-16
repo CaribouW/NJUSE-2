@@ -8,9 +8,11 @@ import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.Coupon;
 import com.example.main.model.RefundStrategy;
+import com.example.main.model.VIPRechargeStrategy;
 import com.example.main.model.VIPStrategy;
 import com.example.main.repository.CouponRepository;
 import com.example.main.repository.RefundStrategyRepository;
+import com.example.main.repository.VIPRechargeStrategyRepo;
 import com.example.main.repository.VIPStrategyRepository;
 import com.example.main.service.StrategyService;
 import com.example.main.utils.DateUtils;
@@ -33,6 +35,9 @@ public class StrategyServiceImpl implements StrategyService {
     private VIPStrategyRepository vipStrategyRepository;
     @Autowired
     private RefundStrategyRepository refundStrategyRepository;
+    @Autowired
+    private VIPRechargeStrategyRepo vipRechargeStrategyRepo;
+
     @Autowired
     private DateUtils dateUtils;
     @Autowired
@@ -180,6 +185,23 @@ public class StrategyServiceImpl implements StrategyService {
         try {
             refundStrategyRepository.deleteById(id);
             return Response.success(null);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON newStrategyVIP(Double amount, Double discount) {
+        try {
+            VIPRechargeStrategy rechargeStrategy
+                    = new VIPRechargeStrategy();
+            vipRechargeStrategyRepo.deleteAll();
+            rechargeStrategy.setId(idUtils.getUUID32());
+            rechargeStrategy.setAmount(amount);
+            rechargeStrategy.setDiscount(discount);
+
+            vipRechargeStrategyRepo.save(rechargeStrategy);
+            return Response.success(rechargeStrategy);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }

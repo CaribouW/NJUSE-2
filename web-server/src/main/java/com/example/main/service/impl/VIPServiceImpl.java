@@ -138,4 +138,5 @@ public class VIPServiceImpl implements VIPService {
     public JSON findAllVipCards() {
         return Response.success(vipCardRepository.findAll());
     }
+
 }
