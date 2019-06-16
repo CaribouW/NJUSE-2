@@ -25,4 +25,7 @@ public interface MovieInfoRepository extends BaseRepository<MovieInfo> {
      * 通过id得到电影
      */
     MovieInfo findByMovieId(String mid);
+
+    @Query(value = "select m.* from movie_info m where m.name like %:n%", nativeQuery = true)
+    List<MovieInfo> findMovieInfosByNameLike(@Param(value = "n") String name);
 }

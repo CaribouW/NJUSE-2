@@ -145,5 +145,14 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    @Override
+    public JSON findByName(String name) {
+        try {
+            return Response.success(movieInfoRepository.findMovieInfosByNameLike(name));
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
 
 }

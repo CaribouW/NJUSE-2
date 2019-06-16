@@ -24,4 +24,6 @@ public interface MovieService {
     JSON getStaff(String mid);
 
     JSON getAllMovies();
+
+    JSON findByName(String name);
 }

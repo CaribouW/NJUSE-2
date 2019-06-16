@@ -58,4 +58,12 @@ public class MovieController {
     public JSON getStaff(@RequestParam(value = "movieId") String mid) {
         return movieService.getStaff(mid);
     }
+
+    /**
+     * 根据关键字搜索电影
+     * */
+    @GetMapping("/movie/key")
+    public JSON getMovieByName(@RequestParam(value = "key")String name){
+        return movieService.findByName(name);
+    }
 }
