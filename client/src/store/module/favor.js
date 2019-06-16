@@ -1,4 +1,4 @@
-import {getFavorList, getFavorCounter} from '../../service/favorService.js'
+import {getFavorList, getFavorCounter, addFavor, deleteFavor} from '../../service/favorService.js'
 const state = {
   favorList: [],
 };
@@ -20,7 +20,24 @@ const actions = {
     return getFavorCounter({
       movieId: payload.movieId
     }).then(res => {
-      
+      return res
+    })
+  },
+
+  async addFavor({}, payload) {
+    return addFavor({
+      userId: payload.userId,
+      movieId: payload.movieId,
+    }).then(res => {
+      return res
+    })
+  },
+
+  async deleteFavor({}, payload) {
+    return deleteFavor({
+      userId: payload.userId,
+      movieId: payload.movieId,
+    }).then(res => {
       return res
     })
   },
@@ -29,7 +46,7 @@ const actions = {
 const mutations = {
   getFavorList: (state, payload) => {
     state.favorList= payload
-  },
+  }
 };
 export default {
   state,

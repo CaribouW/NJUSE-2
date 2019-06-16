@@ -38,10 +38,11 @@ export async function doPut({url, params, body}) {
   })
 }
 
-export async function doDelete({url, params}) {
+export async function doDelete({url, params,data}) {
   return axios.delete(url, {
     params: params,
     withCredentials: true,
+    data:data,
     baseURL: baseIP,
     responseType: 'application/json'
   })

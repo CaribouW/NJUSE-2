@@ -3,9 +3,9 @@
     <div class="movie_poster">
       <img src="@/assets/images/movie/海王.png" alt="@/assets/images/movie/海王.png">
       <div class="movie_poster_name">{{movieInfo.name}}</div>
-      <div class="movie_poster_typeAndFavour" v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}<span>0人想看</span></div>
-      <div class="movie_poster_mark" @click="favor=!favor">
-        <span v-if="!favor">标记为喜爱</span><span v-else class="favour">已喜爱</span>
+      <div class="movie_poster_typeAndFavour" v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}<span>{{favorCounter}}人想看</span></div>
+      <div class="movie_poster_mark">
+        <span v-if="!favor" @click="addFavor">标记为喜爱</span><span v-else class="favour" @click="deleteFavor">已喜爱</span>
       </div>
       <div class="movie_poster_purchase" @click="purchaseDialogVisible = true">
         立即购票
@@ -340,7 +340,8 @@ export default {
       // 计时器
       oTimer: null,
       schedule: [],
-      orderId: ''
+      orderId: '',
+      favorCounter: 0
     }
   },
   computed: {
@@ -392,7 +393,30 @@ export default {
         this.selectSeatDialogVisible = true
       }
     },
-    // 判断是否标记喜爱
+    addFavor () {
+      this.$store.dispatch('addFavor', {
+        userId: sessionStorage.getItem('userId'),
+        movieId: this.$route.query.movieId,
+      }).then(res => {
+        this.favor = true
+      })
+    },
+    deleteFavor () {
+      this.$store.dispatch('deleteFavor', {
+        userId: sessionStorage.getItem('userId'),
+        movieId: this.$route.query.movieId,
+      }).then(res => {
+        this.favor = !this.favor
+      })
+    },
+    getFavorCounter () {
+      this.$store.dispatch('getFavorCounter', {
+        movieId: this.$route.query.movieId
+      }).then(res => {
+        this.favorCounter = res.sum
+      })
+    },
+    // 获取当前用户想看列表
     getFavorList () {
       this.$store.dispatch('getFavorList', {
         userId: sessionStorage.getItem('userId')
@@ -550,6 +574,7 @@ export default {
     })
     // 获取
     _this.getFavorList()
+    _this.getFavorCounter()
   }
 }
 </script>
