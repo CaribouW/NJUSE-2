@@ -18,13 +18,13 @@
         <el-input
           type="text"
           placeholder="请输入新用户名"
-          v-model="text"
+          v-model="userName"
           maxlength="10"
           show-word-limit
         >
         </el-input>
         <br/>
-        ID:12345678
+        ID:{{id}}
       </div>
       <div class="modify_other">
         <el-dropdown>
@@ -47,7 +47,7 @@
            <div class="block">
                 <span class="demonstration">生日： </span>
                 <el-date-picker
-                  v-model="value1"
+                  v-model="birthday"
                   type="date"
                   placeholder="选择日期"
                   class="date-picker"
@@ -57,7 +57,7 @@
         </span>
         <br/>
         <span>
-            <el-button round style="color:#CFF9FE;" @click="goInfo()">保存</el-button>
+            <el-button round style="color:#CFF9FE;" @click="onSubmit()">保存</el-button>
             <el-button round style="color:#CFF9FE;" @click="goInfo()">取消</el-button>
         </span>
       </div>
@@ -76,14 +76,16 @@
       return {
         tabPosition: 'left',
         imageUrl: '',
-        text: '',
+        userName: '',
+        id:sessionStorage.getItem('userId'),
         textarea: '',
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
           },
         },
-        value1: '',
+        birthday: '',
+        info:{},
       }
     },
     methods: {
@@ -104,7 +106,19 @@
           this.$message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
+      },
+      onSubmit:function(){
+      //   // this.info=
+      //   this.$store.dispatch('updateUser', {
+      //     id:sessionStorage.getItem('userId'),
+      //     info.pic:"url",
+
+      //   })
+      //   .then(res => {
+      //   console.log(res)
+      // });
       }
+
     }
   }
 </script>

@@ -4,8 +4,8 @@
       <img src="@/assets/images/homepage/personal-image.png" alt="" style="width:140px;height:140px;">
     </div>
     <div class="main_id">
-      <b>啊我前端好菜 </b><br/>
-      ID:{{userInfo.id}}
+      <b>{{name}} </b><br/>
+      ID:{{id}}
     </div>
     <div class="main_other">
         <span>
@@ -14,7 +14,7 @@
         </span><br/>
       <span>
           <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:21px;height:21px;">
-          生日：2019-01-01
+          生日：{{birthday}}
         </span><br/>
       <el-button round style="color:#CFF9FE;" @click="goModify()">编辑信息</el-button>
     </div>
@@ -32,23 +32,27 @@
     data() {
       return {
         userInfo:{},
-        tabPosition: 'left'
+        tabPosition: 'left',
+        name:"还未设置用户名",
+        id:'ed005bfb2f564096a4e9011547ee21a3',
+        birthday:"还未修改生日"
       }
     },
 
-    /**
+    /** 
      * 页面加载之前获取数据
      */
-    created: function () {
+    created: function () { 
  
     },
     mounted: function () {
-      var that = this;
-      console.log(sessionStorage.getItem('userId'))
       this.$store.dispatch('getUserInfo', sessionStorage.getItem('userId')).then(res => {
         console.log(res)
-        this.userInfo=res
       });
+      // this.$store.dispatch('getUserInfo', sessionStorage.getItem('userId')).then(res => {
+      //   console.log(res)
+      //   this.userInfo=res
+      // });
     },
     methods: {
       goModify() {

@@ -1,19 +1,19 @@
 <template>
     <div class="history">
       <div class="cards" v-for="order in data_getHistory" :key="order.order.orderId">
-        <historyCard :cardMsg="order"></historyCard>
+        <history_card :cardMsg="order"></history_card>
       </div>
     </div>
 </template>
  
 <script>
 import user from "./index.vue"
-import historyCard from "./historyCard.vue"
+import history_card from "./historyCard.vue"
 export default {
   name: 'history',
   components: { 
     user,
-    historyCard,
+    history_card,
   },
   data () {
     return {

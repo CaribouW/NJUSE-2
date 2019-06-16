@@ -1,6 +1,6 @@
 
 <template>
-<historyCard>
+<history_card>
     <div class="success">
         <div class="success_header">
           <el-row>
@@ -42,7 +42,7 @@
                     </el-col>
                     <el-col :span="8">
                       <div class="success_hall">
-                        {{hall.category}}
+                        影厅类型：{{hall.category}}
                       </div>
                     </el-col>
                   </el-row>
@@ -54,8 +54,8 @@
                     </el-col>
                     <el-col :span="8">
                       <div class="success_seat">
-                        <div class="tickets" v-for="ticket in tickets" :key="ticket.ticketId">
-                          {{ticket.row}}排{{ticket.col}}座
+                        <div class="tickets" v-for="ticket in tickets" :key="ticket.ticketId" style="display:inline">
+                          {{ticket.row}}排{{ticket.col}}座 
                       </div>
                       </div>
                     </el-col>
@@ -147,7 +147,7 @@
           </el-row>
         </div> 
       </div>
-</historyCard>
+</history_card>
 </template>
 
 <script>
@@ -228,19 +228,24 @@ export default {
     },
 
     getStrategy:function(){
-      let time0=this.refundStrategy[0].time
-      let time1=this.refundStrategy[1].time
-      let time2=this.refundStrategy[2].time
+      let startegyLength=this.refundStrategy.length
+      let startegyTime=[]
+      for(let i=0;i<startegyLength;i++){
+        startegyTime[i]=this.refundStrategy[i].time
+      }
       let time=this.timeSubtract_minute(this.slot.startTime)
-      if(time0>=time){
+      if(startegyTime[0]>=time){
         this.percent=this.refundStrategy[0].rate
       }
-      else if(time0<time&&time<=time1){
+      else if(startegyLength!=1){
         this.percent=this.refundStrategy[1].rate
       }
-      else if(time1<time){
-        this.percent=this.refundStrategy[2].rate
-      }
+      // else if(time0<time&&time<=time1){
+      //   this.percent=this.refundStrategy[1].rate
+      // }
+      // else if(time1<time){
+      //   this.percent=this.refundStrategy[2].rate
+      // }
     },
 
     onSubmit: function () {
@@ -287,8 +292,8 @@ export default {
   },
   created () {
     // this.distance=this.slot.startTime-this.order.confirmDate
-    console.log(this.cardMsg)
-    console.log(this.movie)
+    // console.log(this.cardMsg)
+    // console.log(this.movie)
   },
 
 }
