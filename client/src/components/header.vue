@@ -85,7 +85,10 @@
           {text: '个人中心', index: 'user'},
           {text: '消息', index: 'message'},
           {text: '退出登陆', index: 'logout'},
-        ]
+        ],
+        list:[],
+        modules:[],
+        searchKey: {},
       }
     },
     methods: {
@@ -182,7 +185,28 @@
         this.goLogin()
       },
       search() {
-        this.$router.push('/search')
+        console.log(this.keyword)
+        if (this.keyword == '' || typeof(this.keyword)=="undefined")
+        {
+          this.list=this.modules;
+        }else{
+          this.list=[]
+          for(let i=0;i<this.modules.length;i++){
+            if(this.keyword==this.modules[i].name){
+              this.list.push(this.modules[i])
+            }
+          }
+
+          // this.modules.map(function(item) {
+          //   console.log(typeof item.name);
+          // if (item.name.search(that.searchData) != -1) { // 筛选条件
+          //   this.list.push(item);
+          //   }
+          // });
+        }
+      console.log(this.list)
+      this.$router.push('/search')
+
       }
     },
     // 保证header在登录注册时不会显示
@@ -201,6 +225,9 @@
         this.logined = false
         this.roleName = 'gust'
       }
+      this.$store.dispatch('getAllMovie').then(res => {
+        this.modules=res
+      }); 
       // console.log(this.roleName)
     }
   }

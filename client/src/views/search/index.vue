@@ -21,6 +21,41 @@
   </div>
 </template>
 
+<script>
+
+  export default {
+    data() {
+      return {
+      }
+    },
+
+    /** 
+     * 页面加载之前获取数据
+     */
+    created: function () {
+    },
+    methods: {
+    //   search() {
+    //   let that = this;
+    //   if (that.searchData === '' || typeof(that.searchData)=="undefined")
+    //   {
+    //     that.list=that.modules;
+    //   }else{
+    //     that.list=[]
+    //     that.modules.map(function(item) {
+    //       console.log(typeof item.name);
+    //     if (item.name.search(that.searchData) != -1) { // 筛选条件
+    //       that.list.push(item);
+    //     }
+    //   });
+    //   }
+    //   console.log(this.list)
+    // },
+    }
+  }
+</script>
+
+
 <style lang="scss">
 .search{
   padding-top: 30px;
