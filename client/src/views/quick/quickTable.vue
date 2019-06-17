@@ -8,7 +8,7 @@
       style="width: 100%;">
       <el-table-column
         prop="date"
-        label="日期"
+        label="开始时间"
       >
       </el-table-column>
       <el-table-column
@@ -45,7 +45,6 @@
             @click="purchase(scope.$index, scope.row)"
           >立即购买
           </el-button>
-
         </template>
 
       </el-table-column>
@@ -64,56 +63,17 @@
     },
     data() {
       return {
+        userId: '',
         tableData: [
           {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
+            movieId: '',
+            date: '',
+            movieName: '',
+            price: '￥',
+            category: '',
             info: '',
             refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
-          }, {
-            date: '12:00 - 14:00',
-            movieName: '阿丽塔:战斗天使',
-            price: '￥' + '45',
-            category: '普通3D',
-            info: '',
-            refund: '可改票不可退票',
+            scheduleId: ''
           },
         ]
       }
@@ -128,12 +88,12 @@
           this.$router.push({
             path: '/movie/detail',
             query: {
-              movieId: '3606'
+              movieId: row.movieId
             }
           });
           this.$store.commit('purchase', {
-            movieId: '3606',
-            scheduleId: '111'
+            movieId: row.movieId,
+            scheduleId: row.scheduleId
           })
         } else {
           this.$message.error('请先登录');
@@ -147,36 +107,40 @@
         return data === null;
       }
     },
-    mounted() {
+    async mounted() {
       const this_ = this;
-      doGet({
+      await doGet({
         url: '/schedule/list',
       }).then(res => {
         return dealResponse(res)
       }).then(res => {
-        this_.tableData = res.slot.map(item => {
-          const m = '';
-          doGet({
-            url: '/movie/list'
+        return res.slot.map(item => {
+          return {
+            movieId: item.movieId,
+            scheduleId: item.slotId,
+            price: '￥' + item.ticketPrize,
+            date: item.startTime
+          }
+        });
+      }).then(res => {
+        this_.tableData = [];
+        res.forEach((item, index) => {
+          const mid = item.movieId;
+          this_.$store.dispatch('getMovieBasicInfo', {
+            movieId: mid,
+            userId: '',
           }).then(res => {
-            const list = dealResponse(res);
-            const m = list.filter(movie => {
-              return movie.movieId === item.movieId
-            })
-            return m
-          }).then(res => {
-            return {
-              movieId: item.movieId,
+            this_.tableData.push({
               movieName: res.name,
-              slotId: item.slotId,
-              date: item.startTime,
-              category: item.property,
-              price: '￥' + item.ticketPrize,
-            }
-          });
-
+              category: res.basicInfo.type,
+              refund: '可改票不可退票',
+              info: '座位有多余',
+              ...item
+            })
+          })
         })
-      })
+      });
+
     }
   }
 </script>
