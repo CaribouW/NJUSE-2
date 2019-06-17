@@ -93,6 +93,7 @@ public class StrategyServiceImpl implements StrategyService {
         coupon.setAmount(req.getInteger("couponNumber"));
         coupon.setDiscount(req.getDouble("discountPrice"));
         coupon.setThreshHold(req.getDouble("conditionPrice"));
+        coupon.setName(req.getString("couponName"));
         coupon.setStartDate(dateUtils.strToDate(req.getString("startDate"),
                 DateStrPattern.YEAR_MONTH_DAY.getPat()));
         coupon.setEndDate(dateUtils.strToDate(req.getString("endDate"),

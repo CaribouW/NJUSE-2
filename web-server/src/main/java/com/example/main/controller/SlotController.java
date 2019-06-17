@@ -49,4 +49,9 @@ public class SlotController {
     public JSON newSlot(@RequestBody JSONObject req) {
         return hallService.newSlot(req);
     }
+
+    @DeleteMapping("/schedule")
+    public JSON deleteSlot(@RequestBody JSONObject req){
+        return hallService.deleteSlot(req.getString("slotId"));
+    }
 }

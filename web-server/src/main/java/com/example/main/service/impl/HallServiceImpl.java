@@ -90,7 +90,7 @@ public class HallServiceImpl implements HallService {
             String slotId = req.getString("slotId");
             TimeSlot slot = timeSlotRepository.findTimeSlotBySlotId(slotId);
             //update
-            slot.setHallId(req.getString("hallID"));
+            slot.setHallId(req.getString("hallId"));
             slot.setMovieId(req.getString("movieId"));
             Date startTime = dateUtils.strToDate(req.getString("startTime"), DateStrPattern.SECONDS.getPat());
             Date endTime = dateUtils.strToDate(req.getString("endTime"), DateStrPattern.SECONDS.getPat());
@@ -115,7 +115,7 @@ public class HallServiceImpl implements HallService {
             if (timeSlotRepository.existsById(slotId)) {
                 return Response.fail(ResponseType.RESOURCE_ALREADY_EXIST);
             }
-            slot.setHallId(req.getString("hallID"));
+            slot.setHallId(req.getString("hallId"));
             slot.setMovieId(req.getString("movieId"));
             Date startTime = dateUtils.strToDate(req.getString("startTime"), DateStrPattern.SECONDS.getPat());
             Date endTime = dateUtils.strToDate(req.getString("endTime"), DateStrPattern.SECONDS.getPat());
