@@ -34,6 +34,10 @@
                   <i class="el-icon-menu"></i>
                   <span slot="title">排片管理</span>
                 </el-menu-item>
+                <el-menu-item index="/admin/activity">
+                  <i class="el-icon-star-on"></i>
+                  <span slot="title">活动管理</span>
+                </el-menu-item>
                 <el-menu-item index="/admin/statistic">
                   <i class="el-icon-setting"></i>
                   <span slot="title">信息统计</span>
