@@ -63,7 +63,7 @@ public class StrategyServiceImpl implements StrategyService {
             if (null != req.get("movies"))
                 movieIds = (List<String>) req.get("movies");
             List<MapperMovieCoupon> movies =
-                    mapperMovieCouponRepository.findMovieIdsByCouponId(coupon.getCouponId());
+                    mapperMovieCouponRepository.findAllByCouponId(coupon.getCouponId());
             //清空原有关联
             movies.forEach(item -> mapperMovieCouponRepository.deleteById(item.getId()));
             //加入
@@ -72,6 +72,7 @@ public class StrategyServiceImpl implements StrategyService {
 
                 movieCoupon.setId(idUtils.getUUID32());
                 movieCoupon.setCouponId(coupon.getCouponId());
+                movieCoupon.setMovieId(item);
                 mapperMovieCouponRepository.save(movieCoupon);
             });
 
@@ -126,7 +127,7 @@ public class StrategyServiceImpl implements StrategyService {
             coupons.forEach(item -> {
                 JSONObject object = new JSONObject();
                 List<String> mids
-                        = mapperMovieCouponRepository.findMovieIdsByCouponId(item.getCouponId())
+                        = mapperMovieCouponRepository.findAllByCouponId(item.getCouponId())
                         .stream()
                         .map(mapp -> mapp.getMovieId())
                         .collect(Collectors.toList());
@@ -153,7 +154,7 @@ public class StrategyServiceImpl implements StrategyService {
         try {
             couponRepository.deleteById(cId);
             List<MapperMovieCoupon> list
-                    = mapperMovieCouponRepository.findMovieIdsByCouponId(cId);
+                    = mapperMovieCouponRepository.findAllByCouponId(cId);
             mapperMovieCouponRepository.deleteAll(list);
 
             return Response.success(null);

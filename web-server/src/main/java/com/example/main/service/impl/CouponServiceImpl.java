@@ -60,7 +60,7 @@ public class CouponServiceImpl implements CouponService {
                 single.put("endDate", item.getEndDate());
                 single.put("type", null == userCoupon.getVipId() ? 0 : 1);
                 single.put("state", userCoupon.getState());
-                List<String> ids = movieCouponRepository.findMovieIdsByCouponId(item.getCouponId())
+                List<String> ids = movieCouponRepository.findAllByCouponId(item.getCouponId())
                         .stream()
                         .map(MapperMovieCoupon::getMovieId)
                         .collect(Collectors.toList());

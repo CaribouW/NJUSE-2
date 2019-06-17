@@ -10,6 +10,5 @@ public interface MapperMovieCouponRepository extends BaseRepository<MapperMovieC
     /**
      * 根据couponId获取到关联的电影id列表
      */
-    @Query(value = "select m.movie_id from mapper_movie_coupon m where m.coupon_id =:cid", nativeQuery = true)
-    List<MapperMovieCoupon> findMovieIdsByCouponId(@Param(value = "cid") String cid);
+    List<MapperMovieCoupon> findAllByCouponId(String cid);
 }
