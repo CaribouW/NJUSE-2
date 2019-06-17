@@ -42,7 +42,10 @@ public class MovieTicketServiceImpl implements MovieTicketService {
     private RefundStrategyRepository refundStrategyRepository;
     @Autowired
     private MovieInfoRepository movieInfoRepository;
-
+    @Autowired
+    private MapperMovieCouponRepository mapperMovieCouponRepository;
+    @Autowired
+    private MapperUserCouponRepository mapperUserCouponRepository;
 
     @Autowired
     private IDUtils idUtils;
@@ -211,12 +214,21 @@ public class MovieTicketServiceImpl implements MovieTicketService {
                     card.getRemainValue() < consumption) { //支付失败
                 return Response.fail(ResponseType.CONSUME_FAIL);
             }
-
+            //设置银行卡内容
             card.setRemainValue(card.getRemainValue() - consumption);
             vipCardRepository.save(card); //save the card
             order.setConfirmDate(new Date());
             order.setState(OrderStateType.PAID.getValue());            //set paid
             orderRepository.save(order);
+            //随机赠送优惠券
+            MapperMovieCoupon movieCoupon
+                    = mapperMovieCouponRepository.findAll().stream().findAny().get();
+            MapperUserCoupon userCoupon = new MapperUserCoupon();
+            userCoupon.setId(idUtils.getUUID32());
+            userCoupon.setUserId(order.getUserId());
+            userCoupon.setCouponId(movieCoupon.getCouponId());
+            mapperUserCouponRepository.save(userCoupon);
+
             JSONObject ans = new JSONObject();
             ans.put("cardBalance", order.getExpense());
             return Response.success(ans);

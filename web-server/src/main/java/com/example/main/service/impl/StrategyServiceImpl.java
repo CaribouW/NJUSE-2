@@ -6,14 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.main.core.enums.DateStrPattern;
 import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
-import com.example.main.model.Coupon;
-import com.example.main.model.RefundStrategy;
-import com.example.main.model.VIPRechargeStrategy;
-import com.example.main.model.VIPStrategy;
-import com.example.main.repository.CouponRepository;
-import com.example.main.repository.RefundStrategyRepository;
-import com.example.main.repository.VIPRechargeStrategyRepo;
-import com.example.main.repository.VIPStrategyRepository;
+import com.example.main.model.*;
+import com.example.main.repository.*;
 import com.example.main.service.StrategyService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
@@ -22,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 经理策略制定
@@ -37,6 +32,10 @@ public class StrategyServiceImpl implements StrategyService {
     private RefundStrategyRepository refundStrategyRepository;
     @Autowired
     private VIPRechargeStrategyRepo vipRechargeStrategyRepo;
+    @Autowired
+    private MapperMovieCouponRepository mapperMovieCouponRepository;
+    @Autowired
+    private MovieInfoRepository movieInfoRepository;
 
     @Autowired
     private DateUtils dateUtils;
@@ -54,8 +53,27 @@ public class StrategyServiceImpl implements StrategyService {
                     DateStrPattern.YEAR_MONTH_DAY.getPat()));
             coupon.setEndDate(dateUtils.strToDate(req.getString("endDate"),
                     DateStrPattern.YEAR_MONTH_DAY.getPat()));
+            //设置优惠金额
             coupon.setDiscount(req.getDouble("discountPrice"));
-            coupon.setThreshHold(req.getDouble("couponNumber"));
+            //设置优惠满减要求
+            coupon.setThreshHold(req.getDouble("conditionPrice"));
+            //设置优惠券张数
+            coupon.setAmount(req.getInteger("couponNumber"));
+            List<String> movieIds = null;
+            if (null != req.get("movies"))
+                movieIds = (List<String>) req.get("movies");
+            List<MapperMovieCoupon> movies =
+                    mapperMovieCouponRepository.findMovieIdsByCouponId(coupon.getCouponId());
+            //清空原有关联
+            movies.forEach(item -> mapperMovieCouponRepository.deleteById(item.getId()));
+            //加入
+            movieIds.forEach(item -> {
+                MapperMovieCoupon movieCoupon = new MapperMovieCoupon();
+
+                movieCoupon.setId(idUtils.getUUID32());
+                movieCoupon.setCouponId(coupon.getCouponId());
+                mapperMovieCouponRepository.save(movieCoupon);
+            });
 
             //update
             couponRepository.save(coupon);
@@ -69,18 +87,75 @@ public class StrategyServiceImpl implements StrategyService {
 
     @Override
     public JSON addCouponStrategy(JSONObject req) {
-        return null;
+        Coupon coupon = new Coupon();
+        coupon.setCouponId(idUtils.getUUID32());
+        coupon.setAmount(req.getInteger("couponNumber"));
+        coupon.setDiscount(req.getDouble("discountPrice"));
+        coupon.setThreshHold(req.getDouble("conditionPrice"));
+        coupon.setStartDate(dateUtils.strToDate(req.getString("startDate"),
+                DateStrPattern.YEAR_MONTH_DAY.getPat()));
+        coupon.setEndDate(dateUtils.strToDate(req.getString("endDate"),
+                DateStrPattern.YEAR_MONTH_DAY.getPat()));
+
+        List<String> mids = (List<String>) req.get("movies");
+        mids.forEach(item -> {
+            if (movieInfoRepository.existsById(item)) {
+
+                MapperMovieCoupon movieCoupon = new MapperMovieCoupon();
+                movieCoupon.setId(idUtils.getUUID32());
+                movieCoupon.setCouponId(coupon.getCouponId());
+                movieCoupon.setMovieId(item);
+
+                mapperMovieCouponRepository.save(movieCoupon);
+            }
+        });
+
+        couponRepository.save(coupon);
+
+        JSONObject object = new JSONObject();
+        object.put("couponId", coupon.getCouponId());
+        return Response.success(object);
     }
 
     @Override
-    public JSON getCouponStrategyList(JSONObject req) {
-        return null;
+    public JSON getCouponStrategyList() {
+        try {
+            JSONArray array = new JSONArray();
+            List<Coupon> coupons
+                    = couponRepository.findAll();
+            coupons.forEach(item -> {
+                JSONObject object = new JSONObject();
+                List<String> mids
+                        = mapperMovieCouponRepository.findMovieIdsByCouponId(item.getCouponId())
+                        .stream()
+                        .map(mapp -> mapp.getMovieId())
+                        .collect(Collectors.toList());
+                object.put("movies", mids);
+                object.put("couponNumber", item.getAmount());
+                object.put("conditionPrice", item.getThreshHold());
+                object.put("discountPrice", item.getDiscount());
+                object.put("startDate", item.getStartDate());
+                object.put("endDate", item.getEndDate());
+                object.put("couponName", item.getName());
+                object.put("couponID", item.getCouponId());
+                array.add(object);
+            });
+
+            return Response.success(array);
+        } catch (Exception e) {
+
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
     }
 
     @Override
     public JSON removeCouponStrategy(String cId) {
         try {
             couponRepository.deleteById(cId);
+            List<MapperMovieCoupon> list
+                    = mapperMovieCouponRepository.findMovieIdsByCouponId(cId);
+            mapperMovieCouponRepository.deleteAll(list);
+
             return Response.success(null);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);

@@ -45,6 +45,28 @@ public class CouponController {
         return strategyService.updateCouponStrategy(req);
     }
 
+    /**
+     * 获取优惠策略
+     */
+    @GetMapping("/strategy/list")
+    public JSON getAllCouponList() {
+        return strategyService.getCouponStrategyList();
+    }
+
+    /**
+     * 添加优惠策略
+     */
+    @PostMapping("/strategy")
+    public JSON newCoupon(@RequestBody JSONObject req) {
+        return strategyService.addCouponStrategy(req);
+    }
+
+    @DeleteMapping("/strategy")
+    public JSON deleteCoupon(@RequestBody JSONObject req) {
+        return strategyService.removeCouponStrategy(req.getString("couponId"));
+
+    }
+
     @PostMapping("/vip")
     public JSON newCouponsForVip(@RequestBody JSONObject req) {
         return couponService.newCouponsForVip(req);

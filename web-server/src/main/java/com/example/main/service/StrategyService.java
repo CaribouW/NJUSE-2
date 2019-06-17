@@ -18,7 +18,7 @@ public interface StrategyService {
     /**
      * 获取优惠策略列表
      */
-    JSON getCouponStrategyList(JSONObject req);
+    JSON getCouponStrategyList();
 
     /**
      * 删除优惠策略
