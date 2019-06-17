@@ -70,7 +70,14 @@
                width="35%">
       <el-form :model="form">
         <el-form-item label="*电影名称：" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" placeholder="请输入电影名称"></el-input>
+          <!-- <el-input v-model="form.name" autocomplete="off" placeholder="请输入电影名称"></el-input> -->
+          <el-autocomplete
+            class="inline-input"
+            v-model="form.movieName"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入电影名称"
+            @select="selectMovie"
+          ></el-autocomplete>
         </el-form-item>
         <el-form-item label="*放映影厅：" :label-width="formLabelWidth">
           <el-select v-model="form.hall" placeholder="请选择影厅">
@@ -101,8 +108,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="onCancel">取 消</el-button>
+        <el-button type="primary" @click="onSubmit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -111,6 +118,8 @@
 <script>
   import admin from '../index.vue'
   import { getHallList } from '@/service/HallService.js'
+  import { getAllMovie } from '@/service/movieService.js'
+  import { addMovieSchedule } from '@/service/scheduleService.js'
 
   export default {
     name: 'scheduleManagement',
@@ -119,7 +128,8 @@
     },
     data() {
       return {
-        halls: [],
+        halls: [], // 所有影厅
+        movies: [], // 所有上架的电影
         value: '',
         // 查看排片
         pickerOptions1: {
@@ -162,17 +172,15 @@
           }]
         },
         checkScheduleValue: '',
+        // 新增排片
         dialogFormVisible: false,
         form: {
-          movieName: '',
-          startTime: '',
-          endTime: '',
+          movieId: '',
+          startTime: null,
+          endTime: null,
           hall: '',
           ticketPrice: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          movieName: '',
         },
         formLabelWidth: '100px',
       }
@@ -182,10 +190,71 @@
         this.dialogFormVisible = true;
       },
       onSubmit() {
-
+        if(this.form.movieName===''){
+          alert('请选择需要排片的电影')
+        }else if(this.form.movieId==''){
+          alert('您输入的电影未存在于已上架电影列表')
+        }else if(this.form.hall==''){
+          alert('请选择影厅')
+        }else if(this.form.startTime==null){
+          alert('请设置排片的开始时间')
+        }else if(this.form.endTime==null){
+          alert('请设置排片的结束时间')
+        }else if(this.form.ticketPrice==''){
+          alert('请设置场次的票价')
+        }
+        else{
+          addMovieSchedule({
+            movieId: this.form.movieId,
+            hallId: this.form.hall,
+            startTime: this.timeToFormat(this.form.startTime),
+            endTime: this.timeToFormat(this.form.endTime),
+            price: this.form.ticketPrice,
+            slotId: this.form.movieName
+          }).then(res => {
+            this.form = {
+              movieId: '',
+              startTime: null,
+              endTime: null,
+              hall: '',
+              ticketPrice: '',
+              movieName: '',
+            }
+          })
+          this.dialogFormVisible = false
+        }
       },
       onCancel() {
+        this.form = {
+          movieId: '',
+          startTime: null,
+          endTime: null,
+          hall: '',
+          ticketPrice: '',
+          movieName: '',
+        }
         this.dialogFormVisible = false
+      },
+      querySearch(queryString, cb) {
+        var movieList = this.movieList
+        var results = queryString ? movieList.filter(this.createFilter(queryString)) : movieList;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (movie) => {
+          return (movie.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      selectMovie(item){
+        this.form.movieId = item.movieId
+      },
+      timeToFormat(time){
+        var year = time.getFullYear()
+        var month = time.getMonth()+1
+        var day = time.getDate()
+        var moment = time.toTimeString().substring(0,8)
+        return year+'-'+month+'-'+day+' '+moment
       }
     },
     mounted: function(){
@@ -194,12 +263,24 @@
           this.halls = res
         }
       )
+      getAllMovie().then(
+        res => {
+          this.movies = res
+        }
+      )
     },
     computed: {
       hallList: function(){
         return this.halls.filter(function(item){
           return item.state === true
         })
+      },
+      movieList: function(){
+        var movies = this.movies
+        for(var i = 0; i < this.movies.length; i++){
+          this.movies[i].value = this.movies[i].name
+        }
+        return movies
       }
     }
   }
