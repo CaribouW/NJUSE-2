@@ -9,7 +9,7 @@
                 </div>
                 <div class="card">
                     <img src="@/assets/images/vip/34A5E5AE-3165-47C0-977E-B540DE3067DE.png" alt="" style="width:320px;height:200px;">
-                    <p>¥300/张</p>
+                    <p>¥{{price}}/张</p><p>赠送{{bonus}}元</p>
                 </div>
                 <div class="card_button">
                     <el-button round style="color:#CFF9FE;" @click="purchaseVIP()">购买</el-button>
@@ -28,13 +28,15 @@ export default {
     data(){
         return{
             tabPosition:'left',
+            price: 300,
+            bonus: 0
         }
     },
     methods: {
       purchaseVIP () {
         this.$store.dispatch('purchaseMemberCard', {
           userId: sessionStorage.getItem('userId'),
-          cardBalance: '300',
+          cardBalance: this.price+this.bonus,
           ownDate: '2018-05-09'
         }).then(res => {
           if (typeof res === 'number') {
@@ -44,6 +46,10 @@ export default {
           }
         })
       }
+    },
+    created() {
+      this.price = localStorage.getItem('price')
+      this.bonus = localStorage.getItem('bonus')
     }
 }
 </script>

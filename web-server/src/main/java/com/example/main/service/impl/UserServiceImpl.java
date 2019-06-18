@@ -97,8 +97,9 @@ public class UserServiceImpl implements UserService {
             ans.put("pic", userInfo.getAvatarUrl());
             ans.put("id", uid);
             ans.put("vip", "vip");
-            ans.put("birthday",userInfo.getBirth());
-            ans.put("sex", userInfo.getSex().equals("male") ? 1 : 0);
+            ans.put("birthday", userInfo.getBirth());
+            ans.put("sex",
+                    userInfo.getSex().equals("male") ? 1 : 0);
             return Response.success(ans);
         } catch (Exception e) {
             return Response.fail(ResponseType.RESOURCE_NOT_EXIST);

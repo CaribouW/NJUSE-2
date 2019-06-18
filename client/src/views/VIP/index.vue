@@ -13,8 +13,7 @@
                 background-color="#131c1c"
                 text-color="#fff"
                 active-text-color="#ffd04b"
-                :router="true"
-              >
+                :router="true">
                 <el-menu-item index="/VIP/buyCard" v-if="!isMember">
                   <i class="user_menu"></i>
                   <span>会员注册</span>
@@ -89,12 +88,12 @@
       background-color: #131C1C;
       color: #FFFFFF;
       // text-align: center;
-      height: 565px;
+      // height: 565px;
     }
     .el-container {
       margin-bottom: 20px;
       padding: 100px 100px 20px 120px
-
+      
     }
     .el-main {
       background-color: rgba($color: #131C1C, $alpha: 0.5);

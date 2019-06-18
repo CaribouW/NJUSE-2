@@ -10,13 +10,13 @@
     <div class="main_other">
         <span>
           <img src="@/assets/images/header/fullsizerender(4).png" alt="" style="width:22px;height:31px;">
-          VIP 1
+          VIP等级：黄金会员
         </span><br/>
       <span>
           <img src="@/assets/images/basicinfo/nan.png" alt="" style="width:21px;height:21px;">
           生日：{{birthday}}
         </span><br/>
-      <el-button round style="color:#CFF9FE;" @click="goModify()">编辑信息</el-button>
+      <el-button round style="color:#CFF9FE;" @click="goModify()" disabled>编辑信息</el-button>
     </div>
   </div>
 </template>
@@ -33,9 +33,9 @@
       return {
         userInfo:{},
         tabPosition: 'left',
-        name:"还未设置用户名",
+        name:"啊我前端好菜",
         id:'ed005bfb2f564096a4e9011547ee21a3',
-        birthday:"还未修改生日"
+        birthday:"2019-06-21"
       }
     },
 

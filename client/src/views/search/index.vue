@@ -1,13 +1,12 @@
 <template>
   <div class="search">
-    <div class="search_movie" v-for="i in 6">
-      <img class="search_movie_poster" src="@/assets/images/search/a_100294605_m_601_m1_180_236.jpg" alt="">
+    <div class="search_movie" v-for=" search in this.$route.query.searchList" :key="search.movieId">
+      <img class="search_movie_poster" :src="search.poster" alt="">
       <div class="search_movie_info">
-        <div>我中国少年说第2季 2019</div>
-        <div>地区：中国大陆 上映时间: 2019年05月18日</div>
-        <div>我中国少年》是河北广播电视台卫视频道2019年强力打造的一档大型原创智力竞技节目，
-          以12-18岁的00后少年为主体，以科学竞技为手段，展现少年们在记</div>
-        <div>查看资料</div>
+        <b>{{search.name}}</b>
+        <div>地区：{{search.nation}}</div>
+        <div style="height:114px;">简介：{{search.briefIntro}}</div>
+        <el-button @click="onCheck">查看更多</el-button>
       </div>
     </div>
     <div class="search_page">
@@ -20,6 +19,30 @@
     </div>
   </div>
 </template>
+
+<script>
+
+  export default {
+    data() {
+      return {
+      }
+    },
+
+    /** 
+     * 页面加载之前获取数据
+     */
+    created: function () {
+      console.log(this.$route.query.searchList)
+    },
+    methods: {
+      onCheck:function(){
+        // this.$router.push('../movie/detail?movieId=' + this.search.movieId)
+      }
+
+    }
+  }
+</script>
+
 
 <style lang="scss">
 .search{
@@ -49,18 +72,6 @@
       color: white;
       text-align: left;
       >div{line-height: 40px;}
-      >div:last-of-type{
-        background-color: #D7F8FD;
-        margin-top: 10px;
-        color: black;
-        width: 110px;
-        height: 40px;
-        line-height: 40px;
-        border-radius: 30px;
-        cursor: pointer;
-        text-align: center;
-      }
-      // >div:last-of-type:hover{}
     }
   }
   &_page {
@@ -68,8 +79,15 @@
     .el-pagination{
       color: white;
       li{background-color: #201f1d;font-size: 16px;}
-      button{background-color: #201f1d;}
     }
   }
+  .el-button {
+      // margin-top: 20px;
+      border-radius: 25px;
+      padding: 4px 15px;
+      background-color: rgba($color: #131C1C, $alpha: 0.5);
+      font-size: 14px;
+      border-color: #CFF9FE
+    }
 }
 </style>
