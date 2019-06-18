@@ -154,6 +154,7 @@ public class VIPServiceImpl implements VIPService {
             List<VIPCard> vipCards = vipCardRepository.findAll().stream()
                     .filter(item -> {
                         String id = item.getCardId();
+                        item.setVipLevel(getVipLevel(item.getUserId()).getRankName());
                         double value = historyRepository.findAllByVipId(id)
                                 .stream()
                                 .map(VIPRechargeHistory::getAmount).reduce((v1, v2) -> v1 + v2).get();

@@ -3,11 +3,30 @@
     <el-collapse>
       <el-collapse-item title="会员卡购买" name="1">
         <el-divider direction="horizontal"></el-divider>
-        <div class="vip_buy">
-          会员卡购买价格:<el-input v-model="cardForm.price"></el-input>
-          购买赠送金额：<el-input v-model="cardForm.bonus"></el-input>
-          <el-button round class="modify" @click="modifyPurchase">确定修改</el-button>
-        </div>
+        <el-form ref="cardForm" :model="cardForm" label-width="120px">
+          <el-form-item label="会员卡购买价格:">
+            <el-col :span="12">
+              <el-input v-model="cardForm.price"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="购买赠送金额：">
+            <el-col :span="12">
+              <el-input v-model="cardForm.bonus"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item>
+            <el-col :span="12">
+              <el-button round class="modify" @click="modifyPurchase">确定修改</el-button>
+            </el-col>
+          </el-form-item>
+        </el-form>
+<!--        <div class="vip_buy">-->
+<!--          会员卡购买价格:-->
+<!--          <el-input v-model="cardForm.price"></el-input>-->
+<!--          购买赠送金额：-->
+<!--          <el-input v-model="cardForm.bonus"></el-input>-->
+<!--          <el-button round class="modify" @click="modifyPurchase">确定修改</el-button>-->
+<!--        </div>-->
       </el-collapse-item>
       <el-collapse-item title="会员卡优惠策略" name="2">
         <el-divider direction="horizontal"></el-divider>
@@ -31,7 +50,8 @@
                 prop="discount"
                 label="充值折扣">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.discount" placeholder="请输入折扣(%)" @click="console.log(scope.row.discount)" ></el-input>
+                  <el-input v-model="scope.row.discount" placeholder="请输入折扣(%)"
+                            @click="console.log(scope.row.discount)"></el-input>
                 </template>
               </el-table-column>
             </el-table>
@@ -45,22 +65,23 @@
           <el-form ref="cardForm" :model="cardForm" label-width="120px">
             <el-form-item label="消费累计达到：">
               <el-col :span="12">
-                <el-input v-model="couponForm.limitation" placeholder="请输入金额" @mouseout.native="getMemberList"></el-input>
+                <el-input v-model="couponForm.limitation" placeholder="请输入金额"
+                          @mouseout.native="getMemberList"></el-input>
               </el-col>
             </el-form-item>
-              <el-form-item label="选择优惠券：">
-                <el-col :span="12">
-                  <el-select v-model="couponID" placeholder="请选择">
-                    <el-option
-                      v-for="item in couponForm.couponList"
-                      :key="item.couponID"
-                      :label="item.couponID"
-                      :value="item.couponID">
-                      <span style="float: left">满{{item.conditionPrice}}减{{ item.discountPrice }}</span>
-                    </el-option>
-                  </el-select>
-                </el-col>
-              </el-form-item>
+            <el-form-item label="选择优惠券：">
+              <el-col :span="12">
+                <el-select v-model="couponID" placeholder="请选择">
+                  <el-option
+                    v-for="item in couponForm.couponList"
+                    :key="item.couponID"
+                    :label="item.couponName"
+                    :value="item.couponID">
+                    <span style="float: left">满{{item.conditionPrice}}减{{ item.discountPrice }}</span>
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-form-item>
             <el-form-item label="选择会员：">
               <el-col :span="12">
                 <el-select v-model="vips" multiple placeholder="请选择">
@@ -83,7 +104,7 @@
       </el-collapse-item>
       <el-divider direction="horizontal"></el-divider>
     </el-collapse>
-    
+
   </div>
 </template>
 
@@ -122,7 +143,7 @@
       }
     },
     methods: {
-      modifyPurchase () {
+      modifyPurchase() {
         localStorage.setItem('price', this.cardForm.price)
         localStorage.setItem('bonus', this.cardForm.bonus)
         this.$message.success('修改成功')
@@ -147,9 +168,11 @@
       this.cardForm.price = localStorage.getItem('price')
       this.cardForm.bonus = localStorage.getItem('bonus')
       this.$store.dispatch('getCouponStrategyList').then(res => {
+        console.log(res)
         this.couponForm.couponList = res
       })
-    }
+    },
+    computed: {}
   }
 </script>
 
@@ -181,6 +204,7 @@
 
     .vip_strategy {
       text-align: center;
+
       .table {
         .el-input {
           width: 95%;
@@ -195,10 +219,11 @@
     .vip_coupon {
       text-align: left;
       width: 100%;
+
       .el-input {
       }
 
-      .el-button{
+      .el-button {
         margin: 0 auto;
         border-radius: 25px;
         font-size: 14px;
