@@ -196,16 +196,17 @@
               this.list.push(this.modules[i])
             }
           }
-
-          // this.modules.map(function(item) {
-          //   console.log(typeof item.name);
-          // if (item.name.search(that.searchData) != -1) { // 筛选条件
-          //   this.list.push(item);
-          //   }
-          // });
         }
       console.log(this.list)
-      this.$router.push('/search')
+      // sessionStorage.setItem('searchList',this.list)
+      // console.log(sessionStorage.getItem('searchList'))
+      // this.$router.push('/search')
+      this.$router.push({
+          path: '/search',
+          query: {
+            searchList:this.list
+          }
+        })
 
       }
     },
