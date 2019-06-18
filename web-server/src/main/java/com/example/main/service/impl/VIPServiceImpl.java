@@ -55,6 +55,13 @@ public class VIPServiceImpl implements VIPService {
             vipCard.setRemainValue(cardBalance);
             //save
             vipCardRepository.save(vipCard);
+            //recharge His
+            VIPRechargeHistory history=new VIPRechargeHistory();
+            history.setVipId(vipCard.getCardId());
+            history.setRechargeTime(new Date());
+            history.setAmount(cardBalance);
+            history.setId(idUtils.getUUID32());
+            historyRepository.save(history);
             //response
             JSONObject res = new JSONObject();
             res.put("VIPCardId", vipCard.getCardId());
@@ -137,16 +144,21 @@ public class VIPServiceImpl implements VIPService {
 
     @Override
     public JSON findAllVipCards(double limitation) {
-        List<VIPCard> vipCards = vipCardRepository.findAll().stream()
-                .filter(item -> {
-                    String id = item.getCardId();
-                    double value = historyRepository.findAllByVipId(id)
-                            .stream()
-                            .map(h -> h.getAmount()).reduce((v1, v2) -> v1 + v2).get();
-                    return value >= limitation;
-                }).collect(Collectors.toList());
+        try {
+            List<VIPCard> vipCards = vipCardRepository.findAll().stream()
+                    .filter(item -> {
+                        String id = item.getCardId();
+                        double value = historyRepository.findAllByVipId(id)
+                                .stream()
+                                .map(VIPRechargeHistory::getAmount).reduce((v1, v2) -> v1 + v2).get();
+                        return value >= limitation;
+                    }).collect(Collectors.toList());
 
-        return Response.success(vipCards);
+            return Response.success(vipCards);
+        }catch (Exception e){
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+
     }
 
 }
