@@ -18,9 +18,15 @@
                 <div class="VIPInfo_record">
                   <el-collapse v-model="activeNames">
                     <el-collapse-item title="充值记录" name="1">
-                      <div v-for="(record, index) in rechargeList" :key="index">
+                      <div v-for="(record, index) in history" :key="index">
                         <span>充值金额：{{record.amount}}</span><span>充值时间：{{record.time}}</span>
                       </div>
+                      <el-pagination
+                        layout="prev, pager, next"
+                        :total="rechargeList.length"
+                        :current-page.sync="currentPage"
+                        :page-size="5">
+                      </el-pagination>
                     </el-collapse-item>
                   </el-collapse>
                 </div>
@@ -37,12 +43,18 @@ export default {
     },
     data(){
         return{
+          currentPage: 1,
             tabPosition:'left',
             activeNames: ['1'],
             amount: '',
             vipInfo: {},
             rechargeList: []
         }
+    },
+    computed: {
+      history: function () {
+        return this.rechargeList.slice((this.currentPage-1)*5, this.currentPage*5)
+      }
     },
     methods: {
       getNowFormatDate() {
@@ -109,9 +121,11 @@ export default {
     margin-right: 30px;
     margin-bottom: 30px;
   }
-  .el-collapse-item__content{
+  .el-collapse-item__content{padding-bottom: 0;
     >div{
-      height: 50px; line-height: 50px;
+      height: 40px; line-height: 40px;
+      width: fit-content;
+      margin: 0 auto;
       >span{
         width: 200px;
         display: inline-block;
