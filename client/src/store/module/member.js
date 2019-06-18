@@ -1,4 +1,4 @@
-import {purchaseMemberCard, getMemberInfo, rechargeVIP, getRechargeHistory} from "../../service/memberService";
+import {purchaseMemberCard, getMemberInfo, rechargeVIP, getRechargeHistory, getMemberList} from "../../service/memberService";
 
 const state = {
   basicInfo: {
@@ -61,6 +61,14 @@ const actions = {
   async getRechargeHistory({}, payload) {
     return getRechargeHistory({
       userId: payload.userId
+    }).then(response => {
+      return response
+    });
+  },
+
+  async getMemberList({}, payload) {
+    return getMemberList({
+      limitation: payload.limitation
     }).then(response => {
       return response
     });

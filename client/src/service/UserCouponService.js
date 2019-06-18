@@ -25,3 +25,25 @@ export function getCouponList({userId}) {
     return dealResponse(res)
   })
 }
+
+// 获取优惠策略列表
+export function getCouponStrategyList() {
+  return doGet({
+    url: '/coupon/strategy/list',
+  }).then(res => {
+    return dealResponse(res)
+  })
+}
+
+// 主动给予指定会员以优惠券
+export function giveCoupon({vipIdList,couponId}) {
+  return doPost({
+    url: '/coupon/vip',
+    body: {
+      vipIdList: vipIdList,
+      couponId: couponId,
+    }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}

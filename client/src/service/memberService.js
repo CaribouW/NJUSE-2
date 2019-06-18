@@ -49,3 +49,14 @@ export function getRechargeHistory({userId}) {
     return dealResponse(res)
   })
 }
+
+export function getMemberList({limitation}) {
+  return doGet({
+    url: '/vip/list',
+    params: {
+      limitation: limitation,
+    }
+  }).then(res => {
+    return dealResponse(res)
+  })
+}

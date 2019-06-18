@@ -1,4 +1,5 @@
 import {getCoupon} from '../../service/couponService.js'
+import {getCouponStrategyList ,giveCoupon} from '../../service/UserCouponService.js'
 const state = {
   userId:'',
 };
@@ -8,6 +9,21 @@ const actions = {
   async getCoupon({}, userId) {
     return getCoupon({
       userId: userId
+    }).then(res => {
+      return res
+    })
+  },
+
+  async getCouponStrategyList({}, userId) {
+    return getCouponStrategyList().then(res => {
+      return res
+    })
+  },
+
+  async giveCoupon({}, {vipIdList,couponId}) {
+    return giveCoupon({
+      vipIdList: vipIdList,
+      couponId: couponId
     }).then(res => {
       return res
     })

@@ -79,7 +79,7 @@ export default {
           userId: sessionStorage.getItem('userId')
         }).then(res => {
           console.log(res)
-          this.rechargeList = res.rechargeList
+          this.rechargeList = res.rechargeList.reverse()
           console.log(this.rechargeList)
         }).catch(err => {
           console.log(err)
