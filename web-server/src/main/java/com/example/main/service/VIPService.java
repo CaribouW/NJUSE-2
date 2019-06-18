@@ -8,6 +8,9 @@ public interface VIPService {
 
     JSON findVipByUid(String uid);
 
+    /**
+     * 会员卡充值
+     * */
     JSON recharge(JSONObject req);
 
     /**

@@ -8,9 +8,8 @@ import com.example.main.core.enums.ResponseType;
 import com.example.main.core.response.Response;
 import com.example.main.model.VIPCard;
 import com.example.main.model.VIPRechargeHistory;
-import com.example.main.repository.CouponRepository;
-import com.example.main.repository.VIPCardRepository;
-import com.example.main.repository.VIPRechargeHistoryRepository;
+import com.example.main.model.VIPRechargeStrategy;
+import com.example.main.repository.*;
 import com.example.main.service.VIPService;
 import com.example.main.utils.DateUtils;
 import com.example.main.utils.IDUtils;
@@ -35,6 +34,8 @@ public class VIPServiceImpl implements VIPService {
     @Autowired
     private VIPRechargeHistoryRepository historyRepository;
     @Autowired
+    private VIPRechargeStrategyRepo vipRechargeStrategyRepo;
+    @Autowired
     private DateUtils dateUtils;
     @Autowired
     private IDUtils idUtils;
@@ -56,7 +57,7 @@ public class VIPServiceImpl implements VIPService {
             //save
             vipCardRepository.save(vipCard);
             //recharge His
-            VIPRechargeHistory history=new VIPRechargeHistory();
+            VIPRechargeHistory history = new VIPRechargeHistory();
             history.setVipId(vipCard.getCardId());
             history.setRechargeTime(new Date());
             history.setAmount(cardBalance);
@@ -65,7 +66,9 @@ public class VIPServiceImpl implements VIPService {
             //response
             JSONObject res = new JSONObject();
             res.put("VIPCardId", vipCard.getCardId());
-            res.put("VIPLevel", "VIP");
+            VIPRechargeStrategy strategy = getVipLevel(uid);
+            res.put("VIPLevel", strategy.getRankName());
+            res.put("discount", strategy.getDiscount());
             return Response.success(res);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
@@ -79,10 +82,13 @@ public class VIPServiceImpl implements VIPService {
             if (null == vipCard) {
                 return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
             }
+            //获取指定策略
+            VIPRechargeStrategy strategy = getVipLevel(uid);
             JSONObject res = new JSONObject();
             res.put("VIPCardId", vipCard.getCardId());
             res.put("VIPCardBalance", vipCard.getRemainValue());
-            res.put("VIPLevel", vipCard.getVipLevel());
+            res.put("VIPLevel", strategy.getRankName());
+            res.put("discount", strategy.getDiscount());
             res.put("ownDate", vipCard.getOwnDate());
             return Response.success(res);
         } catch (Exception e) {
@@ -94,15 +100,15 @@ public class VIPServiceImpl implements VIPService {
     public JSON recharge(JSONObject req) {
         double amount = req.getDouble("rechargeAmount");
         String id = req.getString("VIPCardId");
-//        String rechargeTime = req.getString("rechargeTime");
         try {
             VIPCard vipCard =
                     vipCardRepository.findVIPCardByCardId(id);
             if (null == vipCard) {
                 return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
             }
+            VIPRechargeStrategy strategy = getVipLevel(vipCard.getUserId());
             //update remain
-            vipCard.setRemainValue(amount + vipCard.getRemainValue());
+            vipCard.setRemainValue(amount / strategy.getDiscount() + vipCard.getRemainValue());
             //insert history
             VIPRechargeHistory history = new VIPRechargeHistory();
             history.setId(idUtils.getUUID32());
@@ -155,10 +161,30 @@ public class VIPServiceImpl implements VIPService {
                     }).collect(Collectors.toList());
 
             return Response.success(vipCards);
-        }catch (Exception e){
+        } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
 
     }
 
+    private VIPRechargeStrategy getVipLevel(String uid) {
+        double amount = fetchRechargeAmount(uid);
+        List<VIPRechargeStrategy> strategys = vipRechargeStrategyRepo.findAll();
+        strategys.sort((o1, o2) -> (int) (o1.getMinRecharge() - o2.getMinRecharge()));
+        for (VIPRechargeStrategy strategy : strategys) {
+            if (strategy.getMinRecharge() >= amount) {
+                return strategy;
+            }
+        }
+        //否则返回最高的
+        return strategys.get(strategys.size() - 1);
+    }
+
+    private double fetchRechargeAmount(String uid) {
+        return
+                historyRepository.findAllByUserId(uid)
+                        .stream()
+                        .map(VIPRechargeHistory::getAmount)
+                        .reduce(Double::sum).get();
+    }
 }

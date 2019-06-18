@@ -9,17 +9,10 @@ import javax.persistence.Table;
 @Table(name = "vip_recharge_strategy")
 public class VIPRechargeStrategy {
     private String id;
-    private double amount;
-    private double discount;
-
-    @Column(name = "amount")
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    private String rankName;    //会员级别名称
+    private String rank;        //会员级别
+    private double minRecharge; //初始充值最低值
+    private double discount;    //减免的充值比例， 0 - 1
 
     @Id
     @Column(name = "id", length = 32, nullable = false)
@@ -39,5 +32,29 @@ public class VIPRechargeStrategy {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+
+    public String getRankName() {
+        return rankName;
+    }
+
+    public void setRankName(String rankName) {
+        this.rankName = rankName;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public double getMinRecharge() {
+        return minRecharge;
+    }
+
+    public void setMinRecharge(double minRecharge) {
+        this.minRecharge = minRecharge;
     }
 }

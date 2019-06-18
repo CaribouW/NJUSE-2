@@ -27,8 +27,6 @@ public class StrategyServiceImpl implements StrategyService {
     @Autowired
     private CouponRepository couponRepository;
     @Autowired
-    private VIPStrategyRepository vipStrategyRepository;
-    @Autowired
     private RefundStrategyRepository refundStrategyRepository;
     @Autowired
     private VIPRechargeStrategyRepo vipRechargeStrategyRepo;
@@ -167,19 +165,7 @@ public class StrategyServiceImpl implements StrategyService {
     @Override
     public JSON getVIPStrategy() {
         try {
-            List<VIPStrategy> strategies =
-                    vipStrategyRepository.findAll();
-            JSONArray array = new JSONArray();
-
-            strategies.forEach(item -> {
-                JSONObject object = new JSONObject();
-                object.put("rankName", item.getRankName());
-                object.put("rank", item.getRank());
-                object.put("rechargePrice", item.getMinRecharge());
-                object.put("discount", item.getDiscount());
-                array.add(object);
-            });
-            return Response.success(array);
+            return Response.success(vipRechargeStrategyRepo.findAll());
         } catch (NullPointerException e) {
             return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
         } catch (Exception e) {
@@ -193,7 +179,7 @@ public class StrategyServiceImpl implements StrategyService {
             req.stream()
                     .map(item -> jsonUtils.toJSONObject(item))
                     .forEach(item -> {
-                        VIPStrategy strategy = new VIPStrategy();
+                        VIPRechargeStrategy strategy = new VIPRechargeStrategy();
                         if (item.getString("id") == null) {
                             strategy.setId(idUtils.getUUID32());
                         } else
@@ -202,11 +188,11 @@ public class StrategyServiceImpl implements StrategyService {
                         strategy.setMinRecharge(item.getDouble("rechargePrice"));
                         strategy.setRankName(item.getString("rankName"));
                         strategy.setDiscount(item.getDouble("discount"));
-                        if (!vipStrategyRepository.existsById(strategy.getId())) {
+                        if (!vipRechargeStrategyRepo.existsById(strategy.getId())) {
                             throw new NullPointerException();
                         }
                         //save
-                        vipStrategyRepository.saveAndFlush(strategy);
+                        vipRechargeStrategyRepo.saveAndFlush(strategy);
                     });
             return Response.success(null);
         } catch (NullPointerException e) {
@@ -214,6 +200,25 @@ public class StrategyServiceImpl implements StrategyService {
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }
+    }
+
+    @Override
+    public JSON newVIPStrategy(VIPRechargeStrategy strategy) {
+        try {
+            strategy.setId(idUtils.getUUID32());
+            vipRechargeStrategyRepo.save(strategy);
+            return Response.success(strategy);
+        } catch (Exception e) {
+            return Response.fail(ResponseType.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public JSON removeVIPStrategy(String sid) {
+        if (!vipRechargeStrategyRepo.existsById(sid))
+            return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+        vipRechargeStrategyRepo.deleteById(sid);
+        return Response.success(null);
     }
 
     @Override
@@ -262,23 +267,6 @@ public class StrategyServiceImpl implements StrategyService {
         try {
             refundStrategyRepository.deleteById(id);
             return Response.success(null);
-        } catch (Exception e) {
-            return Response.fail(ResponseType.UNKNOWN_ERROR);
-        }
-    }
-
-    @Override
-    public JSON newStrategyVIP(Double amount, Double discount) {
-        try {
-            VIPRechargeStrategy rechargeStrategy
-                    = new VIPRechargeStrategy();
-            vipRechargeStrategyRepo.deleteAll();
-            rechargeStrategy.setId(idUtils.getUUID32());
-            rechargeStrategy.setAmount(amount);
-            rechargeStrategy.setDiscount(discount);
-
-            vipRechargeStrategyRepo.save(rechargeStrategy);
-            return Response.success(rechargeStrategy);
         } catch (Exception e) {
             return Response.fail(ResponseType.UNKNOWN_ERROR);
         }

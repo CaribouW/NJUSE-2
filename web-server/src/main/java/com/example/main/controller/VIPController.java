@@ -3,6 +3,7 @@ package com.example.main.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.model.VIPRechargeStrategy;
 import com.example.main.service.StrategyService;
 import com.example.main.service.VIPService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class VIPController {
         return vipService.recharge(req);
     }
 
+    /**
+     * 会员卡消费
+     */
     @PutMapping("/consume")
     public JSON vipConsume(@RequestBody JSONObject req) {
         return vipService.consume(req);
@@ -61,19 +65,29 @@ public class VIPController {
         return strategyService.getVIPStrategy();
     }
 
+    /**
+     * 会员卡策略更新
+     */
     @PutMapping("/strategy")
     public JSON updateStrategyList(@RequestBody JSONArray req) {
         return strategyService.updateVIPStrategy(req);
     }
 
+    /**
+     * 新增会员策略
+     */
     @PostMapping("/strategy/recharge")
-    public JSON newStrategyVIP(@RequestBody JSONObject req) {
-        return strategyService.newStrategyVIP(req.getDouble("amount"),
-                req.getDouble("discount"));
+    public JSON newStrategyVIP(@RequestBody VIPRechargeStrategy strategy) {
+        return strategyService.newVIPStrategy(strategy);
     }
 
     @GetMapping("/list")
     public JSON getAllVipCards(@RequestParam(name = "limitation", defaultValue = "0") double limitation) {
         return vipService.findAllVipCards(limitation);
+    }
+
+    @DeleteMapping("/strategy/recharge")
+    public JSON removeStrategyVIP(@RequestParam(value = "id") String sid) {
+        return strategyService.removeVIPStrategy(sid);
     }
 }

@@ -3,6 +3,7 @@ package com.example.main.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.main.model.VIPRechargeStrategy;
 
 public interface StrategyService {
     /**
@@ -39,8 +40,18 @@ public interface StrategyService {
      */
     JSON updateVIPStrategy(JSONArray req);
 
+    /**
+     * 添加新的会员策略
+     * */
+    JSON newVIPStrategy(VIPRechargeStrategy strategy);
+
+    /**
+     * 删除会员策略
+     * */
+    JSON removeVIPStrategy(String sid);
 
     //----------------------------------------------------------------------
+
 
     /**
      * 获取退票策略列表
@@ -63,5 +74,4 @@ public interface StrategyService {
      * */
     JSON removeRefundStrategy(String id);
 
-    JSON newStrategyVIP(Double amount, Double discount);
 }
