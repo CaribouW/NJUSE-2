@@ -23,7 +23,7 @@ export function addActivity({movies,couponNumber,conditionPrice,discountPrice,en
 export function deleteActivity({couponId}){
   return doDelete({
     url: "/coupon/strategy",
-    params: {
+    data: {
       couponId: couponId
     }
   })
