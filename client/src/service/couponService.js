@@ -73,3 +73,15 @@ export function getCoupon({userId}) {
         
       })
   }
+
+  export function useCoupon({couponId,userId}){
+    return doPut({
+      url: "/coupon",
+      body: {
+        couponId: couponId,
+        userId: userId
+      }
+    }).then(res => {
+      return dealResponse(res)
+    })
+  }

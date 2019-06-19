@@ -4,7 +4,8 @@
       <b>会员信息</b>
     </div>
     <div class="info_body">
-      <p class="info_level">会员等级：黄金会员</p>
+      <p class="info_level">会员等级：{{vipInfo.VIPLevel}}</p>
+      <p>会员折扣：{{vipInfo.discount*10}}折</p>
       <p class="info_balance">会员卡余额：¥ {{vipInfo.VIPCardBalance}}</p>
       <p>会员卡号：5343765353259682</p>
       <el-input
@@ -150,6 +151,11 @@
           display: inline-block;
         }
       }
+    }
+
+    .el-collapse-item__header{
+      padding-left: 20px;
+      font-size: 18px;
     }
   }
 

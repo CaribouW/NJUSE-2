@@ -33,33 +33,33 @@
               <span class="basicInfo_title">基本信息</span>
               <div class="movie_info_content_basicInfo">
                 <div>中文名</div>
-                <div>{{movieInfo.basicInfo.ChineseName}}</div>
+                <div>{{movieInfo.basicInfo.ChineseName || '无'}}</div>
                 <div>类型</div>
-                <div v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type}}</div>
+                <div v-if="movieInfo.basicInfo.type">{{movieInfo.basicInfo.type || '无'}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
                 <div>英文名</div>
-                <div>{{movieInfo.basicInfo.EnglishName}}</div>
+                <div>{{movieInfo.basicInfo.EnglishName || '无'}}</div>
                 <div>片长</div>
-                <div>{{movieInfo.basicInfo.duration}}分钟</div>
+                <div>{{movieInfo.basicInfo.duration || '无'}}分钟</div>
               </div>
               <div class="movie_info_content_basicInfo">
                 <div>出品公司</div>
-                <div>{{movieInfo.basicInfo.productionCompany}}</div>
+                <div>{{movieInfo.basicInfo.productionCompany || '无'}}</div>
                 <div>上映时间</div>
-                <div>{{movieInfo.basicInfo.showTime}}</div>
+                <div>{{movieInfo.basicInfo.showTime || '无'}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
                 <div>发行公司</div>
-                <div>{{movieInfo.basicInfo.distributionCompany}}</div>
+                <div>{{movieInfo.basicInfo.distributionCompany || '无'}}</div>
                 <div>导演</div>
-                <div>{{movieInfo.basicInfo.director}}</div>
+                <div>{{movieInfo.basicInfo.director || '无'}}</div>
               </div>
               <div class="movie_info_content_basicInfo">
                 <div>语言</div>
-                <div>{{movieInfo.basicInfo.language}}</div>
+                <div>{{movieInfo.basicInfo.language || '无'}}</div>
                 <div>imdb编码</div>
-                <div>{{movieInfo.basicInfo.imdb}}</div>
+                <div>{{movieInfo.basicInfo.imdb || '无'}}</div>
               </div>
             </div>
           </el-tab-pane>
@@ -98,7 +98,8 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="票房">票房
-            <ve-line :data="chartData"></ve-line>
+            <ve-line :data="chartData" width="800px" height="400px"></ve-line>
+            <div></div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -156,8 +157,8 @@
             <div class="seat_content_screen">
               {{hall.name}}厅 银幕
             </div>
-            <div v-for="(cols,colIndex) in seat">
-              <div v-for="(each, rolIndex) in cols" :key="">
+            <div v-for="(cols,colIndex) in seat" :key="colIndex">
+              <div v-for="(each, rolIndex) in cols" :key="rolIndex">
                 <img src="@/assets/images/movie/TIM图片20190609150257.png" alt="" v-if="each==0">
                 <img src="@/assets/images/movie/TIM图片20190609150410.png" alt="" v-if="each==1"
                      class="canSelect" @click="selectSeat(colIndex, rolIndex, $event)">
@@ -206,14 +207,26 @@
             <el-collapse-item title="电影优惠券" name="1">
               <el-radio v-model="coupon" label="1">不使用优惠券</el-radio>
               <br/>
-              <el-radio v-model="coupon" label="2">使用普通优惠券</el-radio>
+              <el-radio v-model="coupon" label="2">使用优惠券</el-radio>
+              <div v-if="coupon === '2'">
+                <el-radio v-model="couponSelect" :label="item" v-for="(item, index) in trueCoupon" :key="index">
+                  <div class="confirmOrder_coupon_each">
+                    <div>{{item.couponName}}</div>
+                    <div>满{{item.useCondition}}减{{item.couponAmount}}</div>
+                  </div>
+                </el-radio>
+                <div v-if="falseCoupon.length !== 0">不满足条件的优惠券</div>
+                <div v-if="falseCoupon.length !== 0" class="confirmOrder_coupon_each" v-for="(item, index) in falseCoupon" :key="index">
+                  <div>{{item.couponName}}</div>
+                  <div>满{{item.useCondition}}减{{item.couponAmount}}</div>
+                </div>
+              </div>
               <br/>
-              <el-radio v-model="coupon" label="3">使用会员优惠券</el-radio>
             </el-collapse-item>
           </el-collapse>
         </div>
         <div class="confirmOrder_price">
-          <span>票价总计</span><span>{{totalPrice}}元</span>
+          <span>票价总计</span><span>{{needPrice}}元</span>
         </div>
         <div class="confirmOrder_know">
           <h3>购票须知</h3>
@@ -229,7 +242,7 @@
           </li>
         </div>
         <div class="confirmOrder_pay">
-          <span>不支持退票/改签</span><span>应付：<span>{{totalPrice}}元</span></span>
+          <span>不支持退票/改签</span><span>应付：<span>{{needPrice}}元</span></span>
           <div class="confirmOrder_pay_buttom" @click="pay()">立即付款</div>
         </div>
         <div slot="title" class="header-title">
@@ -243,7 +256,7 @@
         :modal-append-to-body='false'
         top="20vh"
         width="40%">
-        <div class="movie_pay_price">¥{{totalPrice}}元</div>
+        <div class="movie_pay_price">¥{{needPrice}}元</div>
         <el-radio-group v-model="payRadio">
           <el-radio label="1">会员卡支付</el-radio>
           <el-radio label="2">银行卡支付</el-radio>
@@ -313,9 +326,9 @@
           </div>
         </div>
         <div class="movie_paySuccess_orderDetail">
-          <li>实付金额: <span>{{totalPrice}}元</span></li>
-          <li>订单号：2777777777777777777</li>
-          <li>购买时间：2019-05-07 18：18：46</li>
+          <li>实付金额: <span>{{needPrice}}元</span></li>
+          <li>订单号：277647390117524527</li>
+          <li>购买时间：{{nowTime}}</li>
           <li>电影票由凉凉电影院提供</li>
         </div>
         <div slot="title" class="header-title">
@@ -336,20 +349,21 @@
     },
     data() {
       return {
+        nowTime: '2019-06-07 18：18：46',
         favorList: [],
         ticketInfo: {},
         hall: {},
         chartData: {
-          columns: ['日期', '余额', '比率'],
-          rows: [
-            {'日期': '1月1日', '余额': 123, '比率': 0.3},
-            {'日期': '1月2日', '余额': 1223, '比率': 0.6},
-            {'日期': '1月3日', '余额': 2123, '比率': 0.9},
-            {'日期': '1月4日', '余额': 4123, '比率': 0.12},
-            {'日期': '1月5日', '余额': 3123, '比率': 0.15},
-            {'日期': '1月6日', '余额': 7123, '比率': 0.20}
-          ]
-        },
+            columns: ['日期', '票房'],
+            rows: [
+              { '日期': '6月1日', '票房': 1231 },
+              { '日期': '6月2日', '票房': 1223 },
+              { '日期': '6月3日', '票房': 2123 },
+              { '日期': '6月4日', '票房': 4123 },
+              { '日期': '6月5日', '票房': 3123 },
+              { '日期': '6月6日', '票房': 7123 }
+            ]
+          },
         // 座位
         seat: [],
 
@@ -384,7 +398,12 @@
         oTimer: null,
         schedule: [],
         orderId: '',
-        favorCounter: 0
+        favorCounter: 0,
+        // 用户优惠券
+        couponList: [],
+        couponSelect: {
+          couponAmount: 0
+        }
       }
     },
     computed: {
@@ -402,6 +421,9 @@
       },
       totalPrice: function () {
         return this.selectedSeat.length * this.ticketInfo.ticketPrize
+      },
+      needPrice: function () {
+        return this.totalPrice - this.couponSelect.couponAmount
       },
       scheduleDate: function () {
         var arr = []
@@ -427,9 +449,39 @@
           });
           return ret
         }
+      },
+      trueCoupon: function () {
+        var ret = []
+        this.couponList.forEach(element => {
+          if (element.useCondition <= this.totalPrice && element.state == 1) {
+            ret.push(element)
+          }
+        });
+        return ret
+      },
+      falseCoupon: function () {
+        var ret = []
+        this.couponList.forEach(element => {
+          if (element.useCondition > this.totalPrice && element.state == 1) {
+            ret.push(element)
+          }
+        });
+        return ret
       }
     },
     methods: {
+      getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var strDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
+        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+          + " " + hours + seperator2 + minutes
+        return currentdate;
+      },
       checkQuickPurchase() {
         if (this.$store.state.movie.quickPurchase) {
           this.selectSeatDialogVisible = true
@@ -440,6 +492,7 @@
           userId: sessionStorage.getItem('userId'),
           movieId: this.$route.query.movieId,
         }).then(res => {
+          console.log(res)
           this.getFavorList()
           this.getFavorCounter()
         })
@@ -466,6 +519,17 @@
           userId: sessionStorage.getItem('userId')
         }).then(res => {
           this.favorList = res
+          console.log(this.favorList)
+        })
+      },
+      // 消耗优惠券
+      useCoupon() {
+        console.log(this.couponSelect)
+        this.$store.dispatch('useCoupon', {
+          userId: sessionStorage.getItem('userId'),
+          couponId: this.couponSelect.couponUserId
+        }).then(res => {
+          console.log(res)
         })
       },
       // 返回首页
@@ -554,6 +618,7 @@
           if (res.orderId) {
             this.orderId = res.orderId
             this.payDialogVisible = true
+            this.useCoupon()
           } else {
             this.$message.error('出错了')
           }
@@ -561,9 +626,14 @@
       },
       // 银行卡付款
       payByBank() {
-        this.payDialogVisible = false
-        this.confirmOrderDialogVisible = false
-        this.paySuccessDialogVisible = true
+        if (this.bank.account === '12345678' && this.bank.password === '12345678') {
+          this.payDialogVisible = false
+          this.confirmOrderDialogVisible = false
+          this.paySuccessDialogVisible = true
+          this.nowTime = this.getNowFormatDate()
+        } else {
+          this.$message.error('账号密码错误！')
+        }
       },
       // 会员卡付款
       payByMember() {
@@ -571,7 +641,7 @@
         this.confirmOrderDialogVisible = false
         this.$store.dispatch('consume', {
           userId: sessionStorage.getItem('userId'),
-          consumption: this.totalPrice,
+          consumption: this.needPrice,
           orderId: this.orderId,
         }).then(res => {
           console.log(res)
@@ -579,6 +649,7 @@
             this.$message.error('您的余额不足，请充值。')
           } else {
             this.paySuccessDialogVisible = true
+            this.nowTime = this.getNowFormatDate()
           }
         })
 
@@ -607,6 +678,7 @@
         movieId: this.$route.query.movieId
       }).then(res => {
         this.movieInfo = res
+        console.log(this.movieInfo)
       })
       // 获取电影排片
       _this.$store.dispatch('getMovieSchedule').then(res => {
@@ -615,6 +687,13 @@
             _this.schedule.push(obj)
           }
         })
+      })
+      // 获取用户拥有优惠券
+      _this.$store.dispatch('getCoupon', {
+        userId: sessionStorage.getItem('userId'),
+      }).then(res => {
+        console.log(res)
+        _this.couponList = res
       })
       // 获取
       _this.getFavorList()
@@ -631,7 +710,6 @@
       margin: 20px 0;
       padding-bottom: 40px;
       position: relative;
-
       &_mark, &_purchase {
         position: absolute;
         width: 240px;
@@ -774,7 +852,7 @@
           }
 
           > div:nth-of-type(even) {
-            width: 400px;
+            width: 350px;
           }
 
           > div:last-of-type {
@@ -1108,7 +1186,14 @@
         background-color: #343331;
         text-align-last: left;
         padding: 0 30px;
-
+        &_each{
+          width: 150px;
+          height: 60px;
+          display: inline-block;
+          margin-left: 20px;
+          border: 1px solid #CFF9FE;
+          >div{margin: 0 auto; width: fit-content; line-height: 30px;}
+        }
         > h3 {
           height: 50px;
           line-height: 50px;
@@ -1118,6 +1203,11 @@
           display: block;
         }
 
+        .el-collapse-item__content{
+          >div{
+            .el-radio{display: inline-block;}
+          }
+        }
         .el-collapse-item__wrap, .el-collapse-item__header {
           background-color: #343331;
           border: none;

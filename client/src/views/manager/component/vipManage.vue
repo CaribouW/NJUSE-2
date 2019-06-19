@@ -1,6 +1,6 @@
 <template>
   <div class="vipManage">
-    <el-collapse>
+    <el-collapse accordion>
       <el-collapse-item title="会员卡购买" name="1">
         <el-divider direction="horizontal"></el-divider>
         <el-form ref="cardForm" :model="cardForm" label-width="120px">
@@ -20,20 +20,13 @@
             </el-col>
           </el-form-item>
         </el-form>
-<!--        <div class="vip_buy">-->
-<!--          会员卡购买价格:-->
-<!--          <el-input v-model="cardForm.price"></el-input>-->
-<!--          购买赠送金额：-->
-<!--          <el-input v-model="cardForm.bonus"></el-input>-->
-<!--          <el-button round class="modify" @click="modifyPurchase">确定修改</el-button>-->
-<!--        </div>-->
       </el-collapse-item>
       <el-collapse-item title="会员卡优惠策略" name="2">
         <el-divider direction="horizontal"></el-divider>
         <div class="vip_strategy">
           <div class="table">
             <el-table
-              :data="tableData"
+              :data="VipStrategyForm"
               border
               :fit="true"
               style="width: 100%">
@@ -43,7 +36,7 @@
                 width="100">
               </el-table-column>
               <el-table-column
-                prop="name"
+                prop="rankName"
                 label="会员名称">
               </el-table-column>
               <el-table-column
@@ -55,7 +48,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-button round class="modify" @click="goModify()">确定修改</el-button>
+            <el-button round class="modify" @click="modifyVipStrategy()">确定修改</el-button>
           </div>
         </div>
       </el-collapse-item>
@@ -125,21 +118,9 @@
           price: '',
           bonus: '',
         },
-        tableData: [{
-          rank: 'VIP 1',
-          name: '青铜会员',
-          discount: '',
-        }, {
-          rank: 'VIP 2',
-          name: '白银会员',
-          discount: '',
-        }, {
-          rank: 'VIP 3',
-          name: '黄金会员',
-          discount: '',
-        }],
         couponID: '',
-        vips: [],
+        vips: [], 
+        VipStrategyForm: []
       }
     },
     methods: {
@@ -160,6 +141,43 @@
           vipIdList: this.vips,
           couponId: this.couponID
         }).then(res => {
+          this.$message.success('赠送成功')
+        })
+      },
+      modifyVipStrategy() {
+        var vipRank = []
+        var vip1 = {}
+        vip1.rank = '1'
+        vip1.rankName = '青铜会员'
+        vip1.rechargePrice = 500
+        vip1.discount = this.VipStrategyForm[0].discount
+        vip1.id = this.VipStrategyForm[0].id
+        vipRank.push(vip1)
+        var vip2 = {}
+        vip2.rank = '2'
+        vip2.rankName = '白银会员'
+        vip2.rechargePrice = 1000
+        vip2.discount = this.VipStrategyForm[1].discount
+        vip2.id = this.VipStrategyForm[1].id
+        vipRank.push(vip2)
+        var vip3 = {}
+        vip3.rank = '3'
+        vip3.id = this.VipStrategyForm[2].id
+        vip3.rankName = '黄金会员'
+        vip3.rechargePrice = 5000
+        vip3.discount = this.VipStrategyForm[2].discount
+        vipRank.push(vip3)
+        var vip4 = {}
+        vip4.rank = '4'
+        vip4.id = this.VipStrategyForm[3].id
+        vip4.rankName = '尊贵皇族会员'
+        vip4.rechargePrice = 10000
+        vip4.discount = this.VipStrategyForm[3].discount
+        vipRank.push(vip4)
+        // console.log(vipRank)
+        this.$store.dispatch('modifyVipStrategy', {
+          vipRank: vipRank,
+        }).then(res => {
           console.log(res)
         })
       }
@@ -168,8 +186,10 @@
       this.cardForm.price = localStorage.getItem('price')
       this.cardForm.bonus = localStorage.getItem('bonus')
       this.$store.dispatch('getCouponStrategyList').then(res => {
-        console.log(res)
         this.couponForm.couponList = res
+      })
+      this.$store.dispatch('getVipStrategy').then(res => {
+        this.VipStrategyForm = res
       })
     },
     computed: {}

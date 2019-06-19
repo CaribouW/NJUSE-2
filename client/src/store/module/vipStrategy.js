@@ -8,10 +8,7 @@ const getters = {
 const actions = {  
   async modifyVipStrategy({commit, state}, payload) { 
     return modifyVipStrategy({
-        rechargePrice:payload.rechargePrice,
-        rankName:payload.rankName,
-        rank:payload.rank,
-        discount:payload.discount
+      vipRank: payload.vipRank
     }).then(res => { 
       console.log(res)
       return res

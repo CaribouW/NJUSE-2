@@ -1,4 +1,4 @@
-import {getCoupon} from '../../service/couponService.js'
+import {getCoupon, useCoupon  } from '../../service/couponService.js'
 import {getCouponStrategyList ,giveCoupon} from '../../service/UserCouponService.js'
 const state = {
   userId:'',
@@ -6,10 +6,11 @@ const state = {
 const getters = {}; 
 
 const actions = {
-  async getCoupon({}, userId) {
+  async getCoupon({}, payload) {
     return getCoupon({
-      userId: userId
+      userId: payload.userId
     }).then(res => {
+      console.log(res)
       return res
     })
   },
@@ -25,6 +26,16 @@ const actions = {
       vipIdList: vipIdList,
       couponId: couponId
     }).then(res => {
+      return res
+    })
+  },
+
+  async useCoupon({}, {couponId, userId}) {
+    return useCoupon({
+      couponId: couponId,
+      userId: userId
+    }).then(res => {
+      console.log(res)
       return res
     })
   },
