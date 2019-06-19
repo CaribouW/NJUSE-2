@@ -1,6 +1,6 @@
 <template>
   <div class="history">
-    <div class="cards" v-for="order in data_getHistory" :key="order.order.orderId">
+    <div class="cards" v-for="order in data_getHistory_sorted" :key="order.order.orderId">
       <history_card :cardMsg="order"></history_card>
     </div>
   </div>
@@ -33,12 +33,25 @@
       this.updateHistoryList()
 
     },
-
+    computed: {
+      data_getHistory_sorted: function(){
+        return this.data_getHistory.sort(this.orderSort)
+      }
+    },
     methods: {
       updateHistoryList: function () {
         this.$store.dispatch('getHistory', sessionStorage.getItem('userId')).then(res => {
           this.data_getHistory = res.orderList
         });
+      },
+      orderSort: function(a,b){
+        var time1 = new Date(a.slot.startTime)
+        var time2 = new Date(b.slot.startTime)
+        if (time1<=time2){
+          return 1
+        }else{
+          return -1
+        }
       }
 
 
