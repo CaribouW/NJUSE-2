@@ -6,9 +6,9 @@ const state = {
 const getters = {}; 
 
 const actions = {
-  async getCoupon({}, payload) {
+  async getCoupon({}, userId) {
     return getCoupon({
-      userId: payload.userId
+      userId: userId
     }).then(res => {
       console.log(res)
       return res

@@ -6,15 +6,22 @@
           会员优惠券
         </span><br/>
         <div class="coupon_pattern" v-for="coupon in coupons" :key="coupon.couponId">
+          <el-row>
           <div class="couponCard">
+            <el-col :span="12">
             <div class="coupon_info">
               <b>{{coupon.couponName}} </b>  
               <b>  -{{coupon.couponAmount}}</b><br/>  
-              <span>最低使用金额:{{coupon.useCondtion}}</span><br/>
-              <span style="font-size:12px;">{{coupon.startDate}} ～ {{coupon.endDate}}</span>
+              <span style="font-size:14px;">最低使用金额:{{coupon.useCondtion}}</span><br/>
+              <span style="font-size:12px;">{{coupon.startDate}} ～ </span><br/>
+              <span style="font-size:12px;">{{coupon.endDate}}</span>
             </div>
-              <el-button round >立即使用</el-button>
+            </el-col>
+            <el-col :span="1">
+              <el-button round @click="goMovieList">立即使用</el-button>
+              </el-col>
         </div>
+        </el-row>
         </div>
       </div>
     </div>
@@ -35,13 +42,14 @@ export default {
   },
   methods: {
     goMovieList() {
-            this.$router.push("/movielist")
-        },
+      this.$router.push("/movielist")
+    },
   },
   /**
    * 页面加载之前获取数据
    */
   created: function () {
+    console.log(sessionStorage.getItem('userId'))
     var that = this;
       this.$store.dispatch('getCoupon', sessionStorage.getItem('userId')).then(res => {
         this.coupons=res
@@ -68,12 +76,12 @@ export default {
         background-image: url('../../assets/images/coupon/coupon.png');
         background-repeat: no-repeat;
         background-size: 100%;
-        width: 300px;
-        height: 90px;
+        width: 360px;
+        height: 110px;
         margin: 10px;
 
       .coupon_info{
-        margin-left: 15px;
+        margin-left: 25px;
         font-size: 16px;
         padding-top:5px;
 
@@ -89,8 +97,8 @@ export default {
   }
 
   .el-button{
-    margin-top: 22px;
-    padding: 8px 208px;
+    padding-top : 40px;
+    padding-left: 78px;
     background-color: transparent;
     font-size: 16px;
     color: #ffffff;
