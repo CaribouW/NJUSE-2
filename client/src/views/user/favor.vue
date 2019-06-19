@@ -53,7 +53,8 @@ export default {
   },
   methods: {
     updateFavorList:function(){
-      this.$store.dispatch('getFavorList', sessionStorage.getItem('userId')).then(res => {
+      this.$store.dispatch('getFavorList', {
+        userId:sessionStorage.getItem('userId'),}).then(res => {
         this.favorList=res
         console.log(this.favorList)
         this.handleState()
