@@ -34,6 +34,8 @@ public class CouponServiceImpl implements CouponService {
     private MapperMovieCouponRepository movieCouponRepository;
     @Autowired
     private VIPRechargeHistoryRepository historyRepository;
+    @Autowired
+    private MapperUserCouponRepository mapperUserCouponRepository;
 
     @Autowired
     private DateUtils dateUtils;
@@ -45,28 +47,32 @@ public class CouponServiceImpl implements CouponService {
         try {
             //得到用户拥有的coupon类别
             List<Coupon> coupons = couponRepository.findCouponsByUserId(uid);
-            //
+            List<MapperUserCoupon> mapperUserCoupons =
+                    mapperUserCouponRepository.findMapperUserCouponsByUserId(uid);
             JSONArray array = new JSONArray();
-            coupons.forEach(item -> {
-                //暂时只考虑一个
-                //获取关联的个人优惠券
-                MapperUserCoupon userCoupon = userCouponRepository.findMapperUserCouponsByCouponId(item.getCouponId()).get(0);
-                JSONObject single = new JSONObject();
-                single.put("couponId", userCoupon.getId());
-                single.put("couponName", item.getName());
-                single.put("couponAmount", item.getDiscount());
-                single.put("useCondition", item.getThreshHold());
-                single.put("startDate", item.getStartDate()); //封装一个时间格式处理工具类
-                single.put("endDate", item.getEndDate());
-                single.put("type", null == userCoupon.getVipId() ? 0 : 1);
-                single.put("state", userCoupon.getState());
-                List<String> ids = movieCouponRepository.findAllByCouponId(item.getCouponId())
-                        .stream()
-                        .map(MapperMovieCoupon::getMovieId)
-                        .collect(Collectors.toList());
-                single.put("movies", ids);
-                //append to the rear
-                array.add(single);
+            mapperUserCoupons.forEach(m -> {
+                Coupon item = couponRepository.findCouponByCouponId(m.getCouponId());
+                if (null != item) {
+
+                    //暂时只考虑一个
+                    //获取关联的个人优惠券
+                    JSONObject single = new JSONObject();
+                    single.put("couponId", m.getId());
+                    single.put("couponName", item.getName());
+                    single.put("couponAmount", item.getDiscount());
+                    single.put("useCondition", item.getThreshHold());
+                    single.put("startDate", item.getStartDate()); //封装一个时间格式处理工具类
+                    single.put("endDate", item.getEndDate());
+                    single.put("type", null == m.getVipId() ? 0 : 1);
+                    single.put("state", m.getState());
+                    List<String> ids = movieCouponRepository.findAllByCouponId(item.getCouponId())
+                            .stream()
+                            .map(MapperMovieCoupon::getMovieId)
+                            .collect(Collectors.toList());
+                    single.put("movies", ids);
+                    //append to the rear
+                    array.add(single);
+                }
             });
             return Response.success(array);
         } catch (Exception e) {
@@ -79,7 +85,7 @@ public class CouponServiceImpl implements CouponService {
     public JSON consumeCoupon(String uid, String ucid) {
         try {
             MapperUserCoupon record = userCouponRepository.findMapperUserCouponById(ucid);
-            if (null == record) {
+            if (null == record || record.getState() == CouponType.USED.getCode()) {
                 return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
             }
             record.setState(CouponType.USED.getCode());
