@@ -36,6 +36,8 @@ export default {
         })
         .then(res => {
         console.log('register',res)
+        this.$message.success('注册成功!')
+        this.$router.push('/login')
       });
       }
       

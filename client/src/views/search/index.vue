@@ -6,7 +6,7 @@
         <b>{{search.name}}</b>
         <div>地区：{{search.nation}}</div>
         <div style="height:114px;">简介：{{search.briefIntro}}</div>
-        <el-button @click="onCheck">查看更多</el-button>
+        <el-button @click="onCheck(search)">查看更多</el-button>
       </div>
     </div>
     <div class="search_page">
@@ -35,8 +35,19 @@
       console.log(this.$route.query.searchList)
     },
     methods: {
-      onCheck:function(){
-        // this.$router.push('../movie/detail?movieId=' + this.search.movieId)
+      onCheck:function(data){
+        if (sessionStorage.getItem('userId')) {
+          this.$router.push({
+            path: '/movie/detail',
+            query: {
+              movieId: data.movieId
+            }
+          })
+        } else {
+          this.$message.error('请先登录')
+          this.$router.push('/login')
+        }
+        
       }
 
     }

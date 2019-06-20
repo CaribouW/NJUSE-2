@@ -12,7 +12,7 @@
                     <p>¥{{price}}/张</p><p>赠送{{bonus}}元</p>
                 </div>
                 <div class="card_button">
-                    <el-button round style="color:#CFF9FE;" @click="purchaseVIP()">购买</el-button>
+                    <el-button round style="color:#CFF9FE;" @click="purchaseVIP()">{{purchase}}</el-button>
                 </div>
             </div>
         </div>
@@ -29,7 +29,8 @@ export default {
         return{
             tabPosition:'left',
             price: 300,
-            bonus: 0
+            bonus: 0,
+            purchase: '购买'
         }
     },
     methods: {
@@ -42,6 +43,7 @@ export default {
           if (typeof res === 'number') {
             this.$message.error('您已是会员，请勿重复购买！')
           } else {
+            this.purchase = '您已是会员'
             this.$router.push('/VIP/VIPrights')
           }
         })
