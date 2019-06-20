@@ -28,11 +28,28 @@ export function getMovieSchedule() {
   }
 
 // 修改排片信息
-export function modifyMovieSchedule(){
-
+export function modifyMovieSchedule(movieId,hallId,startTime,endTime,price,slotId){
+    return doPut({
+      url: '/schedule',
+      body: {
+        movieId: movieId,
+        hallId: hallId,
+        startTime: startTime,
+        endTime: endTime,
+        price: price,
+        slotId: slotId
+      }
+    }).then(res => {
+      return dealResponse(res)
+    })
 }
 
 // 删除排片信息
-export function deleteMovieSchedule(){
-
+export function deleteMovieSchedule({slotId}){
+    return doDelete({
+      url: '/schedule',
+      data: {
+        slotId: slotId
+      }
+    })
 }

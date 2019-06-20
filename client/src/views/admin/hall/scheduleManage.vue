@@ -44,49 +44,49 @@
           <li class="s_m_card_content_moment_item">24:00</li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules0" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules0" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules1" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules1" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules2" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules2" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules3" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules3" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules4" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules4" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules5" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules5" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules6" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules6" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange(item)">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
@@ -153,7 +153,7 @@
   import admin from '../index.vue'
   import { getHallList } from '@/service/HallService.js'
   import { getAllMovie } from '@/service/movieService.js'
-  import { addMovieSchedule,getMovieSchedule } from '@/service/scheduleService.js'
+  import { addMovieSchedule,getMovieSchedule,modifyMovieSchedule,deleteMovieSchedule } from '@/service/scheduleService.js'
 
   export default {
     name: 'scheduleManagement',
@@ -219,6 +219,7 @@
           movieName: '',
         },
         formLabelWidth: '100px',
+        selectedSlotId: '', // 选中排片的id
         throughAdd: false,
         throughChange: false
       }
@@ -228,9 +229,17 @@
         this.throughAdd = true
         this.dialogFormVisible = true
       },
-      doChange(){
+      doChange(item){
+        this.form.movieId = item.movieId
+        this.form.movieName = item.movieName
+        this.form.startTime = new Date(item.startTime)
+        this.form.endTime = new Date(item.endTime)
+        this.form.hall = item.hallId
+        this.form.ticketPrice = item.ticketPrize
+        this.selectedSlotId = item.slotId
         this.throughChange = true
         this.dialogFormVisible = true
+        console.log(item)
       },
       onSubmit() {
         if(this.form.movieName===''){
@@ -252,7 +261,7 @@
             hallId: this.form.hall,
             startTime: this.timeToFormat(this.form.startTime),
             endTime: this.timeToFormat(this.form.endTime),
-            price: this.form.ticketPrice,
+            price: Number(this.form.ticketPrice),
             slotId: this.form.movieName
           }
           addMovieSchedule(newSchedule).then(res => {
@@ -290,6 +299,71 @@
         this.dialogFormVisible = false
         this.throughAdd = false
         this.throughChange = false
+        this.selectedSlotId = ''
+      },
+      onDelete(){
+        deleteMovieSchedule({
+          slotId: this.selectedSlotId
+        }).then( res => {
+          this.schedules.slot = this.schedules.slot.filter(function(schedule){
+            return schedule.slotId!=this.selectedSlotId
+          },this)
+          this.dialogFormVisible = false
+          this.selectedSlotId = ''
+          this.throughChange = false
+        })
+
+      },
+      onChange(){
+        if(this.form.movieName===''){
+          alert('请选择需要排片的电影')
+        }else if(this.form.movieId==''){
+          alert('您输入的电影未存在于已上架电影列表')
+        }else if(this.form.hall==''){
+          alert('请选择影厅')
+        }else if(this.form.startTime==null){
+          alert('请设置排片的开始时间')
+        }else if(this.form.endTime==null){
+          alert('请设置排片的结束时间')
+        }else if(this.form.ticketPrice==''){
+          alert('请设置场次的票价')
+        }
+        else{
+          var newSchedule = {
+            movieId: this.form.movieId,
+            hallId: this.form.hall,
+            startTime: this.timeToFormat(this.form.startTime),
+            endTime: this.timeToFormat(this.form.endTime),
+            price: Number(this.form.ticketPrice),
+            slotId: this.selectedSlotId
+          }
+          modifyMovieSchedule(newSchedule).then(res => {
+            for(var i = 0;i<this.schedules.slot.length;i++){
+              if(this.schedules.slot[i].slotId==this.selectedSlotId){
+                this.schedules.slot[i] = {
+                  movieId: newSchedule.movieId,
+                  hallId: newSchedule.hallId,
+                  startTime: newSchedule.startTime,
+                  endTime: newSchedule.endTime,
+                  ticketPrize: newSchedule.price,
+                  slotId: this.selectedSlotId
+                }
+              }
+            }
+            
+            this.form = {
+              movieId: '',
+              startTime: null,
+              endTime: null,
+              hall: '',
+              ticketPrice: '',
+              movieName: '',
+            }
+            this.dialogFormVisible = false
+            this.throughChange = false
+            this.selectedSlotId = ''
+          })
+        }
       },
       querySearch(queryString, cb) {
         var movieList = this.movieList
