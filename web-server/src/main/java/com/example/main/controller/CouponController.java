@@ -61,12 +61,18 @@ public class CouponController {
         return strategyService.addCouponStrategy(req);
     }
 
+    /**
+     * 删除优惠策略
+     * */
     @DeleteMapping("/strategy")
     public JSON deleteCoupon(@RequestBody JSONObject req) {
         return strategyService.removeCouponStrategy(req.getString("couponId"));
 
     }
 
+    /**
+     * 给予vip新的优惠券
+     * */
     @PostMapping("/vip")
     public JSON newCouponsForVip(@RequestBody JSONObject req) {
         return couponService.newCouponsForVip(req);

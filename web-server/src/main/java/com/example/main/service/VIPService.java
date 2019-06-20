@@ -4,8 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public interface VIPService {
+    /**
+     * 新增会员卡
+     * */
     JSON addVipCard(JSONObject req);
 
+    /**
+     * 根据用户id得到会员卡信息
+     * */
     JSON findVipByUid(String uid);
 
     /**

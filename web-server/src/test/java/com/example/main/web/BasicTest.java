@@ -1,5 +1,6 @@
-package com.example.main;
+package com.example.main.web;
 
+import com.example.main.MainApplication;
 import com.example.main.controller.LoginController;
 import com.example.main.controller.UserController;
 import org.junit.Before;
