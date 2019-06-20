@@ -7,6 +7,96 @@
 - 后端采用Springboot
 - Api 集成管理工具：eolinker
 
+## 项目目录架构
+
+#### 前端目录架构
+
+```
+.
+├── assets
+│   └── images
+│       ├── basicinfo
+│       ├── coupon
+│       ├── footer
+│       ├── header
+│       ├── homepage
+│       ├── Login
+│       ├── movie
+│       ├── movielist
+│       ├── preferentialpolicy
+│       ├── search
+│       ├── test
+│       └── vip
+├── components
+│   └── admin
+├── mock
+├── router
+├── service
+├── store
+│   └── module
+└── views
+    ├── admin
+    │   └── hall
+    ├── homepage
+    ├── Login
+    ├── manager
+    │   └── component
+    ├── movie
+    │   └── components
+    ├── movieList
+    ├── quick
+    ├── search
+    ├── test
+    ├── user
+    │   ├── basicInfo
+    │   └── helper
+    └── VIP
+
+```
+
+#### 后端目录架构
+
+```bash
+.
+├── main
+│   ├── java
+│   │   ├── com
+│   │   │   └── example
+│   │   │       └── main
+│   │   │           ├── controller
+│   │   │           ├── core
+│   │   │           │   ├── config
+│   │   │           │   ├── enums
+│   │   │           │   ├── exception
+│   │   │           │   ├── paging
+│   │   │           │   ├── response
+│   │   │           │   └── security
+│   │   │           │       ├── credential
+│   │   │           │       ├── filter
+│   │   │           │       ├── listener
+│   │   │           │       ├── realm
+│   │   │           │       ├── session
+│   │   │           │       └── token
+│   │   │           ├── model
+│   │   │           ├── repository
+│   │   │           ├── service
+│   │   │           │   └── impl
+│   │   │           └── utils
+│   │   └── META_INF
+│   └── resources
+│       ├── static
+│       └── templates
+└── test
+    └── java
+        └── com
+            └── example
+                └── main
+                    └── web
+
+```
+
+
+
 ## 作业基本要求
 
 1. 文档部分：
