@@ -124,7 +124,7 @@
               <span class="medium">{{ item }}</span>
               <div class="movieTime_ticket">
                 <ticket v-for="i in schedule" :key="i.startTime" @selectSeatChildNotify="confirmSeat" :schedule="i"
-                        v-if="i.startTime.slice(0, 10) === item"></ticket>
+                        v-if="i.startTime.slice(0, 10) === item" :id="i.slotId"></ticket>
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -341,7 +341,9 @@
 
 
 <script>
+  import $ from "jquery";
   import ticket from '@/views/movie/components/ticket.vue'
+  import {mapGetters, mapActions} from 'vuex'
 
   export default {
     components: {
@@ -467,9 +469,15 @@
           }
         });
         return ret
-      }
+      },
+      ...mapGetters({
+        halls: 'hallList'
+      })
     },
     methods: {
+      ...mapActions({
+        flushHall: 'getHalls'
+      }),
       getNowFormatDate() {
         var date = new Date();
         var seperator1 = "-";
@@ -483,8 +491,23 @@
         return currentdate;
       },
       checkQuickPurchase() {
-        if (this.$store.state.movie.quickPurchase) {
-          this.selectSeatDialogVisible = true
+        var _this = this
+        if (_this.$store.state.movie.quickPurchase) {
+          _this.$store.dispatch('getMovieSchedule').then(res => {
+            _this.schedule = []
+            res.slot.forEach(function (obj) {
+              if (_this.$route.query.movieId === obj.movieId) {
+                _this.schedule.push(obj)
+              }
+            })
+            return _this.schedule
+          }).then((data) => {
+            // console.log(data)
+            // console.log(_this.$store.state.movie.quickPurchase)
+            _this.purchaseDialogVisible = true
+            // console.log($("#"+_this.$store.state.movie.quickPurchase.scheduleId))
+            $("#"+_this.$store.state.movie.quickPurchase.scheduleId).click()
+          })
         }
       },
       addFavor() {
@@ -671,7 +694,7 @@
     },
     created() {
       var _this = this
-      this.checkQuickPurchase()
+      
       // 获取电影详情
       this.$store.dispatch('getMovieBasicInfo', {
         userId: sessionStorage.getItem('userId'),
@@ -688,6 +711,7 @@
           }
         })
       })
+      _this.checkQuickPurchase()
       // 获取用户拥有优惠券
       _this.$store.dispatch('getCoupon', {
         userId: sessionStorage.getItem('userId'),
