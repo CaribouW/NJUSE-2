@@ -279,7 +279,7 @@
         console.log(value);
       },
       goSubmit(){
-        alert("暂未与后端接通")
+        alert("请稍等，正在上架")
       }
     }
   }
