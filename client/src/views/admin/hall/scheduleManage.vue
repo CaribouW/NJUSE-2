@@ -44,49 +44,49 @@
           <li class="s_m_card_content_moment_item">24:00</li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules0" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules0" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules1" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules1" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules2" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules2" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules3" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules3" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules4" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules4" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules5" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules5" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item" v-for="item in schedules6" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules6" :key="item.slotId" v-bind:style="mapScheduleStyle(item)" @click="doChange">
             <span>{{item.movieName}}</span>
             <span>{{"￥"+item.ticketPrize}}</span>
             <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
@@ -141,7 +141,9 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="onCancel">取 消</el-button>
-        <el-button type="primary" @click="onSubmit">确 定</el-button>
+        <el-button type="primary" @click="onSubmit" v-if="throughAdd">确 定</el-button>
+        <el-button type="danger" @click="onDelete" v-if="throughChange">删 除</el-button>
+        <el-button type="primary" @click="onChange" v-if="throughChange">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -217,11 +219,18 @@
           movieName: '',
         },
         formLabelWidth: '100px',
+        throughAdd: false,
+        throughChange: false
       }
     },
     methods: {
       addSchedule() {
-        this.dialogFormVisible = true;
+        this.throughAdd = true
+        this.dialogFormVisible = true
+      },
+      doChange(){
+        this.throughChange = true
+        this.dialogFormVisible = true
       },
       onSubmit() {
         if(this.form.movieName===''){
@@ -264,6 +273,7 @@
               movieName: '',
             }
             this.dialogFormVisible = false
+            this.throughAdd = false
           })
           // this.dialogFormVisible = false
         }
@@ -278,6 +288,8 @@
           movieName: '',
         }
         this.dialogFormVisible = false
+        this.throughAdd = false
+        this.throughChange = false
       },
       querySearch(queryString, cb) {
         var movieList = this.movieList
@@ -473,6 +485,7 @@
         .s_m_card_content_detail_item {
           // top: 160px;
           // height: 100px;
+          cursor: pointer;
           width: 96%;
           display: flex;
           flex-direction: column;
@@ -482,6 +495,7 @@
           border: 2px solid #ccc;
           border-radius: 5px;
           // overflow-y: scroll;
+          justify-content: space-around;
           span{
             font-size: 10px;
           }
