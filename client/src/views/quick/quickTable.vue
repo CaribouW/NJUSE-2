@@ -115,7 +115,6 @@
       }).then(res => {
         return dealResponse(res)
       }).then(res => {
-        console.log(res)
         return res.slot.map(item => {
           return {
             movieId: item.movieId,
@@ -126,6 +125,7 @@
           }
         });
       }).then(res => {
+        console.log(res)
         this_.tableData = [];
         res.forEach((item, index) => {
           const mid = item.movieId;
