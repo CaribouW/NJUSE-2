@@ -429,8 +429,10 @@
       },
       scheduleDate: function () {
         var arr = []
+        var time = this.getNowFormatDate()
+        console.log(time)
         this.schedule.forEach(function (obj) {
-          if (arr.indexOf(obj.startTime.slice(0, 10)) == -1) {
+          if (arr.indexOf(obj.startTime.slice(0, 10)) == -1 && obj.startTime > time) {
             arr.push(obj.startTime.slice(0, 10))
           }
         })
