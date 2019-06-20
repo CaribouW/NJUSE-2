@@ -36,8 +36,8 @@ export default {
       purchaseVIP () {
         this.$store.dispatch('purchaseMemberCard', {
           userId: sessionStorage.getItem('userId'),
-          cardBalance: this.price+this.bonus,
-          ownDate: '2018-05-09'
+          cardBalance: parseInt(this.price)+parseInt(this.bonus),
+          ownDate: '2018-06-21'
         }).then(res => {
           if (typeof res === 'number') {
             this.$message.error('您已是会员，请勿重复购买！')

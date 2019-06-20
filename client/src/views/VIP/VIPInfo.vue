@@ -79,8 +79,14 @@
           rechargeTime: this.getNowFormatDate()
         }).then(res => {
           if (res === 200) {
-            this.$store.commit('recharge', parseInt(this.amount/this.vipInfo.discount))
+            this.$store.commit('recharge', parseInt(this.amount))
             this.getRechargeHistory()
+            this.$store.dispatch('getMemberInfo', {
+              userId: sessionStorage.getItem('userId')
+            }).then(res => {
+              console.log(res)
+              this.vipInfo = res
+            })
             this.$message.success('充值成功')
           } else {
             this.$message.error('充值失败')
