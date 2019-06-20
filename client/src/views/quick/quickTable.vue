@@ -73,7 +73,8 @@
             category: '',
             info: '',
             refund: '可改票不可退票',
-            scheduleId: ''
+            scheduleId: '',
+            hallId: ''
           },
         ]
       }
@@ -114,12 +115,14 @@
       }).then(res => {
         return dealResponse(res)
       }).then(res => {
+        console.log(res)
         return res.slot.map(item => {
           return {
             movieId: item.movieId,
             scheduleId: item.slotId,
             price: '￥' + item.ticketPrize,
-            date: item.startTime
+            date: item.startTime,
+            hallId: item.hallId
           }
         });
       }).then(res => {
