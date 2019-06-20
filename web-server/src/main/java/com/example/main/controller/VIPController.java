@@ -69,8 +69,8 @@ public class VIPController {
      * 会员卡策略更新
      */
     @PutMapping("/strategy")
-    public JSON updateStrategyList(@RequestBody JSONArray req) {
-        return strategyService.updateVIPStrategy(req);
+    public JSON updateStrategyList(@RequestBody JSONObject req) {
+        return strategyService.updateVIPStrategy(req.getJSONArray("vipRank"));
     }
 
     /**

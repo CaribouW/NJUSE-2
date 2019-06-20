@@ -179,8 +179,10 @@ public class StrategyServiceImpl implements StrategyService {
             req.stream()
                     .map(item -> jsonUtils.toJSONObject(item))
                     .forEach(item -> {
+                        System.out.println(item);
                         VIPRechargeStrategy strategy = new VIPRechargeStrategy();
-                        if (item.getString("id") == null) {
+                        if (item.getString("id") == null ||
+                                item.getString("id").equals("")) {
                             strategy.setId(idUtils.getUUID32());
                         } else
                             strategy.setId(item.getString("id"));
@@ -188,9 +190,6 @@ public class StrategyServiceImpl implements StrategyService {
                         strategy.setMinRecharge(item.getDouble("rechargePrice"));
                         strategy.setRankName(item.getString("rankName"));
                         strategy.setDiscount(item.getDouble("discount"));
-                        if (!vipRechargeStrategyRepo.existsById(strategy.getId())) {
-                            throw new NullPointerException();
-                        }
                         //save
                         vipRechargeStrategyRepo.saveAndFlush(strategy);
                     });

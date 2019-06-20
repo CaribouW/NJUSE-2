@@ -57,7 +57,8 @@ public class CouponServiceImpl implements CouponService {
                     //暂时只考虑一个
                     //获取关联的个人优惠券
                     JSONObject single = new JSONObject();
-                    single.put("couponId", m.getId());
+                    single.put("couponUserId", m.getId());
+                    single.put("couponId", m.getCouponId());
                     single.put("couponName", item.getName());
                     single.put("couponAmount", item.getDiscount());
                     single.put("useCondition", item.getThreshHold());
