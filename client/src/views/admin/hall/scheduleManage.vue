@@ -238,14 +238,23 @@
           alert('请设置场次的票价')
         }
         else{
-          addMovieSchedule({
+          var newSchedule = {
             movieId: this.form.movieId,
             hallId: this.form.hall,
             startTime: this.timeToFormat(this.form.startTime),
             endTime: this.timeToFormat(this.form.endTime),
             price: this.form.ticketPrice,
             slotId: this.form.movieName
-          }).then(res => {
+          }
+          addMovieSchedule(newSchedule).then(res => {
+            this.schedules.slot.unshift({
+              movieId: newSchedule.movieId,
+              hallId: newSchedule.hallId,
+              startTime: newSchedule.startTime,
+              endTime: newSchedule.endTime,
+              ticketPrize: newSchedule.price,
+              slotId: res.slotId
+            })
             this.form = {
               movieId: '',
               startTime: null,
@@ -254,8 +263,9 @@
               ticketPrice: '',
               movieName: '',
             }
+            this.dialogFormVisible = false
           })
-          this.dialogFormVisible = false
+          // this.dialogFormVisible = false
         }
       },
       onCancel() {
