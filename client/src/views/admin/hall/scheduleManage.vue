@@ -21,6 +21,7 @@
           align="right"
           type="date"
           placeholder="请选择"
+          :clearable="clearable"
           :picker-options="pickerOptions1">
         </el-date-picker>
       </div>
@@ -31,13 +32,8 @@
     <!-- 排片信息展示卡片 -->
     <div class="schedule_manage_card">
       <div class="s_m_card_title">
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
-        <div class="s_m_card_title_date">2019-05-21</div>
+        <div class="s_m_card_title_date" v-for="item in timeline" :key="item">{{ item }}</div>
+        
       </div>
       <div class="s_m_card_content">
         <ul class="s_m_card_content_moment">
@@ -48,18 +44,54 @@
           <li class="s_m_card_content_moment_item">24:00</li>
         </ul>
         <ul class="s_m_card_content_detail">
-          <li class="s_m_card_content_detail_item">
-            <span>钢铁侠</span>
-            <span>￥30</span>
-            <span>20:00--22:00</span>
+          <li class="s_m_card_content_detail_item" v-for="item in schedules0" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
           </li>
         </ul>
-        <ul class="s_m_card_content_detail"></ul>
-        <ul class="s_m_card_content_detail"></ul>
-        <ul class="s_m_card_content_detail"></ul>
-        <ul class="s_m_card_content_detail"></ul>
-        <ul class="s_m_card_content_detail"></ul>
-        <ul class="s_m_card_content_detail"></ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules1" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules2" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules3" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules4" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules5" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
+        <ul class="s_m_card_content_detail">
+          <li class="s_m_card_content_detail_item" v-for="item in schedules6" :key="item.slotId" v-bind:style="mapScheduleStyle(item)">
+            <span>{{item.movieName}}</span>
+            <span>{{"￥"+item.ticketPrize}}</span>
+            <span>{{item.startTime.substring(11,16)+'-'+item.endTime.substring(11,16)}}</span>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -119,7 +151,7 @@
   import admin from '../index.vue'
   import { getHallList } from '@/service/HallService.js'
   import { getAllMovie } from '@/service/movieService.js'
-  import { addMovieSchedule } from '@/service/scheduleService.js'
+  import { addMovieSchedule,getMovieSchedule } from '@/service/scheduleService.js'
 
   export default {
     name: 'scheduleManagement',
@@ -130,7 +162,9 @@
       return {
         halls: [], // 所有影厅
         movies: [], // 所有上架的电影
+        schedules:[], // 全部的排片信息
         value: '',
+        clearable: false,
         // 查看排片
         pickerOptions1: {
           // disabledDate(time) {
@@ -171,7 +205,7 @@
             }
           }]
         },
-        checkScheduleValue: '',
+        checkScheduleValue: new Date(),
         // 新增排片
         dialogFormVisible: false,
         form: {
@@ -249,12 +283,32 @@
       selectMovie(item){
         this.form.movieId = item.movieId
       },
+      /**
+       * 将Date对象转换成“年月日 时分秒”格式的字符串
+       */
       timeToFormat(time){
         var year = time.getFullYear()
         var month = time.getMonth()+1
+        if(month<10){
+          month = '0'+month
+        }
         var day = time.getDate()
+        if(day<10){
+          day = '0'+day
+        }
         var moment = time.toTimeString().substring(0,8)
         return year+'-'+month+'-'+day+' '+moment
+      },
+      /**
+       * 元素定位，返回高度和顶部距离
+       */
+      mapScheduleStyle(schedule) {
+        var start = new Date(schedule.startTime).getHours()+new Date(schedule.startTime).getMinutes()/60,
+            end = new Date(schedule.endTime).getHours()+new Date(schedule.endTime).getMinutes()/60 ;
+        return {
+            top: 40*start+'px',
+            height: 40*(end-start)+'px'
+        }
       }
     },
     mounted: function(){
@@ -266,6 +320,11 @@
       getAllMovie().then(
         res => {
           this.movies = res
+        }
+      )
+      getMovieSchedule().then(
+        res => {
+          this.schedules = res
         }
       )
     },
@@ -281,7 +340,78 @@
           this.movies[i].value = this.movies[i].name
         }
         return movies
-      }
+      },
+      timeline: function(){
+        var setting = this.checkScheduleValue.getTime()
+        var tmp = new Date()
+        var result = []
+        for(var i = 0;i<7;i++){
+          tmp.setTime(setting + 3600*1000*24*i)
+          result.push(this.timeToFormat(tmp).substring(0,10))
+        }
+        return result
+      },
+      scheduleList: function(){
+        var this3 = this
+        var tmp = this3.schedules
+        for(var i = 0;i<tmp.slot.length;i++){
+          for(var j = 0;j<this3.movies.length;j++){
+            if(this3.movies[j].movieId===tmp.slot[i].movieId){
+              tmp.slot[i].movieName = this3.movies[j].name
+            }
+          }
+        }
+        // tmp.slot.forEach(item => {
+        //   this.movies.forEach(element => {
+        //     if(element.movieId==item.movieId){
+        //       item.movieName = element.name
+        //     }
+        //   });
+        // });
+        return tmp
+      },
+      schedules0: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[0]
+        },this)
+      },
+      schedules1: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[1]
+        },this)
+      },
+      schedules2: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[2]
+        },this)
+      },
+      schedules3: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[3]
+        },this)
+      },
+      schedules4: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[4]
+        },this)
+      },
+      schedules5: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[5]
+        },this)
+      },
+      schedules6: function(){
+        return this.scheduleList.slot.filter(function(item){
+          var tmp = item.startTime.substring(0,10)
+          return tmp===this.timeline[6]
+        },this)
+      },
     }
   }
 </script>
@@ -331,7 +461,8 @@
         position: relative;
 
         .s_m_card_content_detail_item {
-
+          // top: 160px;
+          // height: 100px;
           width: 96%;
           display: flex;
           flex-direction: column;
@@ -341,6 +472,9 @@
           border: 2px solid #ccc;
           border-radius: 5px;
           // overflow-y: scroll;
+          span{
+            font-size: 10px;
+          }
         }
       }
     }
