@@ -1,6 +1,6 @@
 <template>
   <div class="vipManage">
-    <el-collapse accordion>
+    <el-collapse v-model="activeNames">
       <el-collapse-item title="会员卡购买" name="1">
         <el-divider direction="horizontal"></el-divider>
         <el-form ref="cardForm" :model="cardForm" label-width="120px">
@@ -105,6 +105,7 @@
   export default {
     data() {
       return {
+        activeNames: ['1'],
         couponForm: {
           limitation: '',
           couponList: [],

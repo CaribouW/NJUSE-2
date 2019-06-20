@@ -20,15 +20,15 @@
                 router>
                 <el-menu-item index="/manager/hallManage">
                   <i class="el-icon-menu"></i>
-                  <span slot="title">影厅信息管理</span>
+                  <span slot="title">影厅信息</span>
                 </el-menu-item>
                 <el-menu-item index="/manager/refundManage">
                   <i class="el-icon-menu"></i>
-                  <span slot="title">退票策略管理</span>
+                  <span slot="title">退票策略</span>
                 </el-menu-item>
                 <el-menu-item index="/manager/movieRoleManage">
                   <i class="el-icon-setting"></i>
-                  <span slot="title">影院角色管理</span>
+                  <span slot="title">影院角色</span>
                 </el-menu-item>
                 <el-menu-item index="/manager/vipManage">
                   <i class="el-icon-setting"></i>
