@@ -112,8 +112,13 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-  }
 
+  }
+  ::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px #CFF9FE;;
+    background: #535353;
+  }
   body {
     font: 16px/1.5 "微软雅黑", Arial, Tahoma, Helvetica, \5b8b\4f53, sans-serif
   }

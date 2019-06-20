@@ -152,14 +152,14 @@ public class HallServiceImpl implements HallService {
             int row = hall.getRow();
             int col = hall.getCol();
             int[][] ans = new int[row][col];
+            //所有的座位先填充为1
             for (int[] i : ans) {
                 Arrays.fill(i, 1);
             }
             List<MovieTicket> tickets =
                     movieTicketRepository.findMovieTicketsBySlotId(id);
-            tickets.forEach(ticket -> {
-                ans[ticket.getRow()][ticket.getCol()] = 0;
-            });
+            //如果座位已经被购买,填充为0
+            tickets.forEach(ticket -> ans[ticket.getRow()][ticket.getCol()] = 0);
 
             return Response.success(ans);
         } catch (NullPointerException e) {

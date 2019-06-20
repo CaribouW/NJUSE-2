@@ -11,8 +11,8 @@ import java.util.Date;
 public class VIPRechargeHistory {
     private String id;
     private String vipId;
-    private Date rechargeTime;
-    private double amount;
+    private Date rechargeTime;  //退还时间
+    private double amount;      //退还额度
 
     @Id
     @Column(name = "id", length = 32)
