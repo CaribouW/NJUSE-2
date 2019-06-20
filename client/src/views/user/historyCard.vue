@@ -251,6 +251,7 @@
                 type: 'success',
                 message: '退票成功'
               });
+              this.order.state = '1'
             }
             this.refundVisible = false;
             // this.$parent.created();
