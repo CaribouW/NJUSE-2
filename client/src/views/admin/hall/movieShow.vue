@@ -70,11 +70,12 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              type="primary"
               @click="handleEdit(scope.$index, scope.row)">修改
             </el-button>
             <el-button
               size="mini"
-              type="info"
+              type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
@@ -185,33 +186,33 @@
       }
     },
     mounted: function(){
-      // getAllMovie().then(
-      //   res => {
-      //     console.log(res)
+      getAllMovie().then(
+        res => {
+          console.log(res)
           
-      //     this.movieList = this.mark(res)
-      //   }
-      // )
-      this.movieList = this.mark([{
-          uploadDate: '2016-04-01',
-          downDate: '2016-05-02',
-          name: '复仇者联盟',
-          state: '已上映'
-        }, {
-          uploadDate: '2016-04-01',
-          downDate: '2016-05-04',
-          name: '蜘蛛侠',
-          state: '未上映'
-        }, {
-          uploadDate: '2016-04-01',
-          downDate: '2016-05-01',
-          name: '复仇者联盟',
-          state: '已上映'
-        }, {
-          uploadDate: '2019-07-01',
-          downDate: '2019-08-03',
-          name: '蚁人',
-        }])
+          this.movieList = this.mark(res)
+        }
+      )
+      // this.movieList = this.mark([{
+      //     uploadDate: '2016-04-01',
+      //     downDate: '2016-05-02',
+      //     name: '复仇者联盟',
+      //     state: '已上映'
+      //   }, {
+      //     uploadDate: '2016-04-01',
+      //     downDate: '2016-05-04',
+      //     name: '蜘蛛侠',
+      //     state: '未上映'
+      //   }, {
+      //     uploadDate: '2016-04-01',
+      //     downDate: '2016-05-01',
+      //     name: '复仇者联盟',
+      //     state: '已上映'
+      //   }, {
+      //     uploadDate: '2019-07-01',
+      //     downDate: '2019-08-03',
+      //     name: '蚁人',
+      //   }])
       
     }
   }
