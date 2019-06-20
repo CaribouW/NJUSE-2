@@ -112,7 +112,7 @@ public class VIPServiceImpl implements VIPService {
             //insert history
             VIPRechargeHistory history = new VIPRechargeHistory();
             history.setId(idUtils.getUUID32());
-            history.setAmount(amount);
+            history.setAmount(amount / strategy.getDiscount());
             history.setRechargeTime(new Date());
             history.setVipId(id);
             //save
