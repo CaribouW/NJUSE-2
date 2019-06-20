@@ -7,7 +7,7 @@
       </div>
       <div class="register_body_content_right">
           <input type="text" placeholder="请输入账号" v-model="account"><br>
-          <input type="password" placeholder="请输入密码" v-model="account_again"><br>
+          <input type="password" placeholder="请输入密码" v-model="password_again"><br>
           <input type="password" placeholder="请再次输入密码" v-model="password"><br>
           <button @click="rigister()">注册</button>
       </div>
@@ -20,25 +20,23 @@ export default {
   data () {
     return {
       account: '',
-      account_again: '',
+      password_again: '',
       password: ''
     }
   },
   methods: {
     rigister() {
-      _this = this
-      if (this.account !== this.account_again) {
-        this.$message.error('用户名不一致')
+      if (this.password != this.password_again) {
+        this.$message.error('两次输入的密码不一致')
+        // console(this.password+' '+this.passowrd_again)
       } else {
-        this.$axios.post(this.GLOBAL + '/user/register', {
-          account: 'admin',
-          password: '12345678'
-        }).then(res => {
-          console.log(res)
-          
-        }).catch(err => {
-          console.log(err)
+        this.$store.dispatch('userSignUp', {
+          account:this.account,
+          password:this.password
         })
+        .then(res => {
+        console.log('register',res)
+      });
       }
       
     }

@@ -42,7 +42,7 @@
     data() {
       return {
         movieList: [],
-        random: Math.floor(Math.random()*92),
+        random: 1,
         posters: [
           {index: 0, url: require('@/assets/images/test/pictest0.jpg')},
           {index: 1, url: require('@/assets/images/test/pictest1.jpg')},
@@ -63,11 +63,11 @@
         switch (tag) {
           case '正在热映':
             this.selected = '正在热映'
-            this.random = Math.floor(Math.random()*92);
+            this.random = 1;
             break;
           case '即将上映':
             this.selected = '即将上映'
-            this.random = Math.floor(Math.random()*92);
+            this.random = 9;
             break;
           default:
             break;

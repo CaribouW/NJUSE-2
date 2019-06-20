@@ -7,7 +7,7 @@
         </span><br/>
         <div class="coupon_pattern" v-for="coupon in coupons" :key="coupon.couponId">
           <el-row>
-          <div class="couponCard">
+          <div class="couponCard" v-if="coupon.state==1">
             <el-col :span="12">
             <div class="coupon_info">
               <b>{{coupon.couponName}} </b>  
@@ -44,6 +44,7 @@ export default {
     goMovieList() {
       this.$router.push("/movielist")
     },
+
   },
   /**
    * 页面加载之前获取数据

@@ -58,7 +58,11 @@ const actions = {
         console.log(response);
         return response;
       } else {
-        commit('updateUser', response);
+        commit('updateUser', {
+          userId: response.id,
+          account: response.account,
+          roleName: response.roleName,
+        });
         return {
           userId: getUserInfo(state).userId,
         };
