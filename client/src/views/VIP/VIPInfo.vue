@@ -79,7 +79,7 @@
           rechargeTime: this.getNowFormatDate()
         }).then(res => {
           if (res === 200) {
-            this.$store.commit('recharge', parseInt(this.amount))
+            this.$store.commit('recharge', parseInt(this.amount/this.vipInfo.discount))
             this.getRechargeHistory()
             this.$message.success('充值成功')
           } else {
