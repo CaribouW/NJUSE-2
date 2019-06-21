@@ -178,7 +178,11 @@ public class MovieTicketServiceImpl implements MovieTicketService {
             order.setConfirmDate(date);
             //设置未支付
             order.setState(OrderStateType.NOT_PAY.getValue());
+            //查询对应场次
+            order.setExpense(req.getDouble("price"));
+            //save
             orderRepository.save(order);
+
             //更新所有的电影票
             seats.forEach(item -> {
                 String[] strings = item.split(",");
