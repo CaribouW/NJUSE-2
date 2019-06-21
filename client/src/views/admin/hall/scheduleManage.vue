@@ -136,7 +136,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="*场次票价：" :label-width="formLabelWidth">
-          <el-input v-model="form.ticketPrice" autocomplete="off" placeholder="请输入本场次的票价"></el-input>
+          <el-input-number v-model="form.ticketPrice" :controls="control" placeholder="请输入本场次的票价"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -215,16 +215,17 @@
           startTime: null,
           endTime: null,
           hall: '',
-          ticketPrice: '',
+          ticketPrice: undefined,
           movieName: '',
         },
-        formLabelWidth: '100px',
+        formLabelWidth: '170px',
         selectedSlotId: '', // 选中排片的id
         throughAdd: false,
         throughChange: false,
         scheduleList: {
           slot: []
-        }
+        },
+        control: false
       }
     },
     methods: {
@@ -257,6 +258,8 @@
           alert('请设置排片的结束时间')
         }else if(this.form.ticketPrice==''){
           alert('请设置场次的票价')
+        }else if(this.form.startTime.getTime()>=this.form.endTime.getTime()){
+          alert('结束时间不得早于开场时间')
         }
         else{
           var newSchedule = {
@@ -281,7 +284,7 @@
               startTime: null,
               endTime: null,
               hall: '',
-              ticketPrice: '',
+              ticketPrice: undefined,
               movieName: '',
             }
             this.dialogFormVisible = false
@@ -296,7 +299,7 @@
           startTime: null,
           endTime: null,
           hall: '',
-          ticketPrice: '',
+          ticketPrice: undefined,
           movieName: '',
         }
         this.dialogFormVisible = false
@@ -330,6 +333,8 @@
           alert('请设置排片的结束时间')
         }else if(this.form.ticketPrice==''){
           alert('请设置场次的票价')
+        }else if(this.form.startTime.getTime()>=this.form.endTime.getTime()){
+          alert('结束时间不得早于开场时间')
         }
         else{
           var newSchedule = {
@@ -375,7 +380,7 @@
               startTime: null,
               endTime: null,
               hall: '',
-              ticketPrice: '',
+              ticketPrice: undefined,
               movieName: '',
             }
             this.dialogFormVisible = false

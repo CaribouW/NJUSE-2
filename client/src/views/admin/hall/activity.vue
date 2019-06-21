@@ -124,6 +124,8 @@ export default {
 				alert('请设置满减条件')
 			}else if(this.form.discountPrice==0){
 				alert('请设置优惠金额')
+			}else if(this.form.startDate.getTime()>=this.form.endDate.getTime()){
+				alert('结束时间不得早于开场时间')
 			}
 			else{
 				var activity = {
@@ -194,6 +196,8 @@ export default {
 				alert('请设置满减条件')
 			}else if(this.form.discountPrice==0){
 				alert('请设置优惠金额')
+			}else if(this.form.startDate.getTime()>=this.form.endDate.getTime()){
+				alert('结束时间不得早于开场时间')
 			}
 			else{
 				var activity = {
