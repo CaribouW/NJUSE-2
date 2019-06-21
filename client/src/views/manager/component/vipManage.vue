@@ -70,7 +70,7 @@
                     :key="item.couponID"
                     :label="item.couponName"
                     :value="item.couponID">
-                    <span style="float: left">满{{item.conditionPrice}}减{{ item.discountPrice }}</span>
+                    <span style="float: left">{{item.couponName}}</span>
                   </el-option>
                 </el-select>
               </el-col>
@@ -79,9 +79,9 @@
               <el-col :span="12">
                 <el-select v-model="vips" multiple placeholder="请选择">
                   <el-option
-                    v-for="item in couponForm.memberList"
-                    :key="item.cardId"
-                    :label="item.cardId"
+                    v-for="(item,index) in couponForm.memberList"
+                    :key="index"
+                    :label="item.name || '无名氏'"
                     :value="item.cardId">
                   </el-option>
                 </el-select>
@@ -121,7 +121,7 @@
         },
         couponID: '',
         vips: [], 
-        VipStrategyForm: []
+        VipStrategyForm: [],
       }
     },
     methods: {
@@ -131,10 +131,16 @@
         this.$message.success('修改成功')
       },
       getMemberList() {
+        this.couponForm.memberList = []
         this.$store.dispatch('getMemberList', {
           limitation: this.couponForm.limitation
         }).then(res => {
-          this.couponForm.memberList = res
+          res.forEach(element => {
+            this.$store.dispatch('getUserInfo', element.userId ).then(data => {
+              element.name = data.name
+              this.couponForm.memberList.push(element)
+            })
+          });
         })
       },
       giveCoupon() {
@@ -175,11 +181,21 @@
         vip4.rechargePrice = 10000
         vip4.discount = this.VipStrategyForm[3].discount
         vipRank.push(vip4)
-        // console.log(vipRank)
+        var vip5 = {}
+        vip5.rank = '5'
+        vip5.id = this.VipStrategyForm[4].id
+        vip5.rankName = '王者会员'
+        vip5.rechargePrice = 50000
+        vip5.discount = this.VipStrategyForm[4].discount
+        vipRank.push(vip5)
         this.$store.dispatch('modifyVipStrategy', {
           vipRank: vipRank,
         }).then(res => {
-          console.log(res)
+          if (res) {
+            this.$message.error('出错了，请稍后再试！')
+          } else {
+            this.$message.success('修改成功')
+          }
         })
       }
     },

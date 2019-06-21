@@ -13,7 +13,6 @@ export function getUserInfo({id}) {
     withCredentials: true,
     baseURL: baseIP
   }).then(res => {
-    console.log(res)
     return dealResponse(res);
   });
 } 
@@ -34,7 +33,6 @@ export function updateUser(payload) {
     withCredentials: true,
     baseURL: baseIP
   }).then(res => {
-    console.log(res)
     return dealResponse(res);
   });
 } 

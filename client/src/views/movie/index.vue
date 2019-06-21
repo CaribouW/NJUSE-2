@@ -472,14 +472,8 @@
         });
         return ret
       },
-      ...mapGetters({
-        halls: 'hallList'
-      })
     },
     methods: {
-      ...mapActions({
-        flushHall: 'getHalls'
-      }),
       getNowFormatDate() {
         var date = new Date();
         var seperator1 = "-";
@@ -715,9 +709,7 @@
       })
       _this.checkQuickPurchase()
       // 获取用户拥有优惠券
-      _this.$store.dispatch('getCoupon', {
-        userId: sessionStorage.getItem('userId'),
-      }).then(res => {
+      _this.$store.dispatch('getCoupon', sessionStorage.getItem('userId')).then(res => {
         console.log(res)
         _this.couponList = res
       })

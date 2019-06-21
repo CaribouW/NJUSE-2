@@ -24,7 +24,6 @@ const actions = {
     return getUserInfo({
       id: userId
     }).then(res => {
-      console.log(res) 
       return res
     }) 
   },
@@ -33,7 +32,6 @@ const actions = {
       account: payload.account,
       password: payload.password
     }).then(response => {
-      console.log(response)
       if (typeof response === "number") {
         return response;
       } else {
@@ -55,7 +53,6 @@ const actions = {
       password: payload.password
     }).then(response => {
       if (typeof response === "number") {
-        console.log(response);
         return response;
       } else {
         commit('updateUser', {
@@ -74,7 +71,6 @@ const actions = {
       userId: payload.userId
     }).then(response => {
       if (typeof response === "number") {
-        console.log('error');
         return response
       }
     })
