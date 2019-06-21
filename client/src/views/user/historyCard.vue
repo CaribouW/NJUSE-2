@@ -228,11 +228,7 @@
           startegyTime[i] = this.refundStrategy[i].time
         }
         let time = this.timeSubtract_minute(this.slot.startTime);
-        if (startegyTime[0] >= time) {
-          this.percent = this.refundStrategy[0].rate
-        } else if (startegyLength !== 1) {
-          this.percent = this.refundStrategy[1].rate
-        }
+        this.percent = this.refundStrategy[0].rate
       },
 
       onSubmit: function () {
