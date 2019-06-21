@@ -75,6 +75,9 @@ public class HallServiceImpl implements HallService {
             movieHall.setRow(req.getInteger("row"));
             movieHall.setCol(req.getInteger("col"));
             movieHall.setCategory(req.getString("category"));
+            if (timeSlotRepository.findAllByHallId(movieHall.getHallId()).size() > 0) {
+                return Response.fail(ResponseType.RESOURCE_NOT_EXIST);
+            }
             movieHallRepository.save(movieHall);
             return Response.success(null);
         } catch (NullPointerException e) {

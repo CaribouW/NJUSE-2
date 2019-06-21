@@ -173,12 +173,20 @@
           category: data.category,
           name: data.name
         }).then(res => {
-          this_.hall = res;
-          this_.$message({
-            type: 'success',
-            message: '修改成功'
-          });
-          this_.modifyVisible = false
+          if (typeof res === 'number') {
+            this_.$message({
+              type: 'error',
+              message: '影厅已排片, 请先删除排片'
+            });
+          } else {
+            console.log(res)
+            this_.hall = res;
+            this_.$message({
+              type: 'success',
+              message: '修改成功'
+            });
+            this_.modifyVisible = false
+          }
         });
       },
       onCancel: function () {

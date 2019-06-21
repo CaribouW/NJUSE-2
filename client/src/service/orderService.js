@@ -42,6 +42,7 @@ export function getHistory({userId}) {
           userId: payload.userId,
           scheduleId: payload.scheduleId,
           confirmTime: payload.confirmTime,
+          price: payload.price,
           seats: payload.seats
         }
       }).then(res => {

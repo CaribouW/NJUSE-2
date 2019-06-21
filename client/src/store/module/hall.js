@@ -42,6 +42,9 @@ const actions = {
       state: payload.state,
       name: payload.name,
     }).then(res => {
+      console.log(res)
+      if (typeof res === "number")
+        return res;
       //修改model内容
       return {
         id: payload.hallId,
@@ -52,6 +55,8 @@ const actions = {
         name: payload.name
       }
     }).then(res => {
+      if (typeof res === "number")
+        return res;
       commit('changeHallItem', res);
       return res
     });

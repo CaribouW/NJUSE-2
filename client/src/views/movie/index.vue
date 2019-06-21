@@ -637,6 +637,7 @@
           userId: sessionStorage.getItem('userId'),
           scheduleId: this.ticketInfo.slotId,
           confirmTime: this.getNowFormatDate(),
+          price: this.needPrice,
           seats: seats
         }).then(res => {
           console.log(res)
