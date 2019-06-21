@@ -28,7 +28,7 @@ export function getMovieSchedule() {
   }
 
 // 修改排片信息
-export function modifyMovieSchedule(movieId,hallId,startTime,endTime,price,slotId){
+export function modifyMovieSchedule({movieId,hallId,startTime,endTime,price,slotId}){
     return doPut({
       url: '/schedule',
       body: {

@@ -239,7 +239,7 @@
         this.selectedSlotId = item.slotId
         this.throughChange = true
         this.dialogFormVisible = true
-        console.log(item)
+        // console.log(item)
       },
       onSubmit() {
         if(this.form.movieName===''){
@@ -337,19 +337,35 @@
             price: Number(this.form.ticketPrice),
             slotId: this.selectedSlotId
           }
+          console.log(newSchedule)
           modifyMovieSchedule(newSchedule).then(res => {
-            for(var i = 0;i<this.schedules.slot.length;i++){
-              if(this.schedules.slot[i].slotId==this.selectedSlotId){
-                this.schedules.slot[i] = {
-                  movieId: newSchedule.movieId,
-                  hallId: newSchedule.hallId,
-                  startTime: newSchedule.startTime,
-                  endTime: newSchedule.endTime,
-                  ticketPrize: newSchedule.price,
-                  slotId: this.selectedSlotId
-                }
-              }
-            }
+            console.log(res)
+
+            // for(var i = 0;i<this.schedules.slot.length;i++){
+            //   if(this.schedules.slot[i].slotId==this.selectedSlotId){
+            //     console.log(123)
+            //     this.schedules.slot[i] = {
+            //       movieId: newSchedule.movieId,
+            //       hallId: newSchedule.hallId,
+            //       startTime: newSchedule.startTime,
+            //       endTime: newSchedule.endTime,
+            //       ticketPrize: newSchedule.price,
+            //       slotId: this.selectedSlotId
+            //     }
+            //   }
+            // }
+            this.schedules.slot = this.schedules.slot.filter(function(schedule){
+            return schedule.slotId!=this.selectedSlotId
+          },this)
+
+            this.schedules.slot.unshift({
+              movieId: newSchedule.movieId,
+              hallId: newSchedule.hallId,
+              startTime: newSchedule.startTime,
+              endTime: newSchedule.endTime,
+              ticketPrize: newSchedule.price,
+              slotId: newSchedule.slotId
+            })
             
             this.form = {
               movieId: '',
