@@ -434,11 +434,15 @@
        * 获取重新处理后的列表
        */
       getScheduleList(schedules){
+        
         var this3 = this
         var tmp = schedules
+        // console.log(schedules)
+        // console.log(this.movies)
         for(var i = 0;i<tmp.slot.length;i++){
           for(var j = 0;j<this3.movies.length;j++){
             if(this3.movies[j].movieId===tmp.slot[i].movieId){
+              // console.log(123)
               tmp.slot[i].movieName = this3.movies[j].name
             }
           }
@@ -448,10 +452,11 @@
     },
     watch: {
       schedules: function(a,b){
+        console.log(this.movies)
         this.scheduleList = this.getScheduleList(a)
       }
     },
-    created: function(){
+    beforeCreate: function(){
       getHallList().then(
         res => {
           this.halls = res
