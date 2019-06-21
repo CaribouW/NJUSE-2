@@ -472,8 +472,14 @@
         });
         return ret
       },
+      ...mapGetters({
+        halls: 'hallList'
+      })
     },
     methods: {
+      ...mapActions({
+        flushHall: 'getHalls'
+      }),
       getNowFormatDate() {
         var date = new Date();
         var seperator1 = "-";
@@ -706,7 +712,10 @@
             _this.schedule.push(obj)
           }
         })
+        console.log(_this.schedule)
       })
+      // 获取影厅信息（判断是否可使用）
+      _this.flushHall()
       _this.checkQuickPurchase()
       // 获取用户拥有优惠券
       _this.$store.dispatch('getCoupon', sessionStorage.getItem('userId')).then(res => {
