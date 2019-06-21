@@ -221,7 +221,10 @@
         formLabelWidth: '100px',
         selectedSlotId: '', // 选中排片的id
         throughAdd: false,
-        throughChange: false
+        throughChange: false,
+        scheduleList: {
+          slot: []
+        }
       }
     },
     methods: {
@@ -421,9 +424,29 @@
             top: 40*start+'px',
             height: 40*(end-start)+'px'
         }
+      },
+      /**
+       * 获取重新处理后的列表
+       */
+      getScheduleList(schedules){
+        var this3 = this
+        var tmp = schedules
+        for(var i = 0;i<tmp.slot.length;i++){
+          for(var j = 0;j<this3.movies.length;j++){
+            if(this3.movies[j].movieId===tmp.slot[i].movieId){
+              tmp.slot[i].movieName = this3.movies[j].name
+            }
+          }
+        }
+        return tmp
       }
     },
-    mounted: function(){
+    watch: {
+      schedules: function(a,b){
+        this.scheduleList = this.getScheduleList(a)
+      }
+    },
+    created: function(){
       getHallList().then(
         res => {
           this.halls = res
@@ -463,25 +486,25 @@
         }
         return result
       },
-      scheduleList: function(){
-        var this3 = this
-        var tmp = this3.schedules
-        for(var i = 0;i<tmp.slot.length;i++){
-          for(var j = 0;j<this3.movies.length;j++){
-            if(this3.movies[j].movieId===tmp.slot[i].movieId){
-              tmp.slot[i].movieName = this3.movies[j].name
-            }
-          }
-        }
-        // tmp.slot.forEach(item => {
-        //   this.movies.forEach(element => {
-        //     if(element.movieId==item.movieId){
-        //       item.movieName = element.name
-        //     }
-        //   });
-        // });
-        return tmp
-      },
+      // scheduleList: function(){
+      //   var this3 = this
+      //   var tmp = this3.schedules
+      //   for(var i = 0;i<tmp.slot.length;i++){
+      //     for(var j = 0;j<this3.movies.length;j++){
+      //       if(this3.movies[j].movieId===tmp.slot[i].movieId){
+      //         tmp.slot[i].movieName = this3.movies[j].name
+      //       }
+      //     }
+      //   }
+      //   // tmp.slot.forEach(item => {
+      //   //   this.movies.forEach(element => {
+      //   //     if(element.movieId==item.movieId){
+      //   //       item.movieName = element.name
+      //   //     }
+      //   //   });
+      //   // });
+      //   return tmp
+      // },
       schedules0: function(){
         return this.scheduleList.slot.filter(function(item){
           var tmp = item.startTime.substring(0,10)
